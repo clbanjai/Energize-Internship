@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: enriched-output
-          path: output/final_enriched.csv
+          path: final_enriched.csv
