@@ -27,7 +27,6 @@ skipped_indeces = set(skipped_indeces)
 for index, row in enumerate(companies):
     if index in skipped_indeces:
         final_enriched_companies.append(affinity_enrich(row))
-        break
     else:
         final_enriched_companies.append(dict(enriched_df.iloc[index]))
 
