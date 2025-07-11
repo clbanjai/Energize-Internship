@@ -56,6 +56,6 @@ def run_monitor(interval=600):
         print("\n🛑 Monitor stopped.")
         imap.logout()
 
-# if __name__ == "__main__":
-#     # run_monitor()
+if __name__ == "__main__":
+    run_monitor()
 

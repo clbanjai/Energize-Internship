@@ -1,73 +1,88 @@
 import requests
 import pandas as pd
-from config import SUPABASE_API_URL, SUPABASE_API_KEY, SUPABASE_TABLE
+import uuid
+from config import SUPABASE_API_URL, SUPABASE_API_KEY
 
-def is_duplicate(deal, existing):
-    return (
-        deal[2] == existing["Series"] and
-        deal[1] == existing["Deal Size"] and
-        deal[5] == existing["Lead Investors"]
-    )
+# Table names
+COMPANIES_TABLE = "companies"
+FUNDINGS_TABLE = "fundings"
 
-def fetch_existing_deals(company_name):
-    url = f"{SUPABASE_API_URL}/rest/v1/{SUPABASE_TABLE}?Company=eq.{company_name}"
-    headers = {
-        "apikey": SUPABASE_API_KEY,
-        "Authorization": f"Bearer {SUPABASE_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    res = requests.get(url, headers=headers)
+HEADERS = {
+    "apikey": SUPABASE_API_KEY,
+    "Authorization": f"Bearer {SUPABASE_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+def get_existing_companies():
+    url = f"{SUPABASE_API_URL}/rest/v1/{COMPANIES_TABLE}?select=id,name"
+    res = requests.get(url, headers=HEADERS)
     if res.status_code == 200:
-        return res.json()
+        return pd.DataFrame(res.json())
     else:
-        print(f"❌ Failed to fetch existing deals: {res.status_code} {res.text}")
-        return []
+        print("❌ Failed to fetch existing companies", res.status_code, res.text)
+        return pd.DataFrame()
+
+def insert_company_if_new(company, existing_df):
+    name = company[0].strip()
+    if not (existing_df['name'].str.lower() == name.lower()).any():
+        payload = {
+            "id": str(uuid.uuid4()),
+            "name": company[0],
+            "tagline": company[1],
+            "location": company[2],
+            "domain": company[3],
+        }
+        url = f"{SUPABASE_API_URL}/rest/v1/{COMPANIES_TABLE}"
+        print(payload)
+        res = requests.post(url, headers=HEADERS, json=[payload])
+        if res.status_code in [200, 201]:
+            print(f"✅ Inserted new company: {name}")
+            return payload["id"]
+        else:
+            print(f"❌ Failed to insert company {name}:", res.status_code, res.text)
+            return None
+    else:
+        matched = existing_df[existing_df['name'].str.lower() == name.lower()]
+        return matched.iloc[0]['id']
+
+def insert_funding_record(company_id, deal):
+    payload = {
+        "id": str(uuid.uuid4()),
+        "company_id": company_id,
+        "date": deal[4],
+        "series": deal[1],
+        "deal_size": float(deal[2]) if deal[2] else None,
+        "lead_investors": deal[3],
+        "source": deal[5],
+    }
+    url = f"{SUPABASE_API_URL}/rest/v1/{FUNDINGS_TABLE}"
+    res = requests.post(url, headers=HEADERS, json=[payload])
+    if res.status_code in [200, 201]:
+        print(f"✅ Inserted funding for company ID {company_id}")
+    else:
+        print(f"❌ Failed to insert funding for company {company_id}:", res.status_code, res.text)
 
 def insert_deals(deals):
-    if not deals:
-        print("⚠️ No deals to insert.")
-        return
-
-    url = f"{SUPABASE_API_URL}/rest/v1/{SUPABASE_TABLE}"
-    headers = {
-        "apikey": SUPABASE_API_KEY,
-        "Authorization": f"Bearer {SUPABASE_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    payload = []
+    existing_companies = get_existing_companies()
     for deal in deals:
         try:
-            existing_deals = fetch_existing_deals(deal[0])
-            if any(is_duplicate(deal, existing) for existing in existing_deals):
-                print(f"⏩ Skipping duplicate deal for {deal[0]}")
-                continue
+            name, tagline, location, domain = deal[0], deal[6], deal[5], deal[7]
+            company_tuple = [name, tagline, location, domain]
+            company_id = insert_company_if_new(company_tuple, existing_companies)
+            if company_id:
+                insert_funding_record(company_id, deal)
+        except Exception as e:
+            print(f"⚠️ Skipping malformed deal: {deal} | Error: {e}")
+example_deal = [[
+    "SolarFlux",                  # Company Name
+    "Series A",                   # Series
+    "25",                         # Deal Size in millions (as a string to be converted)
+    "CleanTech Ventures, SunEdge Capital",  # Lead Investors
+    "2025-07-11",                # Date of Deal
+    "San Diego, CA",             # Location
+    "Thermal solar collector developer",    # Tagline
+    "https://www.solarfluxenergy.com",      # Domain
+    "https://techcrunch.com/solarflux-25m-series-a"  # Source
+]]
 
-            payload.append({
-                "Company": deal[0],
-                "Deal Size": deal[1],
-                "Series": deal[2],
-                "Tagline": deal[3],
-                "Location": deal[4],
-                "Lead Investors": deal[5],
-                "domain": deal[6],
-                "Date" : deal[7],
-                "source": deal[8],
-            })
-        except IndexError:
-            print(f"⚠️ Skipping malformed deal: {deal}")
-
-    if not payload:
-        print("✅ All deals already exist in Supabase.")
-        return
-
-    res = requests.post(url, json=payload, headers=headers)
-
-    if res.status_code in [200, 201]:
-        print(f"✅ Inserted {len(payload)} new deals into Supabase.")
-    else:
-        print("❌ Failed to insert into Supabase:", res.status_code, res.text)
-
-ctvc = pd.read_csv("clean_ctvc.csv")
-head = ctvc.head().values.tolist()
-insert_deals(head)
+insert_deals(example_deal)
