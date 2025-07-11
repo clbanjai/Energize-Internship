@@ -5,5 +5,5 @@ requests
 openai
 # imap-tools
 # email
-os
+# os
 ast
