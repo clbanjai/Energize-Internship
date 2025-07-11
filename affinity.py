@@ -14,8 +14,8 @@ fields_to_extract = [
 ]
 
 
-all_orgs = pd.read_csv("energize_affinity_ids.csv")
-id_set = set(all_orgs["id"].values)
+# all_orgs = pd.read_csv("energize_affinity_ids.csv")
+# id_set = set(all_orgs["id"].values)
 
 def in_energize_affinity(id):
     return id in id_set
@@ -198,12 +198,12 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id"]].values)
+# companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id"]].values)
 
 def enriched_df(companies_df):
-    
+
     result = []
     for row in companies_df:
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
-print(enriched_df(companies[:10]).drop_duplicates())
+# print(enriched_df(companies[:10]).drop_duplicates())
