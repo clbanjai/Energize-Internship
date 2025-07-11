@@ -3,7 +3,7 @@ pandas
 python-dotenv
 requests
 openai
-imap-tools
-email
+# imap-tools
+# email
 os
 ast
