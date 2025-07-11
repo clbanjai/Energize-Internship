@@ -3,6 +3,8 @@ import ast
 from config import OPENAI_API_KEY
 from config import THESIS
 import pandas as pd
+import uuid
+
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -210,6 +212,214 @@ def general_text_parser(html):
     soup = BeautifulSoup(html,"html.parser")
     return soup.get_text()
 
-def split_df(df):
-    companies_df = df[["Company", "Tagline", "Location", "Domain"]]
-    deals_df = df[["Comapany","Series","Lead Investor","Date","Source"]]
+from difflib import SequenceMatcher
+import numpy as np
+import re
+
+def clean_deal_size_column(df, column="Deal Size", eur_to_usd=1.08):
+    df = df.copy()
+    standardized = []
+    currencies = []
+
+    for val in df[column]:
+        if pd.isna(val):
+            standardized.append(None)
+            currencies.append(None)
+            continue
+
+        val = str(val).strip()
+
+        if val.lower() in {"undisclosed", "na", "n/a", ""}:
+            standardized.append(None)
+            currencies.append(None)
+            continue
+
+        is_eur = "€" in val
+        is_usd = "$" in val
+        match = re.search(r"([\d.,]+)\s*([kKmMbB]?)", val)
+        if match:
+            number_str = match.group(1).replace(",", "")
+            unit = match.group(2).upper()
+            try:
+                number = float(number_str)
+                if unit in ["B","BN"] :
+                    number *= 1000
+                elif unit == ["K","k"]:
+                    number /= 1000
+
+                if is_usd:
+                    currencies.append("USD")
+                elif is_eur:
+                    number *= eur_to_usd
+                    currencies.append("EUR")
+                else:
+                    currencies.append("Unknown")
+
+                standardized.append(round(number, 2))
+            except ValueError:
+                standardized.append(None)
+                currencies.append(None)
+        else:
+            standardized.append(None)
+            currencies.append(None)
+
+    # Overwrite Deal Size
+    df[column] = standardized
+
+    # Ensure Currency column is placed right next to Deal Size
+    if "Currency" in df.columns:
+        df.drop("Currency", axis=1, inplace=True)
+
+    deal_size_idx = df.columns.get_loc(column)
+    df.insert(deal_size_idx + 1, "Currency", currencies)
+
+    return df
+
+def repeated_attribute(df, value,attribute="Company"):
+    return df[df[attribute].str.lower() == value.lower()]
+
+def normalize_investors_to_set(inv_str: str) -> set:
+    if pd.isna(inv_str):
+        return set()
+    return set(i.strip().lower() for i in inv_str.split(','))
+
+def deduplicate_funding_deals_two_step_partial_overlap(df: pd.DataFrame, min_overlap=2) -> pd.DataFrame:
+    df = df.copy()
+
+    # --------------------
+    # Normalize base fields
+    # --------------------
+    df['Company'] = df['Company'].str.strip().str.lower()
+    df['Series'] = df['Series'].str.strip().str.upper()
+    df['Domain'] = df['Domain'].str.strip().str.lower()
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['Deal Size Clean'] = df['Deal Size'].fillna(0).astype(float).map(lambda x: f"{x:.2f}")
+    df['Investor Set'] = df['Lead Investors'].map(normalize_investors_to_set)
+
+    # --------------------------
+    # Step 1: Dedup by structure
+    # --------------------------
+    df = df.sort_values(by='Date')
+    structure_dedup = df.drop_duplicates(
+        subset=['Company', 'Deal Size Clean', 'Series'],
+        keep='first'
+    ).reset_index(drop=True)
+
+    # --------------------------
+    # Step 2: Dedup by investor overlap
+    # --------------------------
+    keep_indices = []
+    used_sets = []
+
+    for idx, row in structure_dedup.iterrows():
+        current_set = row['Investor Set']
+        is_duplicate = False
+
+        for existing_set in used_sets:
+            if len(current_set.intersection(existing_set)) >= min_overlap:
+                is_duplicate = True
+                break
+
+        if not is_duplicate:
+            keep_indices.append(idx)
+            used_sets.append(current_set)
+
+    deduped_df = structure_dedup.loc[keep_indices]
+    return deduped_df.drop(columns=['Deal Size Clean', 'Investor Set']).reset_index(drop=True).sort_values(by="Company")
+
+
+
+def transform_to_relational_json(df: pd.DataFrame) -> dict:
+    df = df.copy()
+    df['Company Clean'] = df['Company'].str.strip().str.lower()
+
+    company_map = {}
+    companies = []
+    funding_rounds = []
+
+    # Track canonical fields per company
+    domain_cache = {}
+    tagline_cache = {}
+
+    for _, row in df.iterrows():
+        company_key = row['Company Clean']
+        name = row['Company']
+        tagline = row.get('Tagline')
+        location = row.get('Location')
+        domain = row.get('Domain')
+
+        # Initialize company if not seen
+        if company_key not in company_map:
+            company_id = str(uuid.uuid4())
+            company_map[company_key] = company_id
+            domain_cache[company_key] = domain if pd.notna(domain) else None
+            tagline_cache[company_key] = tagline if isinstance(tagline, str) else ""
+
+            companies.append({
+                "id": company_id,
+                "name": name,
+                "tagline": tagline_cache[company_key],
+                "location": location,
+                "domain": domain_cache[company_key]
+            })
+        else:
+            # Update domain if we don't have one yet and this row has it
+            if pd.notna(domain) and not domain_cache[company_key]:
+                domain_cache[company_key] = domain
+                for comp in companies:
+                    if comp["id"] == company_map[company_key]:
+                        comp["domain"] = domain
+                        break
+
+            # Update tagline if this one is longer
+            current_tagline = tagline_cache.get(company_key, "")
+            if isinstance(tagline, str) and len(tagline) > len(current_tagline):
+                tagline_cache[company_key] = tagline
+                for comp in companies:
+                    if comp["id"] == company_map[company_key]:
+                        comp["tagline"] = tagline
+                        break
+
+        # Add funding round
+        funding_rounds.append({
+            "id": str(uuid.uuid4()),
+            "company_id": company_map[company_key],
+            "date": row.get('Date'),
+            "series": row.get('Series'),
+            "deal_size": row.get('Deal Size'),
+            "lead_investors": row.get('Lead Investors'),
+            "source": row.get('Source')
+        })
+
+    return {
+        "companies": companies,
+        "funding_rounds": funding_rounds
+    }
+
+import json
+import pandas as pd
+
+# Helper: Recursively replace NaN/NaT with None in nested dicts/lists
+def clean_nans(obj):
+    if isinstance(obj, dict):
+        return {k: clean_nans(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nans(item) for item in obj]
+    elif pd.isna(obj):
+        return None
+    else:
+        return obj
+
+
+def clean_and_split_df(df):
+    df = df.copy()
+    df = clean_deal_size_column(df)
+    df = deduplicate_funding_deals_two_step_partial_overlap(df)
+    relational_data = transform_to_relational_json(df)
+    clean_data = clean_nans(relational_data)
+    return pd.DataFrame(clean_data["companies"]), pd.DataFrame(clean_data["funding_rounds"])
+
+
+all_data = pd.read_csv("../all_data.csv")[['Company', 'Deal Size', 'Series', 'Tagline', 'Location','Lead Investors', 'Domain', 'Date', 'Source']]
+companies, funding = clean_and_split_df(all_data)
+print(funding)

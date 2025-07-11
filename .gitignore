@@ -211,3 +211,6 @@ energize_affinity_ids.csv/
 
 # config file
 config.py/
+
+# csv files
+private data

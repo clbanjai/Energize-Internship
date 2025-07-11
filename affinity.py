@@ -201,6 +201,7 @@ def array_to_tuples(array):
 companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id"]].values)
 
 def enriched_df(companies_df):
+    
     result = []
     for row in companies_df:
         result.append(affinity_enrich(tuple(row)))
