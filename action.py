@@ -18,16 +18,10 @@ def array_to_tuples(array):
         list of tuples: Each tuple corresponds to a row in the input array.
     """
     return [tuple(row) for row in array]
-skipped_indeces = pd.read_csv("./private_data/skipped_indices.csv")["skipped_indeces"].values
+
 companies = array_to_tuples(pd.read_csv("./private_data/companies.csv")[["name","location","domain","id"]].values)
-enriched_df = pd.read_csv("./private_data/enriched_df_preliminary.csv")
-
 final_enriched_companies = []
-skipped_indeces = set(skipped_indeces)
 for index, row in enumerate(companies):
-    if index in skipped_indeces:
-        final_enriched_companies.append(affinity_enrich(row))
-    else:
-        final_enriched_companies.append(dict(enriched_df.iloc[index]))
-
+    final_enriched_companies.append(affinity_enrich(row))
+    
 pd.DataFrame(final_enriched_companies).to_csv("final_enriched.csv")
