@@ -19,7 +19,7 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-companies = array_to_tuples(pd.read_csv("./private_data/companies.csv")[["name","location","domain","id"]].values)
+companies = array_to_tuples(pd.read_csv("./private_data/companies.csv").head(30)[["name","location","domain","id"]].values)
 final_enriched_companies = []
 for index, row in enumerate(companies):
     final_enriched_companies.append(affinity_enrich(row))
