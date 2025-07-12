@@ -6,6 +6,8 @@ on:
 jobs:
   run-long-task:
     runs-on: ubuntu-latest
+    env:
+      AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
 
     steps:
       - name: Checkout repository
@@ -18,14 +20,6 @@ jobs:
 
       - name: Install requirements
         run: pip install -r requirements.txt
-
-    #   - name: Download CSV files 
-    #     run: |
-    #       wget -O private_data/domain_list.csv "https://drive.google.com/uc?export=download&id=1BBdnULPxqV7uUHn1mctfte1aa2bz_2p1"
-    #       wget -O private_data/energize_affinity_ids.csv "https://drive.google.com/uc?export=download&id=1UPXSCWfzXdHlUMsXDaHk52LZbM9i7gsO"
-    #       wget -O private_data/enriched_df_preliminary.csv     "https://drive.google.com/uc?export=download&id=1lDDeTJRUyEb1JUmbnDXblB03PPoarufh"
-    #       wget -O private_data/skipped_indices.csv     "https://drive.google.com/uc?export=download&id=1ReWLpq3T-7_S3UkEojFYfXvk8Wfyf3fy"
-    #       wget -O private_data/companies.csv     "https://drive.google.com/uc?export=download&id=1CilJ0-elWqWrJ99PdiXzl-hRtVu28BO6"
 
       - name: Run main script
         run: python action.py
