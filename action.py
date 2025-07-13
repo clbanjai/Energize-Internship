@@ -39,8 +39,8 @@ companies_chunk = companies[start:end]
 
 # Enrich only this chunk
 final_enriched_companies = []
-for row in companies_chunk:
+for row in companies_chunk.head():
     final_enriched_companies.append(affinity_enrich(row))
 
 # Save output with chunk-specific filename
-pd.DataFrame(final_enriched_companies).to_csv(f"final_enriched_{chunk_index}.csv", index=False)
+pd.DataFrame(final_enriched_companies).to_csv(f"enriched_chunk_{chunk_index}.csv", index=False)
