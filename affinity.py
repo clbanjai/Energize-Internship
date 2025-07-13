@@ -2,6 +2,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import pandas as pd
 from config import AFFINITY_API_KEY
+from difflib import SequenceMatcher
 
 fields_to_extract = [
     "Location"
@@ -12,6 +13,14 @@ fields_to_extract = [
     "Investors",
     "LinkedIn Profile (Founders/CEOs)",
 ]
+
+
+def name_similarity(name1, name2):
+    """
+    Returns a similarity score between 0 and 1 (higher means more similar).
+    """
+    return SequenceMatcher(None, name1.lower(), name2.lower()).ratio()
+
 
 
 all_orgs = pd.read_csv("private_data/energize_affinity_ids.csv")
@@ -115,38 +124,43 @@ def get_company_by_name(company_name, domain=None,location=None):
             data = json["organizations"]
             # return data
             if len(data)==1:
-                return data[0]
-            if not pd.isna(domain):
+                org = data[0]
+                field_values = get_field_value_by_id(org["id"])
+                return org, field_values
+            if not pd.isna(domain) and domain:
                 for org in data:
-                    org_id = org["id"]
-                    field_values = get_company_info_by_id(org_id)
-                    # return field_values
-                    if field_values:
-                        org_domains = field_values["domains"]
-                        for org_dom in org_domains:
-                            # print(f"This is the domain {domain}")
-                            # print(f"This is the org domain : {org_dom}")
-                            if org_dom in domain:
-                                return org
+                    if name_similarity(org["name"], company_name) > 0.6:
+                        org_domains = org["domains"]
+                        org_id = org["id"]
+                        # field_values = get_field_value_by_id(org_id)
+                        # return field_values
+                        if org_domains:
+                            for org_dom in org_domains:
+                                # print(f"This is the domain {domain}")
+                                # print(f"This is the org domain : {org_dom}")
+                                if org_dom in domain:
+                                    return org, get_field_value_by_id(org_id)
             if location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
                 for org in data:
-                    # print(org)
-                    org_id = org["id"]
-                    field_values = get_field_value_by_id(org_id)
-                    # print(f"{field_values=}")
+                    if name_similarity(org["name"], company_name) > 0.6:
+                        org_id = org["id"]
+                        field_values = get_field_value_by_id(org_id)
+                        # print(f"{field_values=}")
                     if field_values and field_values["Location"]:
                         if in_US(location):
                             city, state = field_values["Location"]["city"], field_values["Location"]["state"]
+                            city, country = city.lower(), country.lower() # to standerdize and avoid issues with capitalization
                             if city and city in location:
-                                return org 
+                                return org, field_values 
                             elif state and state in location:
-                                return org
+                                return org, field_values
                         else:
                             city, country = field_values["Location"]["city"], field_values["Location"]["country"]
-                            city, country = city.lower(), country.lower() # to standerdize and avoid issues with capitalization
+                            city = city.lower() if city else None# to standerdize and avoid issues with capitalization
+                            country = country.lower() if country else None
                             if country and country in location or country and country in location:  
-                                return org
+                                return org, field_values
             else:
                 return None
             # return data
@@ -161,11 +175,13 @@ def affinity_enrich(row):
 
     for k in fields_to_extract:
         enriched_fields[k] = None
+    # return enriched_fields
     try:
-        org = get_company_by_name(name, domain=None, location=location)
+        org, field_values = get_company_by_name(name, domain=domain, location=location)
+        
         if org:
             id = org["id"]
-            field_values = get_field_value_by_id(id)
+            # field_values = get_field_value_by_id(id)
             enriched_fields = {'id': id, 'name': org["name"], 'domain': org["domain"]}
 
             for k, v in field_values.items():
@@ -209,5 +225,3 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-row = ("booster","San Mateo, CA","booster.com",pd.NA)
-print(affinity_enrich(row))
