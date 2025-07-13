@@ -29,13 +29,17 @@ id_set = set(all_orgs["id"].values)
 def in_energize_affinity(id):
     return id in id_set
 
+us_data = pd.read_csv("private_data/uscities.csv")
+cities = set(us_data["city"].str.lower().values)
+states = set(us_data["state_id"].str.lower().values)
 def in_US(location):
-    larger_location = location.split(", ")[-1]
-    if len(larger_location)==2:
-        return True
+    larger_location = location.split(", ")
+    if len(larger_location) > 1:
+        city, state = larger_location[0].lower(), larger_location[1].lower()
+        return city in cities and state in states
     else:
-        return False
-
+        return larger_location[0].lower() in states or larger_location[0].lower() in cities
+    
 
 def get_field_value_by_id(company_id, fields_to_extract = [
     "Employees (Current)",
@@ -143,30 +147,38 @@ def get_company_by_name(company_name, domain=None,location=None):
             if location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
                 for org in data:
-                    if name_similarity(org["name"], company_name) > 0.6:
+                    name_score = name_similarity(org["name"].lower(), company_name)
+                    if name_score > 0.6:
                         org_id = org["id"]
                         field_values = get_field_value_by_id(org_id)
+                        # return name_score
                         # print(f"{field_values=}")
-                    if field_values and field_values["Location"]:
-                        if in_US(location):
-                            city, state = field_values["Location"]["city"], field_values["Location"]["state"]
-                            city, country = city.lower(), country.lower() # to standerdize and avoid issues with capitalization
-                            if city and city in location:
-                                return org, field_values 
-                            elif state and state in location:
-                                return org, field_values
-                        else:
-                            city, country = field_values["Location"]["city"], field_values["Location"]["country"]
-                            city = city.lower() if city else None# to standerdize and avoid issues with capitalization
-                            country = country.lower() if country else None
-                            if country and country in location or country and country in location:  
-                                return org, field_values
-            else:
-                return None
+                        if field_values and field_values["Location"]:
+                            if in_US(location):
+                                city, state = field_values["Location"]["city"], field_values["Location"]["state"]
+                                city = city.lower() if city else None
+                                state = state.lower() if state else None # to standerdize and avoid issues with capitalization
+                                if city and city in location:
+                                    return org, field_values 
+                                elif state and state in location:
+                                    return org, field_values
+                            else:
+                                city, country = field_values["Location"]["city"], field_values["Location"]["country"]
+                                city = city.lower() if city else None# to standerdize and avoid issues with capitalization
+                                country = country.lower() if country else None
+                                if country and country in location or country and country in location:  
+                                    return org, field_values
+            for org in data:
+                name_score = name_similarity(org["name"].lower(), company_name)
+                if name_score ==1:
+                    org_id = org["id"]
+                    field_values = get_field_value_by_id(org_id)
+                    return org, field_values
+            return (None, None)
             # return data
             # return orgs # Return the first organization found
         else:
-            return None
+            return (None, None)
 
 def affinity_enrich(row):
     in_energize = False
@@ -175,10 +187,10 @@ def affinity_enrich(row):
 
     for k in fields_to_extract:
         enriched_fields[k] = None
+    enriched_fields["In Energize Affinity"] = False
     # return enriched_fields
     try:
         org, field_values = get_company_by_name(name, domain=domain, location=location)
-        
         if org:
             id = org["id"]
             # field_values = get_field_value_by_id(id)
@@ -199,10 +211,11 @@ def affinity_enrich(row):
             org_id = org["id"]
             if in_energize_affinity(org_id):
                 in_energize = True
-
         enriched_fields["In Energize Affinity"] = in_energize
         return enriched_fields
     except Exception as e:
+        print(f"Error enriching {name}: {e}")
+        print()
         return enriched_fields
 def array_to_tuples(array):
     """
@@ -225,3 +238,8 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
+
+# row = ("44.01","Oman",None,None)
+# print(affinity_enrich(row))
+# print(get_company_by_name("24m technologies", None, "Cambridge, MA"))
+# print(name_similarity("London, UK", "London, United Kingdom"))
