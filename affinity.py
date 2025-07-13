@@ -129,6 +129,7 @@ def get_company_by_name(company_name, domain=None,location=None):
                             if org_dom in domain:
                                 return org
             if location:# if we have the locatoin then we loop through the outputs until there's a match
+                location = location.lower()
                 for org in data:
                     # print(org)
                     org_id = org["id"]
@@ -143,6 +144,7 @@ def get_company_by_name(company_name, domain=None,location=None):
                                 return org
                         else:
                             city, country = field_values["Location"]["city"], field_values["Location"]["country"]
+                            city, country = city.lower(), country.lower() # to standerdize and avoid issues with capitalization
                             if country and country in location or country and country in location:  
                                 return org
             else:
@@ -206,3 +208,6 @@ def enriched_df(companies_df):
     for row in companies_df:
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
+
+row = ("booster","San Mateo, CA","booster.com",pd.NA)
+print(affinity_enrich(row))
