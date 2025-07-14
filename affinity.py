@@ -232,7 +232,7 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id","tagline"]].values)
+# companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id","tagline"]].values)
 
 def enriched_df(companies_df):
 
