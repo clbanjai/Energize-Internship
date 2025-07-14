@@ -40,7 +40,7 @@ companies_chunk = companies[start:end]
 
 # Enrich only this chunk
 final_enriched_companies = []
-for row in companies_chunk:
+for row in companies_chunk[:5]:
     final_enriched_companies.append(affinity_enrich(row))
 
 # Save output with chunk-specific filename
