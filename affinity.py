@@ -5,14 +5,13 @@ from config import AFFINITY_API_KEY
 from difflib import SequenceMatcher
 
 fields_to_extract = [
-    "Location"
+    "Location",
     "Employees (Current)",
     "Employees: Growth YoY (%)",
     "Investment Stage",
     "Last Funding Amount (USD)",
     "Investors",
-    "LinkedIn Profile (Founders/CEOs)",
-]
+    "LinkedIn Profile (Founders/CEOs)"]
 
 
 def name_similarity(name1, name2):
@@ -182,19 +181,23 @@ def get_company_by_name(company_name, domain=None,location=None):
 
 def affinity_enrich(row):
     in_energize = False
-    name, location, domain, uuid = row
-    enriched_fields = {'id': uuid, 'name': name, 'domain': domain, "Location": location}
+    affinity_ID = None
+    name, location, domain, uuid, tagline = row
+    enriched_fields = {'id': uuid, 'name': name,"tagline": tagline, 'domain': domain, "Location": location}
 
     for k in fields_to_extract:
         enriched_fields[k] = None
     enriched_fields["In Energize Affinity"] = False
+    enriched_fields["Affinty ID"] = "Not in Affinity"
     # return enriched_fields
     try:
         org, field_values = get_company_by_name(name, domain=domain, location=location)
+        # return org, field_values
         if org:
-            id = org["id"]
+            affinity_ID = org["id"]
             # field_values = get_field_value_by_id(id)
-            enriched_fields = {'id': id, 'name': org["name"], 'domain': org["domain"]}
+            enriched_fields['name'] =  org["name"]
+            enriched_fields['domain'] =  org["domain"]
 
             for k, v in field_values.items():
                 if k == "Location":
@@ -208,10 +211,10 @@ def affinity_enrich(row):
                 else:
                     enriched_fields[k] = v
 
-            org_id = org["id"]
-            if in_energize_affinity(org_id):
+            if in_energize_affinity(affinity_ID):
                 in_energize = True
         enriched_fields["In Energize Affinity"] = in_energize
+        enriched_fields["Affinty ID"] = affinity_ID
         return enriched_fields
     except Exception as e:
         print(f"Error enriching {name}: {e}")
@@ -229,7 +232,7 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-# companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id"]].values)
+companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id","tagline"]].values)
 
 def enriched_df(companies_df):
 
@@ -238,8 +241,6 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-
-# row = ("44.01","Oman",None,None)
-# print(affinity_enrich(row))
-# print(get_company_by_name("24m technologies", None, "Cambridge, MA"))
+# row = ("Advent Technolgies", None, None, None, None)
+# print(get_company_by_name("44.01", None, "Oman"))
 # print(name_similarity("London, UK", "London, United Kingdom"))
