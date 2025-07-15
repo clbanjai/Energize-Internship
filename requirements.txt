@@ -3,6 +3,7 @@ pandas
 python-dotenv
 requests
 openai
+requests-html
 # imap-tools
 # email
 # os

@@ -241,6 +241,7 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-# row = ("Advent Technolgies", None, None, None, None)
-# print(get_company_by_name("44.01", None, "Oman"))
+row = ("carbonhound", "Toronto, Canada", "carbonhound.com",None,None)
+print(affinity_enrich(row))
+# print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
 # print(name_similarity("London, UK", "London, United Kingdom"))

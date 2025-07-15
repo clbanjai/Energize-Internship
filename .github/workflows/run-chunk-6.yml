@@ -7,7 +7,7 @@ jobs:
   enrich-chunk-6:
     runs-on: ubuntu-latest
     env:
-      AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
+      AFFINITY_API_KEY: ${ secrets.AFFINITY_API_KEY }
 
     steps:
       - name: Checkout repository 
@@ -22,10 +22,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run enrichment for chunk 6
-        run: python action.py 6
+        run: python domain.py 6
 
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
-           name: enriched-output
-           path: enriched_chunk_6.csv
+           name: domain-output
+           path: domain_list_chunk_6.csv
