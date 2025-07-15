@@ -55,7 +55,7 @@ start = (chunk_index - 1) * chunk_size
 end = chunk_index * chunk_size
 companies_chunk = clean_data[start:end]
 url_list = []
-for index, row in companies_chunk[:5].iterrows():
+for index, row in companies_chunk.iterrows():
     domain = row["Domain"]
     # if index%20==0:
     #     print(f"Processing {index+1}/{(clean_data.shape[0])}")
