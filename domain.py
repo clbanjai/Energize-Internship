@@ -62,6 +62,6 @@ for index, row in companies_chunk[:5].iterrows():
     if not pd.isna(domain) and is_valid_company_url(domain):
         url_list.append(domain)
     else:
-        url_list.append(pd.NA)
+        url_list.append("Not a valid domain")
 url_list = pd.DataFrame(url_list, columns=["Domains"])
 url_list.to_csv(f"./domain_list_chunk_{chunk_index}.csv", index=False)
