@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository 
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -34,3 +34,4 @@ jobs:
           message: "Auto-commit enrichment chunk 5"
           add: 'enrich_chunk_5.csv'
           push: true
+          github_token: ${{secrets.GH_PAT}}
