@@ -198,7 +198,9 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
     else:
         return f"Error: {response.status_code}, {response.text}"
 
-def affinity_enrich(row):
+def affinity_enrich(row,index):
+    if index%5:
+        print(f"Working on {index}")
     in_energize = False
     affinity_ID = None
     name, location, domain, uuid, tagline, investors = row
@@ -262,7 +264,7 @@ def enriched_df(companies_df):
 
 # row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
 # print(affinity_enrich(row))
-print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
+# print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
 # # print(name_similarity("London, UK", "London, United Kingdom"))
 
 # investors = ["VoLo Earth Ventures", "Microsoft Climate Innovation Fund", "Credit Suisse", "Builders Vision", "New York State Ventures", "Unreasonable Collective", "American Family Insurance Institute", "AccelR8", "The Goldman Sachs Urban Investment Group"]
