@@ -91,12 +91,19 @@ def get_field_value_by_id(company_id, fields_to_extract = [
         # Invert the mapping to get id → name, but only for requested fields
         reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
 
-        for field_output in list_of_field_outputs:
+        for field_output in list_of_field_outputs: 
             field_id = field_output.get("field_id")
             if field_id in reverse_mapping:
                 field_value = field_output.get("value")
                 field_name = reverse_mapping[field_id]
-                info[field_name] = field_value
+                if field_value is not None:
+                    # print(f"Processing field: {field_name} with value: {field_value}")
+                    if field_name in info and info[field_name] is not None:
+                        if not isinstance(info[field_name], list):
+                            info[field_name] = [info[field_name]]
+                        info[field_name].append(field_value)
+                    else:
+                        info[field_name] = field_value
 
     return info
 
@@ -111,7 +118,7 @@ def get_company_info_by_id(company_id):
         print("Error:", response.status_code, response.text)
         return None
 
-def get_company_by_name(company_name, domain=None,location=None):
+def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
 
     url = f"https://api.affinity.co/organizations?term={company_name}"
@@ -127,10 +134,11 @@ def get_company_by_name(company_name, domain=None,location=None):
             data = json["organizations"]
             # return data
             if len(data)==1:
+                # print(f"Found 1 organization for {company_name}")
                 org = data[0]
                 field_values = get_field_value_by_id(org["id"])
                 return org, field_values
-            if not pd.isna(domain) and domain:
+            if pd.notna(domain) and domain:
                 for org in data:
                     if name_similarity(org["name"], company_name) > 0.6:
                         org_domains = org["domains"]
@@ -143,7 +151,7 @@ def get_company_by_name(company_name, domain=None,location=None):
                                 # print(f"This is the org domain : {org_dom}")
                                 if org_dom in domain:
                                     return org, get_field_value_by_id(org_id)
-            if location:# if we have the locatoin then we loop through the outputs until there's a match
+            if pd.notna(location) and location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
                 for org in data:
                     name_score = name_similarity(org["name"].lower(), company_name)
@@ -167,12 +175,32 @@ def get_company_by_name(company_name, domain=None,location=None):
                                 country = country.lower() if country else None
                                 if country and country in location or country and country in location:  
                                     return org, field_values
-            for org in data:
-                name_score = name_similarity(org["name"].lower(), company_name)
-                if name_score ==1:
+            if investors:
+                investors = [inv.lower().strip() for inv in investors]  # Normalize investor names to lowercase
+                for org in data:
+                    # print(f"looking at {org['name']} with domain {org['domains']}")
                     org_id = org["id"]
                     field_values = get_field_value_by_id(org_id)
-                    return org, field_values
+                    # return field_values
+                    if field_values and field_values["Investors"]:
+                        # print(f"Investors for {org['name']} with domain {org["domains"]}: {field_values['Investors']}")
+
+                        org_investors = field_values["Investors"]
+                        for inv in org_investors:
+                            inv = inv.lower().strip()  # Normalize investor names to lowercase
+                            if inv in investors:
+                                return org, field_values
+                        # return org, field_values
+                        # for inv in investors:
+
+                        #     if inv.lower() in org_investors:
+                        #         return org, field_values   
+            # # for org in data:
+            #     name_score = name_similarity(org["name"].lower(), company_name)
+            #     if name_score ==1:
+            #         org_id = org["id"]
+            #         field_values = get_field_value_by_id(org_id)
+            #         return org, field_values
             return (None, None)
             # return data
             # return orgs # Return the first organization found
@@ -182,8 +210,8 @@ def get_company_by_name(company_name, domain=None,location=None):
 def affinity_enrich(row):
     in_energize = False
     affinity_ID = None
-    name, location, domain, uuid, tagline = row
-    enriched_fields = {'id': uuid, 'name': name,"tagline": tagline, 'domain': domain, "Location": location}
+    name, location, domain, uuid, tagline, investors = row
+    enriched_fields = {'id': uuid, 'name': name,"tagline": tagline, 'domain': domain, "Location": location, "Investors": investors}
 
     for k in fields_to_extract:
         enriched_fields[k] = None
@@ -191,7 +219,7 @@ def affinity_enrich(row):
     enriched_fields["Affinty ID"] = "Not in Affinity"
     # return enriched_fields
     try:
-        org, field_values = get_company_by_name(name, domain=domain, location=location)
+        org, field_values = get_company_by_name(name, domain=domain, location=location,investors=investors)
         # return org, field_values
         if org:
             affinity_ID = org["id"]
@@ -241,7 +269,10 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-row = ("carbonhound", "Toronto, Canada", "carbonhound.com",None,None)
-print(affinity_enrich(row))
-# print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
-# print(name_similarity("London, UK", "London, United Kingdom"))
+# row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
+# print(affinity_enrich(row))
+# # print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
+# # print(name_similarity("London, UK", "London, United Kingdom"))
+
+# investors = ["VoLo Earth Ventures", "Microsoft Climate Innovation Fund", "Credit Suisse", "Builders Vision", "New York State Ventures", "Unreasonable Collective", "American Family Insurance Institute", "AccelR8", "The Goldman Sachs Urban Investment Group"]
+# print(get_company_by_name("blocpower",investors=investors))
