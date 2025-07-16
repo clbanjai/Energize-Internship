@@ -3,6 +3,7 @@ from requests.auth import HTTPBasicAuth
 import pandas as pd
 from config import AFFINITY_API_KEY
 from difflib import SequenceMatcher
+import time
 
 fields_to_extract = [
     "Location",
@@ -19,6 +20,22 @@ def name_similarity(name1, name2):
     Returns a similarity score between 0 and 1 (higher means more similar).
     """
     return SequenceMatcher(None, name1.lower(), name2.lower()).ratio()
+
+def safe_get(url, auth, max_retries=5, backoff_factor=2.0):
+    for attempt in range(max_retries):
+        response = requests.get(url, auth=auth)
+        if response.status_code == 200:
+            return response
+        elif response.status_code == 429:
+            # Check retry-after header
+            retry_after = int(response.headers.get("X-Ratelimit-Limit-User-Reset", 5))
+            wait_time = retry_after * (backoff_factor ** attempt)
+            print(f"🛑 429 Too Many Requests – Retrying in {wait_time:.1f} seconds...")
+            time.sleep(wait_time)
+        else:
+            print(f"❌ Request failed with {response.status_code}: {response.text}")
+            break
+    return None
 
 
 
@@ -78,11 +95,10 @@ def get_field_value_by_id(company_id, fields_to_extract = [
                     'Last Funding Amount (EUR)': 3007047, 'Last Month Twitter Followers': 3007035, 'Employee Departures: Last 3 Months (#)': 3051579, 'Employee Departures: Last 3 Months (%)': 3051578, 'Employee Departures: Last 3 Months (Leadership)': 3051581, 'Employee Hires: Last 3 Months (#)': 3051577, 'Employee Hires: Last 3 Months (%)': 3051576, 'Employee Hires: Last 3 Months (Leadership)': 3051580, 'Employees (Current)': 3051587, 'Employees: 1 Month Ago': 3051586, 'Employees: 3 Months Ago': 3051585, 'Employees: 6 Months Ago': 3051584, 'Employees: 12 Months Ago': 3051583, 'Employees: 24 Months Ago': 3051582, 'Employees: Growth MoM (%)': 3051575, 'Employees: Growth QoQ (%)': 3051574, 'Employees: Growth YoY (%)': 3051573, 'LinkedIn Profile (Founders/CEOs)': 3051572, 'Strategy': 4075354, 'Diverse Founder (Y/N)?': 3069421, 'ARR 2023 ($)': 3226858, 'Relevant Events': 3364216, 'ARR 2024': 4367478, 'Energize Relationship': 3026453, 'Margin': 3068948, 'ARR 2021 ($)': 3068961, 'ARR 2022 ($)': 3068970, 'Deep Dive': 3010026, 'Financial Impact': 4582456, 'Engagement Tier': 3713299, 'Engagement Impact': 4582457}
 
     info = {i: None for i in fields_to_extract}
-    response = requests.get(
-        f"https://api.affinity.co/field-values?organization_id={company_id}",
-        auth=HTTPBasicAuth("", AFFINITY_API_KEY)
-    )
-
+    url = f"https://api.affinity.co/field-values?organization_id={company_id}"
+    response = safe_get(url, HTTPBasicAuth("", AFFINITY_API_KEY))
+    if response is None:
+        return None
     if response.status_code != 200:
         raise Exception(f"Failed to fetch field values: {response.status_code}, {response.text}")
 
@@ -122,10 +138,9 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
     url = f"https://api.affinity.co/organizations?term={company_name}"
 
-    response = requests.get(
-        url,
-        auth=HTTPBasicAuth('', AFFINITY_API_KEY)  
-        )
+    response = response = safe_get(url, HTTPBasicAuth("", AFFINITY_API_KEY))
+    if response is None:
+        return (None, None)
 
     if response.status_code == 200:
         json = response.json()
@@ -247,7 +262,7 @@ def enriched_df(companies_df):
 
 # row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
 # print(affinity_enrich(row))
-# # print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
+print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
 # # print(name_similarity("London, UK", "London, United Kingdom"))
 
 # investors = ["VoLo Earth Ventures", "Microsoft Climate Innovation Fund", "Credit Suisse", "Builders Vision", "New York State Ventures", "Unreasonable Collective", "American Family Insurance Institute", "AccelR8", "The Goldman Sachs Urban Investment Group"]
