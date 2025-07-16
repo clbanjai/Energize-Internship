@@ -22,10 +22,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run enrichment for chunk 8
-        run: python domain.py 8
+        run: python action.py 8
 
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
-           name: domain-output
-           path: domain_list_chunk_8.csv
+           name: enriched-output
+           path: enriched_list_chunk_8.csv
