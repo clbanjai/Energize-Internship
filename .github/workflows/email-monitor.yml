@@ -1,0 +1,22 @@
+name: Email monitor
+
+on:
+    schedule:
+        - cron: '0 * * * *'  # Every hour
+jobs:
+  monitor-emails:
+    runs-on: ubuntu-latest
+    steps:
+        - name: checkout repository
+          uses: actions/checkout@v4
+        - name: Set up Python # remember to update requirements.txt
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.10'
+        - name: Install dependencies
+          run: pip install -r requirements.txt
+
+        - name: Run email monitor
+          run: python {file_name}.py 
+        
+          # No output to upload {file_name}.py is expected to handle update the database by itself

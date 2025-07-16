@@ -41,8 +41,13 @@ companies_chunk = companies[start:end]
 
 # Enrich only this chunk
 final_enriched_companies = []
-for row in companies_chunk:
+total = len(companies_chunk)
+
+for i, row in enumerate(companies_chunk[:20], start=1):
+    if i % 5 == 0:
+        print(f"Enriching {i}/{total}: {row[0]}")
     final_enriched_companies.append(affinity_enrich(row))
+
 
 # Save output with chunk-specific filename
 pd.DataFrame(final_enriched_companies).to_csv(f"enrich_chunk_{chunk_index}.csv", index=False)

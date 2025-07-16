@@ -7,11 +7,13 @@ jobs:
   enrich-chunk-7:
     runs-on: ubuntu-latest
     env:
-      AFFINITY_API_KEY: ${{secrets.AFFINITY_API_KEY }}
+      AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
 
     steps:
       - name: Checkout repository 
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,8 +26,10 @@ jobs:
       - name: Run enrichment for chunk 7
         run: python action.py 7
 
-      - name: Upload output
-        uses: actions/upload-artifact@v4
-        with:
-           name: enrich-output
-           path: enrich_chunk_7.csv
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-commit enrichment chunk 7" || echo "No changes to commit"
+          git push
