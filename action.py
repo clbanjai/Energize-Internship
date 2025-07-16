@@ -32,7 +32,6 @@ assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
 companies_df = pd.read_csv("./private_data/companies.csv")[["Company", "Location", "Domain", "Company UUID","Tagline", "Investors"]]
 companies = array_to_tuples(companies_df.values)
 
-# print(companies[:10])  # Print first 10 rows for debugging
 # Split into 8 equal chunks
 chunk_size = math.ceil(len(companies) / 8)
 start = (chunk_index - 1) * chunk_size

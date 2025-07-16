@@ -145,14 +145,6 @@ def get_field_value_by_id(company_id, fields_to_extract = [
 
     return info
 
-def get_company_info_by_id(company_id):
-    url = f"https://api.affinity.co/organizations/{company_id}"
-    response = patient_get(url)   
-    if response.status_code == 200:
-        return response.json()  # Return the organization details
-    else:
-        print("Error:", response.status_code, response.text)
-        return None
 
 def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
@@ -220,8 +212,6 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
         return f"Error: {response.status_code}, {response.text}"
 
 def affinity_enrich(row,index):
-    if index%5==0:
-        print(f"Working on {index}")
     in_energize = False
     affinity_ID = None
     name, location, domain, uuid, tagline, investors = row
@@ -231,13 +221,10 @@ def affinity_enrich(row,index):
         enriched_fields[k] = None
     enriched_fields["In Energize Affinity"] = False
     enriched_fields["Affinty ID"] = "Not in Affinity"
-    # return enriched_fields
     try:
         org, field_values = get_company_by_name(name, domain=domain, location=location,investors=investors)
-        # return org, field_values
         if org:
             affinity_ID = org["id"]
-            # field_values = get_field_value_by_id(id)
             enriched_fields['name'] =  org["name"]
             enriched_fields['domain'] =  org["domain"]
 
@@ -274,7 +261,6 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-# companies = array_to_tuples(pd.read_csv("../companies.csv")[["name","location","domain","id","tagline"]].values)
 
 def enriched_df(companies_df):
 
@@ -283,10 +269,3 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
-print(affinity_enrich(row,5))
-# print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
-# # print(name_similarity("London, UK", "London, United Kingdom"))
-
-# investors = ["VoLo Earth Ventures", "Microsoft Climate Innovation Fund", "Credit Suisse", "Builders Vision", "New York State Ventures", "Unreasonable Collective", "American Family Insurance Institute", "AccelR8", "The Goldman Sachs Urban Investment Group"]
-# print(get_company_by_name("blocpower",investors=investors))
