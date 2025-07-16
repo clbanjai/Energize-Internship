@@ -24,9 +24,9 @@ def array_to_tuples(array):
 # Add at the top
 
 # Load chunk index from argument (1–8)
-chunk_index = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
-# chunk_index = 6
+# chunk_index = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+# assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
+chunk_index = 6
 # chunk_index = 1
 # Load and split data
 companies_df = pd.read_csv("./private_data/companies.csv")[["Company", "Location", "Domain", "Company UUID","Tagline", "Investors"]]
