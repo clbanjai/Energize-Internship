@@ -218,7 +218,7 @@ def affinity_enrich(row):
             if in_energize_affinity(affinity_ID):
                 in_energize = True
         enriched_fields["In Energize Affinity"] = in_energize
-        enriched_fields["Affinty ID"] = affinity_ID
+        enriched_fields["Affinty ID"] = affinity_ID if affinity_ID else "Not in Affinity"
         return enriched_fields
     except Exception as e:
         print(f"Error enriching {name}: {e}")
