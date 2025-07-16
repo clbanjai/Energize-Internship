@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
            name: enriched-output
-           path: enriched_list_chunk_7.csv
+           path: enriched_chunk_7.csv
