@@ -180,6 +180,8 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
             return (None, None)
         else:
             return (None, None)
+    else:
+        return f"Error: {response.status_code}, {response.text}"
 
 def affinity_enrich(row):
     in_energize = False
