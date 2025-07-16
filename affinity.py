@@ -97,7 +97,6 @@ def get_field_value_by_id(company_id, fields_to_extract = [
                 field_value = field_output.get("value")
                 field_name = reverse_mapping[field_id]
                 if field_value is not None:
-                    # print(f"Processing field: {field_name} with value: {field_value}")
                     if field_name in info and info[field_name] is not None:
                         if not isinstance(info[field_name], list):
                             info[field_name] = [info[field_name]]
@@ -132,9 +131,7 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
         json = response.json()
         if json and json["organizations"]:
             data = json["organizations"]
-            # return data
             if len(data)==1:
-                # print(f"Found 1 organization for {company_name}")
                 org = data[0]
                 field_values = get_field_value_by_id(org["id"])
                 return org, field_values
@@ -143,12 +140,8 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                     if name_similarity(org["name"], company_name) > 0.6:
                         org_domains = org["domains"]
                         org_id = org["id"]
-                        # field_values = get_field_value_by_id(org_id)
-                        # return field_values
                         if org_domains:
                             for org_dom in org_domains:
-                                # print(f"This is the domain {domain}")
-                                # print(f"This is the org domain : {org_dom}")
                                 if org_dom in domain:
                                     return org, get_field_value_by_id(org_id)
             if pd.notna(location) and location:# if we have the locatoin then we loop through the outputs until there's a match
@@ -158,8 +151,6 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                     if name_score > 0.6:
                         org_id = org["id"]
                         field_values = get_field_value_by_id(org_id)
-                        # return name_score
-                        # print(f"{field_values=}")
                         if field_values and field_values["Location"]:
                             if in_US(location):
                                 city, state = field_values["Location"]["city"], field_values["Location"]["state"]
@@ -178,32 +169,15 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
             if investors:
                 investors = [inv.lower().strip() for inv in investors]  # Normalize investor names to lowercase
                 for org in data:
-                    # print(f"looking at {org['name']} with domain {org['domains']}")
                     org_id = org["id"]
                     field_values = get_field_value_by_id(org_id)
-                    # return field_values
                     if field_values and field_values["Investors"]:
-                        # print(f"Investors for {org['name']} with domain {org["domains"]}: {field_values['Investors']}")
-
                         org_investors = field_values["Investors"]
                         for inv in org_investors:
                             inv = inv.lower().strip()  # Normalize investor names to lowercase
                             if inv in investors:
                                 return org, field_values
-                        # return org, field_values
-                        # for inv in investors:
-
-                        #     if inv.lower() in org_investors:
-                        #         return org, field_values   
-            # # for org in data:
-            #     name_score = name_similarity(org["name"].lower(), company_name)
-            #     if name_score ==1:
-            #         org_id = org["id"]
-            #         field_values = get_field_value_by_id(org_id)
-            #         return org, field_values
             return (None, None)
-            # return data
-            # return orgs # Return the first organization found
         else:
             return (None, None)
 
@@ -246,7 +220,7 @@ def affinity_enrich(row):
         return enriched_fields
     except Exception as e:
         print(f"Error enriching {name}: {e}")
-        print()
+        print(f"The output of getting company name is : {get_company_by_name(name, domain=domain, location=location,investors=investors)}")
         return enriched_fields
 def array_to_tuples(array):
     """

@@ -32,6 +32,7 @@ assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
 companies_df = pd.read_csv("./private_data/companies.csv")[["Company", "Location", "Domain", "Company UUID","Tagline", "Investors"]]
 companies = array_to_tuples(companies_df.values)
 
+# print(companies[:10])  # Print first 10 rows for debugging
 # Split into 8 equal chunks
 chunk_size = math.ceil(len(companies) / 8)
 start = (chunk_index - 1) * chunk_size
@@ -41,6 +42,7 @@ companies_chunk = companies[start:end]
 # Enrich only this chunk
 final_enriched_companies = []
 for row in companies_chunk[:10]:
+    print(f"Enriching company: {row[0]} with domain {row[2]}")
     final_enriched_companies.append(affinity_enrich(row))
 
 # Save output with chunk-specific filename
