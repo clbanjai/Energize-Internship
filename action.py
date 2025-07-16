@@ -43,9 +43,7 @@ companies_chunk = companies[start:end]
 final_enriched_companies = []
 total = len(companies_chunk)
 
-for i, row in enumerate(companies_chunk, start=1):
-    # if i % 5 == 0:
-    # print(f"Enriching {i}/{total}: {row[0]}")
+for i, row in enumerate(companies_chunk[:20], start=1):
     final_enriched_companies.append(affinity_enrich(row,i))
 
 

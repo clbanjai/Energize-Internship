@@ -21,21 +21,44 @@ def name_similarity(name1, name2):
     """
     return SequenceMatcher(None, name1.lower(), name2.lower()).ratio()
 
-def safe_get(url, auth, max_retries=5, backoff_factor=2.0):
+import time
+import requests
+from requests.auth import HTTPBasicAuth
+
+def patient_get(url, auth = HTTPBasicAuth("",AFFINITY_API_KEY), max_retries=5, base_wait=61, backoff_factor=1.0):
+    """
+    Retry GET request on 429s or temporary server errors, with exponential backoff.
+    """
     for attempt in range(max_retries):
         response = requests.get(url, auth=auth)
+
+        # ✅ Success!
         if response.status_code == 200:
             return response
+
+        # ⏳ Rate limited — honor Retry-After if available
         elif response.status_code == 429:
-            # Check retry-after header
-            retry_after = int(response.headers.get("X-Ratelimit-Limit-User-Reset", 5))
-            wait_time = retry_after * (backoff_factor ** attempt)
-            print(f"🛑 429 Too Many Requests – Retrying in {wait_time:.1f} seconds...")
-            time.sleep(wait_time)
+            retry_after = response.headers.get("Retry-After")
+            if retry_after is not None:
+                wait = int(retry_after)
+            else:
+                wait = base_wait 
+            print(f"🔁 429 Too Many Requests – retrying in {wait:.1f}s...")
+            time.sleep(wait)
+
+        # 🔁 Retry on 5xx errors too
+        elif response.status_code >= 500:
+            wait = base_wait 
+            print(f"🔁 {response.status_code} Server Error – retrying in {wait:.1f}s...")
+            time.sleep(wait)
+
         else:
-            print(f"❌ Request failed with {response.status_code}: {response.text}")
-            break
+            print(f"❌ Unrecoverable error: {response.status_code} – {response.text}")
+            return response
+
+    print("❌ Max retries reached – giving up.")
     return None
+
 
 
 
@@ -96,7 +119,7 @@ def get_field_value_by_id(company_id, fields_to_extract = [
 
     info = {i: None for i in fields_to_extract}
     url = f"https://api.affinity.co/field-values?organization_id={company_id}"
-    response = safe_get(url, HTTPBasicAuth("", AFFINITY_API_KEY))
+    response = patient_get(url)
     if response is None:
         return None
     if response.status_code != 200:
@@ -123,10 +146,8 @@ def get_field_value_by_id(company_id, fields_to_extract = [
     return info
 
 def get_company_info_by_id(company_id):
-    response = requests.get(
-        f"https://api.affinity.co/organizations/{company_id}",
-        auth=HTTPBasicAuth('', AFFINITY_API_KEY)
-    )   
+    url = f"https://api.affinity.co/organizations/{company_id}"
+    response = patient_get(url)   
     if response.status_code == 200:
         return response.json()  # Return the organization details
     else:
@@ -138,7 +159,7 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
     url = f"https://api.affinity.co/organizations?term={company_name}"
 
-    response = response = safe_get(url, HTTPBasicAuth("", AFFINITY_API_KEY))
+    response = response = patient_get(url)
     if response is None:
         return (None, None)
 
@@ -199,7 +220,7 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
         return f"Error: {response.status_code}, {response.text}"
 
 def affinity_enrich(row,index):
-    if index%5:
+    if index%5==0:
         print(f"Working on {index}")
     in_energize = False
     affinity_ID = None
@@ -262,8 +283,8 @@ def enriched_df(companies_df):
         result.append(affinity_enrich(tuple(row)))
     return pd.DataFrame(result)
 
-# row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
-# print(affinity_enrich(row))
+row = ("Archive", None, None,None,"tagline",["Lightspeed Venture Partners", "Bain Capital Ventures", "Firstmark"])
+print(affinity_enrich(row,5))
 # print(get_company_by_name("GridCare", "gridcare.ai", "Redwood City, CA"))
 # # print(name_similarity("London, UK", "London, United Kingdom"))
 
