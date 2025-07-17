@@ -1,8 +1,7 @@
 name: Email monitor
 
 on:
-    schedule:
-        - cron: '0 * * * *'  # Every hour
+   workflow_dispatch:
 jobs:
   monitor-emails:
     runs-on: ubuntu-latest
