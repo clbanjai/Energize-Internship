@@ -218,7 +218,8 @@ def affinity_enrich(row,index):
     enriched_fields = {'id': uuid, 'name': name,"tagline": tagline, 'domain': domain, "Location": location, "Investors": investors}
 
     for k in fields_to_extract:
-        enriched_fields[k] = None
+        if k not in enriched_fields:
+            enriched_fields[k] = None
     enriched_fields["In Energize Affinity"] = False
     enriched_fields["Affinty ID"] = "Not in Affinity"
     try:
