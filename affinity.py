@@ -12,7 +12,10 @@ fields_to_extract = [
     "Investment Stage",
     "Last Funding Amount (USD)",
     "Investors",
-    "LinkedIn Profile (Founders/CEOs)"]
+    "LinkedIn Profile (Founders/CEOs)",
+    "Industry",
+    "Business Models",
+    "Technologies"]
 
 
 def name_similarity(name1, name2):
@@ -20,6 +23,29 @@ def name_similarity(name1, name2):
     Returns a similarity score between 0 and 1 (higher means more similar).
     """
     return SequenceMatcher(None, name1.lower(), name2.lower()).ratio()
+
+def same_word_count(name1,name2):
+    words_1 = name1.split(" ")
+    words_2 = name2.split(" ")
+    return len(words_1) == len(words_2)
+
+def location_check(location,field_values):
+    if field_values and field_values["Location"]:
+        if in_US(location):
+            city, state = field_values["Location"]["city"], field_values["Location"]["state"]
+            city = city.lower() if city else None
+            state = state.lower() if state else None # to standerdize and avoid issues with capitalization
+            if city and city in location:
+                return True 
+            elif state and state in location:
+                return True
+        else:
+            city, country = field_values["Location"]["city"], field_values["Location"]["country"]
+            city = city.lower() if city else None# to standerdize and avoid issues with capitalization
+            country = country.lower() if country else None
+            if country and country in location or country and country in location:  
+                return True
+    return False
 
 import time
 import requests
@@ -32,31 +58,31 @@ def patient_get(url, auth = HTTPBasicAuth("",AFFINITY_API_KEY), max_retries=5, b
     for attempt in range(max_retries):
         response = requests.get(url, auth=auth)
 
-        # ✅ Success!
+        # Success!
         if response.status_code == 200:
             return response
 
-        # ⏳ Rate limited — honor Retry-After if available
+        #  Rate limited — honor Retry-After if available
         elif response.status_code == 429:
             retry_after = response.headers.get("Retry-After")
             if retry_after is not None:
                 wait = int(retry_after)
             else:
                 wait = base_wait 
-            print(f"🔁 429 Too Many Requests – retrying in {wait:.1f}s...")
+            print(f" 429 Too Many Requests - retrying in {wait:.1f}s...")
             time.sleep(wait)
 
         # 🔁 Retry on 5xx errors too
         elif response.status_code >= 500:
             wait = base_wait 
-            print(f"🔁 {response.status_code} Server Error – retrying in {wait:.1f}s...")
+            print(f"{response.status_code} Server Error - retrying in {wait:.1f}s...")
             time.sleep(wait)
 
         else:
-            print(f"❌ Unrecoverable error: {response.status_code} – {response.text}")
+            print(f" Unrecoverable error: {response.status_code} - {response.text}")
             return response
 
-    print("❌ Max retries reached – giving up.")
+    print("Max retries reached - giving up.")
     return None
 
 
@@ -88,7 +114,8 @@ def get_field_value_by_id(company_id, fields_to_extract = [
     "Investors",
     "LinkedIn Profile (Founders/CEOs)",
     "Location",
-    "Investors"
+    "Investors",
+    "Description"
 ]):
     field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
@@ -126,6 +153,7 @@ def get_field_value_by_id(company_id, fields_to_extract = [
         raise Exception(f"Failed to fetch field values: {response.status_code}, {response.text}")
 
     list_of_field_outputs = response.json()
+    # return list_of_field_outputs
     if list_of_field_outputs:
         # Invert the mapping to get id → name, but only for requested fields
         reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
@@ -148,8 +176,9 @@ def get_field_value_by_id(company_id, fields_to_extract = [
 
 def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
+    search_name = company_name.replace(" ","")
 
-    url = f"https://api.affinity.co/organizations?term={company_name}"
+    url = f"https://api.affinity.co/organizations?term={search_name}"
 
     response = response = patient_get(url)
     if response is None:
@@ -211,45 +240,96 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
     else:
         return f"Error: {response.status_code}, {response.text}"
 
-def affinity_enrich(row,index):
+import re
+AFFINITY_FIELD_NAME_MAP = {
+    "LinkedIn Profile (Founders/CEOs)": "linkedin_profile",
+    "Employees (Current)": "employees_current",
+    "Employees: Growth YoY (%)": "employees_growth_yoy",
+    "Investment Stage": "investment_stage",
+    "Last Funding Amount (USD)": "last_funding_amount_usd",
+    "Industry": "industry",
+    "Business Models": "business_models",
+    "Technologies": "technologies",
+    "Location": "location",
+    "Investors": "investors"
+}
+
+def normalize_key(key):
+    return AFFINITY_FIELD_NAME_MAP.get(key, re.sub(r"[^\w\s]", "", key.lower()).replace(" ", "_"))
+
+fields_to_extract = [
+    "Location",
+    "Employees (Current)",
+    "Employees: Growth YoY (%)",
+    "Investment Stage",
+    "Last Funding Amount (USD)",
+    "Investors",
+    "LinkedIn Profile (Founders/CEOs)",
+    "Industry",
+    "Business Models",
+    "Technologies"
+]
+fields_to_extract = [normalize_key(f) for f in fields_to_extract]
+
+def affinity_enrich(row):
     in_energize = False
     affinity_ID = None
-    name, location, domain, uuid, tagline, investors = row
-    enriched_fields = {'id': uuid, 'name': name,"tagline": tagline, 'domain': domain, "Location": location, "Investors": investors}
+    name = row["name"]
+    location = row["location"]
+    domain = row["domain"]
+    uuid = row.name if "company_uuid" not in row else row["company_uuid"] # since uuid is the index
+    tagline = row["tagline"]
+    investors = row["investors"]
 
+    enriched_fields = {
+        "company_uuid": uuid,
+        "name": name,
+        "tagline": tagline,
+        "domain": domain,
+        "location": location,
+        "investors": investors
+    }
+
+    # Ensure all possible columns are initialized to None
     for k in fields_to_extract:
         if k not in enriched_fields:
             enriched_fields[k] = None
-    enriched_fields["In Energize Affinity"] = False
-    enriched_fields["Affinty ID"] = "Not in Affinity"
+
+    enriched_fields["in_energize_affinity"] = False
+    enriched_fields["affinity_id"] = "Not in Affinity"
+
     try:
-        org, field_values = get_company_by_name(name, domain=domain, location=location,investors=investors)
+        org, field_values = get_company_by_name(name, domain=domain, location=location, investors=investors)
         if org:
             affinity_ID = org["id"]
-            enriched_fields['name'] =  org["name"]
-            enriched_fields['domain'] =  org["domain"]
+            enriched_fields["name"] = org.get("name", name)
+            enriched_fields["domain"] = org.get("domain", domain)
 
             for k, v in field_values.items():
-                if k == "Location":
-                    if v:
-                        if v["country"].lower() in ["united states of america", "united states", "us", "usa"]:
-                            enriched_fields[k] = f"{v['city']}, {v['state']}"
-                        else:
-                            enriched_fields[k] = f"{v['city']}, {v['country']}"
+                k_norm = normalize_key(k)
+                if k_norm == "location" and isinstance(v, dict):
+                    print("fixing location")
+                    if v.get("country", "").lower() in ["united states", "united states of america", "us", "usa"]:
+                        enriched_fields["location"] = f"{v.get('city')}, {v.get('state')}"
                     else:
-                        enriched_fields[k] = location
-                else:
-                    enriched_fields[k] = v
+                        enriched_fields["location"] = f"{v.get('city')}, {v.get('country')}"
+                elif k_norm == "description" and v is not None:
+                    enriched_fields["tagline"] = v
+                elif v is not None:
+                    enriched_fields[k_norm] = v
 
             if in_energize_affinity(affinity_ID):
                 in_energize = True
-        enriched_fields["In Energize Affinity"] = in_energize
-        enriched_fields["Affinty ID"] = affinity_ID if affinity_ID else "Not in Affinity"
+
+        enriched_fields["in_energize_affinity"] = in_energize
+        enriched_fields["affinity_id"] = affinity_ID if affinity_ID else "Not in Affinity"
         return enriched_fields
+
     except Exception as e:
-        print(f"Error enriching {name}: {e}")
-        print(f"The output of getting company name is : {get_company_by_name(name, domain=domain, location=location,investors=investors)}")
+        print(f"❌ Error enriching {name}: {e}")
+        print("🔍 Fallback result:", get_company_by_name(name, domain, location, investors))
         return enriched_fields
+
 def array_to_tuples(array):
     """
     Convert a 2D array (list of lists) into a list of tuples.
@@ -263,10 +343,33 @@ def array_to_tuples(array):
     return [tuple(row) for row in array]
 
 
-def enriched_df(companies_df):
-
+def enrich_df(companies_df):
     result = []
-    for row in companies_df:
-        result.append(affinity_enrich(tuple(row)))
+    for index, row in companies_df.iterrows():
+        result.append(affinity_enrich(row))
     return pd.DataFrame(result)
 
+# print(name_similarity("24M","24 M Technologies"))
+# print(get_company_by_name("twelve",domain="twelve.co",location="Berkeley, California"))
+#    name, location, domain, uuid, tagline, investors = row
+# row = {"company_uuid":"12312314","name":"twelve","location":"Berkeley, CA","domain":"twelve.co","tagline":"Should not be in the output","investors":None}
+# print(affinity_enrich(row))
+# print(get_company_by_name("xcelerate",domain="https://excelerateenergy.com/",location="Singapore City, Singapore",investors=[' exacta capital partners', 'altair capital', ' federated hermes']))
+# print(get_field_value_by_id(279217482,["Employees: Growth YoY (%)"]))
+# print(affinity_enrich(row,0))
+# string = "60hertz energy"
+# print(string.replace(" ", ""))
+# print(get_company_by_name("Tyba",domain="tyba.ai"))
+
+# temp = {'name': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'amply',
+#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'ecocharge'},
+#  'domain': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'https://www.amply.com/',
+#   'c500497b-198d-48cf-93bc-f6673dcf53fd': None},
+#  'location': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'Paris, France',
+#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'Chicago, IL'},
+#  'tagline': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'Battery analytics startup',
+#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'Clean energy project finance platform'},
+#  'investors': {'319e73ab-db20-4e0e-8109-4c13033d77c3': [' ecosystem ventures',
+#    'xora innovation'],
+#   'c500497b-198d-48cf-93bc-f6673dcf53fd': ['undisclosed investors']}}
+# print(enrich_df(pd.DataFrame(temp))["investors"])

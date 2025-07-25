@@ -1,61 +1,72 @@
-import time
-import imaplib
-import email
-from bs4 import BeautifulSoup
-from uid_tracker import is_uid_seen, mark_uid_seen
-from parser import extract_html_text
-from deal_extractor import extract_deals_from_text
-from db_client import insert_deals
-from config import EMAIL_ADDRESS, EMAIL_PASSWORD, IMAP_SERVER, WATCHLIST
 
-# Establish connection to IMAP
-imap = imaplib.IMAP4_SSL(IMAP_SERVER)
-imap.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+from db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
+from parser_new_cleaned import ctvc, fortune, keepcool,eusubstack, cleaning
+from affinity import enrich_df
+import pandas as pd
+from newsletter import get_new_ctvc, get_new_forutne, get_new_keepcool, get_new_eusubstack
 
-def fetch_and_process():
-    imap.select("inbox")
-    for sender in WATCHLIST:
-        status, data = imap.uid('search', None, f'FROM "{sender}"')
-        if status != "OK":
-            continue
-        uids = data[0].split()
-        for uid in uids:
-            uid_str = uid.decode()
-            if is_uid_seen(sender, uid_str):
-                continue
-            print(f"\n📩 New email from {sender} (UID: {uid_str})")
-            status, msg_data = imap.uid('fetch', uid, '(RFC822)')
-            raw = msg_data[0][1]
-            msg = email.message_from_bytes(raw)
+import warnings
+from embeddings import embed_companies
+warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
-            html = None
-            if msg.is_multipart():
-                for part in msg.walk():
-                    if part.get_content_type() == "text/html":
-                        html = part.get_payload(decode=True).decode()
-                        break
-            else:
-                html = msg.get_payload(decode=True).decode()
+tech_stack = {"ctvc":(get_new_ctvc,ctvc),"fortune":(get_new_forutne,fortune),"keepcool":(get_new_keepcool,keepcool),"eusubstack":(get_new_eusubstack,eusubstack)}
 
-            if html:
-                text = extract_html_text(html)
-                print("🧠 Extracting structured data...")
-                deals = extract_deals_from_text(text)
-                print(f"✅ Extracted {len(deals)} deals.")
-                insert_deals(deals)
+def fetch_newsletter_data(tech_stack = {"ctvc":(get_new_ctvc,ctvc),"fortune":(get_new_forutne,fortune),"keepcool":(get_new_keepcool,keepcool),"eusubstack":(get_new_eusubstack,eusubstack)}):
+    all_data = pd.DataFrame()
+    for k, v in tech_stack.items():
+        new_deal_func, df_func = v
+        new_deals = new_deal_func()
+        print(f"We have {len(new_deals)} {k} newsletters")
+        count = 1
+        if new_deals:
+            for new_url in new_deals:
+                print(count)
+                df = df_func(new_url)
+                if df is not None and not df.empty:
+                    print(f"concatenating {k} to all_data")
+                    all_data = pd.concat([all_data,df])
+    return all_data
 
-            mark_uid_seen(sender, uid_str)
 
-def run_monitor(interval=600):
-    print("📡 Monitoring newsletters...")
-    try:
-        while True:
-            fetch_and_process()
-            time.sleep(interval)
-    except KeyboardInterrupt:
-        print("\n🛑 Monitor stopped.")
-        imap.logout()
+all_data = fetch_newsletter_data()
+companies, deals = cleaning(all_data)
 
-if __name__ == "__main__":
-    run_monitor()
 
+enriched = enrich_df(companies)
+
+
+db_companies = fetch_all("companies")
+
+to_keep = pd.DataFrame()
+for index, row in enriched.iterrows():
+    match = company_in_database(row, db_companies)
+    if match is not None:
+        existing_id = match["company_uuid"]
+        existing_name = match["name"]
+        temp_id = row["company_uuid"]
+        to_change = deals[deals["company_uuid"] == temp_id]
+
+        for i, deal in to_change.iterrows():
+            print(f"🔁 Updating deal {deal['name']} from {temp_id} → {existing_id}")
+            deals.at[i, "company_uuid"] = existing_id
+            deals.at[i, "name"] = existing_name
+    else:
+        print(f"➕ New company to add: {row['name']} ({row['location']})")
+        to_keep = pd.concat([to_keep, row.to_frame().T])
+
+
+print("checking for not seen deals")
+new_deals = unseen_deals(deals)
+print("\n🧬 Embedding new companies...")
+to_keep["embedding"] = to_keep.apply(embed_companies, axis=1)
+if to_keep.index.name == "company_uuid":
+    to_keep = to_keep.reset_index()
+
+if "index" in to_keep.columns:
+    to_keep = to_keep.drop(columns=["index"])
+
+upload_dataframe(to_keep, "companies")
+upload_dataframe(new_deals, "funding")  # filtered deals should be final
+
+print(f"✅ Uploaded {to_keep.shape[0]} new companies and {new_deals.shape[0]} total deals.")

@@ -1,15 +1,21 @@
-from openai import OpenAI
-import ast
-from config import OPENAI_API_KEY
-from config import THESIS
 import pandas as pd
+import numpy as np
+import requests
 import uuid
-from ctvc import ctvc_date, ctvc_deals
-from fortune import fortune_deals, fortune_date
+import ast
+import re
+
 
 from difflib import SequenceMatcher
 import numpy as np
 import re
+
+from config import OPENAI_API_KEY, THESIS
+from newsletter import ctvc_date, ctvc_deals, fortune_deals, fortune_date, keepcool_date, keepcool_deals, eu_substack_date, eu_substack_deals
+
+from difflib import SequenceMatcher
+from openai import OpenAI
+
 
 def name_similarity(name1, name2):
     """
@@ -22,6 +28,7 @@ def name_similarity(name1, name2):
 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+
 def create_batch_prompt(deals: str,climate_only = False) -> str:
     if climate_only:
         prompt = f"""
@@ -29,12 +36,12 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
 
     For each, extract the following 7 fields and return a Python list of lists (one list per deal), with **no explanations**:
 
-    1. Company Name
+    1. name Name
     2. Deal Size (e.g., "$87M")
-    3. Funding Series (e.g., "Seed", "Series A", "Growth", "Post-IPO Equity", etc.), If the series cannot be found leave it as an empty string.
-    4. Tagline – a short phrase describing what the company does
-    5. Headquarters Location (e.g., "City, Country" or "City, State")
-    6. Lead Investors – names separated by commas
+    3. Funding series (e.g., "Seed", "series A", "Growth", "Post-IPO Equity", etc.), If the series cannot be found leave it as an empty string.
+    4. tagline – a short phrase describing what the company does
+    5. Headquarters location (e.g., "City, Country" or "City, State")
+    6. investors – names separated by commas
     7. Using the company name, location, and tagline, determine its website domain by performing a google search. If the domain cannot be found, 
     then leave as an empty string, but try as hard as possible to find the domain.
     Do not forget about any of these categories. 
@@ -44,8 +51,8 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
     ### Format:
 
     [
-    ["Company Name", "Deal Size", "Series", "Tagline", "Location", "Lead Investors","domain"],
-    ["Company Name", "Deal Size", "Series", "Tagline", "Location", "Lead Investors","domain"],
+    ["name Name", "deal_size", "series", "tagline", "location", "investors","domain"],
+    ["name Name", "deal_size", "series", "tagline", "location", "investors","domain"],
 
     ...
     ]
@@ -53,27 +60,27 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
     For instance if the input was: 
     ⚡ SkyNRG, an Amsterdam, Netherlands-based sustainable aviation fuel producer, raised $284m in Growth funding from APG Asset Management. 
 
-    ⚡ Radiant Nuclear, an El Segundo, CA-based micro nuclear reactor developer, raised $165m in Series C funding from DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital, and other investors.
+    ⚡ Radiant Nuclear, an El Segundo, CA-based micro nuclear reactor developer, raised $165m in series C funding from DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital, and other investors.
 
-    ⚡ Battery Smart, a Gurgaon, India-based battery swapping network service, raised $29m in Series B funding from Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, and responsAbility Investments. 
+    ⚡ Battery Smart, a Gurgaon, India-based battery swapping network service, raised $29m in series B funding from Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, and responsAbility Investments. 
 
     🏭 ecop, a Vienna, Austria-based high-tech heat pump manufacturer, raised $12m in Growth funding from European Innovation Council, KSB, EIT InnoEnergy, Finadvice AG, and New Energy Technology (AUS). 
 
     Early-Stage
-    ⚡ Heron Power, a Santa Cruz, CA-based power electronics manufacturer, raised $38m in Series A funding from Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures, and other investors. 
+    ⚡ Heron Power, a Santa Cruz, CA-based power electronics manufacturer, raised $38m in series A funding from Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures, and other investors. 
 
     🏠 Gridcare, a Redwood City, CA-based grid investment optimization platform, raised $14m in Seed funding from Xora Innovation, Acclimate Ventures, Aina Climate AI Ventures, Breakthrough Energy Ventures, Clearvision Ventures, and other investors. 
     and your output should be:
     [
         ["SkyNRG", "$284M", "Growth", "Sustainable aviation fuel producer", "Amsterdam, Netherlands", "APG Asset Management","https://skynrg.com/"],
 
-        ["Radiant Nuclear", "$165M", "Series C", "Micro nuclear reactor developer", "El Segundo, CA", "DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital","https://www.radiantnuclear.com/"],
+        ["Radiant Nuclear", "$165M", "series C", "Micro nuclear reactor developer", "El Segundo, CA", "DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital","https://www.radiantnuclear.com/"],
 
-        ["Battery Smart", "$29M", "Series B", "Battery swapping network service", "Gurgaon, India", "Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, responsAbility Investments"in","https://www.batterysmart.in/"],
+        ["Battery Smart", "$29M", "series B", "Battery swapping network service", "Gurgaon, India", "Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, responsAbility Investments"in","https://www.batterysmart.in/"],
 
         ["ecop", "$12M", "Growth", "High-tech heat pump manufacturer", "Vienna, Austria", "European Innovation Council, KSB, EIT InnoEnergy, Finadvice AG, New Energy Technology (AUS)","https://www.ecop.at/"],
 
-        ["Heron Power", "$38M", "Series A", "Power electronics manufacturer", "Santa Cruz, CA", "Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures", "https://www.heronpower.com/" ],
+        ["Heron Power", "$38M", "series A", "Power electronics manufacturer", "Santa Cruz, CA", "Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures", "https://www.heronpower.com/" ],
 
         ["Gridcare", "$14M", "Seed", "Grid investment optimization platform", "Redwood City, CA", "Xora Innovation, Acclimate Ventures, Aina Climate AI Ventures, Breakthrough Energy Ventures, Clearvision Ventures","https://www.gridcare.ai/"],
 
@@ -88,13 +95,13 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
 
     For each, extract the following 7 fields and return a Python list of lists (one list per deal), with **no explanations**:
 
-    1. **Company Name**
+    1. **name Name**
     2. **Deal Size** – e.g., "$87M"
-    3. **Funding Series** – e.g., "Seed", "Series A", "Growth", "Post-IPO Equity", etc.
-    4. **Tagline** – a short phrase describing what the company does
-    5. **Headquarters Location** – formatted as "City, Country" or "City, State"
-    6. **Lead Investors** – names separated by commas
-    7. **Company Website Domain** – using the company name, location, and tagline, find the official website via Google search; if unavailable, return an empty string
+    3. **Funding series** – e.g., "Seed", "series A", "Growth", "Post-IPO Equity", etc.
+    4. **tagline** – a short phrase describing what the company does
+    5. **Headquarters location** – formatted as "City, Country" or "City, State"
+    6. **investors** – names separated by commas
+    7. **name Website domain** – using the company name, location, and tagline, find the official website via Google search; if unavailable, return an empty string
     8. **In Thesis** – Boolean `True` or `False` indicating whether the company fits the following investment thesis:{THESIS}
 
     > The company should be **asset-light**, primarily **software-based** (but light hardware components are allowed), and focused on enabling the **energy transition**, **sustainability**, **resilience**, **rare earths**, **electrification**, **autonomy**, **digitization**,**infrastructure**,**permitting**.
@@ -103,8 +110,8 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
     ### Format:
 
     [
-    ["Company Name", "Deal Size", "Series", "Tagline", "Location", "Lead Investors","domain", In thesis],
-    ["Company Name", "Deal Size", "Series", "Tagline", "Location", "Lead Investors","domain", In thesis],
+    ["name Name", "deal_size", "series", "tagline", "location", "investors","domain", In thesis],
+    ["name Name", "deal_size", "series", "tagline", "location", "investors","domain", In thesis],
 
     ...
     ]
@@ -112,27 +119,27 @@ def create_batch_prompt(deals: str,climate_only = False) -> str:
     For instance if the input was: 
     ⚡ SkyNRG, an Amsterdam, Netherlands-based sustainable aviation fuel producer, raised $284m in Growth funding from APG Asset Management. 
 
-    ⚡ Radiant Nuclear, an El Segundo, CA-based micro nuclear reactor developer, raised $165m in Series C funding from DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital, and other investors.
+    ⚡ Radiant Nuclear, an El Segundo, CA-based micro nuclear reactor developer, raised $165m in series C funding from DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital, and other investors.
 
-    ⚡ Battery Smart, a Gurgaon, India-based battery swapping network service, raised $29m in Series B funding from Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, and responsAbility Investments. 
+    ⚡ Battery Smart, a Gurgaon, India-based battery swapping network service, raised $29m in series B funding from Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, and responsAbility Investments. 
 
     🏭 ecop, a Vienna, Austria-based high-tech heat pump manufacturer, raised $12m in Growth funding from European Innovation Council, KSB, EIT InnoEnergy, Finadvice AG, and New Energy Technology (AUS). 
     Paraform, $4m, Seed, Connect startupts with recruiter networks, Software, Mayfield
     Early-Stage
-    ⚡ Heron Power, a Santa Cruz, CA-based power electronics manufacturer, raised $38m in Series A funding from Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures, and other investors. 
+    ⚡ Heron Power, a Santa Cruz, CA-based power electronics manufacturer, raised $38m in series A funding from Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures, and other investors. 
 
     🏠 Gridcare, a Redwood City, CA-based grid investment optimization platform, raised $14m in Seed funding from Xora Innovation, Acclimate Ventures, Aina Climate AI Ventures, Breakthrough Energy Ventures, Clearvision Ventures, and other investors. 
     and your output should be:
     [
         ["SkyNRG", "$284M", "Growth", "Sustainable aviation fuel producer", "Amsterdam, Netherlands", "APG Asset Management","https://skynrg.com/"],
 
-        ["Radiant Nuclear", "$165M", "Series C", "Micro nuclear reactor developer", "El Segundo, CA", "DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital","https://www.radiantnuclear.com/", True],
+        ["Radiant Nuclear", "$165M", "series C", "Micro nuclear reactor developer", "El Segundo, CA", "DCVC, Crossbeam Venture Partners, Giant Ventures, Gigascale Capital","https://www.radiantnuclear.com/", True],
 
-        ["Battery Smart", "$29M", "Series B", "Battery swapping network service", "Gurgaon, India", "Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, responsAbility Investments"in","https://www.batterysmart.in/", True],
+        ["Battery Smart", "$29M", "series B", "Battery swapping network service", "Gurgaon, India", "Rising Tide Energy, Ecosystem Integrity Fund, LeapFrog Investments, responsAbility Investments"in","https://www.batterysmart.in/", True],
 
         ["ecop", "$12M", "Growth", "High-tech heat pump manufacturer", "Vienna, Austria", "European Innovation Council, KSB, EIT InnoEnergy, Finadvice AG, New Energy Technology (AUS)","https://www.ecop.at/",True],
 
-        ["Heron Power", "$38M", "Series A", "Power electronics manufacturer", "Santa Cruz, CA", "Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures", "https://www.heronpower.com/",True ],
+        ["Heron Power", "$38M", "series A", "Power electronics manufacturer", "Santa Cruz, CA", "Capricorn Investment Group, Breakthrough Energy Ventures, Energy Impact Partners, Gigascale Capital, Powerhouse Ventures", "https://www.heronpower.com/",True ],
 
         ["Gridcare", "$14M", "Seed", "Grid investment optimization platform", "Redwood City, CA", "Xora Innovation, Acclimate Ventures, Aina Climate AI Ventures, Breakthrough Energy Ventures, Clearvision Ventures","https://www.gridcare.ai/",True],
 
@@ -247,19 +254,32 @@ def fortune(url):
 # print(fortune("https://fortune.com/2025/06/27/what-makes-an-ai-avatar-seem-human-according-to-synthesias-ceo/"))
 # fortune_data#.to_csv("fortune_data.csv",index=False)    
 
-def keepcool(html):
-    pass
+def keepcool(url):
+    deals = keepcool_deals(url)
+    if deals:
+        df = dataframe_OPENAI(deals,climate_only=True)
+        if df is not None and not df.empty:
+            date = keepcool_date(url)
+            df["date"] = date
+            df["source"] = url
+        return df
+    else:
+        return None
+    
 
-def european_substack(html):
-    pass
+def eusubstack(url):
+    deals = eu_substack_deals(url)
+    # return deals
+    if deals:
+        df = dataframe_OPENAI(deals,climate_only=False)
+        if df is not None and not df.empty:
+            date = eu_substack_date(url)
+            df["date"] = date
+            df["source"] = url
+        return df
+    else:
+        return None
 
-def general_text_parser(html):
-    soup = BeautifulSoup(html,"html.parser")
-    return soup.get_text()
-
-from difflib import SequenceMatcher
-import numpy as np
-import re
 
 def clean_deal_size_column(df, column="deal_size", eur_to_usd=1.08):
     df = df.copy()
@@ -372,17 +392,14 @@ def fuzzy_deduplicate_local(
 
             name_match = name_similarity(name_i, other[name_col]) > threshold
 
-            # Conditional logic: only match deal size if both present
             deal_match = True
             if pd.notna(deal_i) and pd.notna(other[deal_col]):
                 deal_match = abs(deal_i - other[deal_col]) <= deal_size_tolerance
 
-            # Conditional logic: only match series if both are non-empty
             series_match = True
             if pd.notna(series_i) and pd.notna(other[series_col]) and str(series_i).strip() and str(other[series_col]).strip():
                 series_match = name_similarity(str(series_i), str(other[series_col])) > threshold
 
-            # Conditional logic: only match location if both are non-empty
             loc_match = True
             if pd.notna(loc_i) and pd.notna(other[location_col]) and str(loc_i).strip() and str(other[location_col]).strip():
                 loc_match = name_similarity(str(loc_i), str(other[location_col])) > 0.5
@@ -391,11 +408,6 @@ def fuzzy_deduplicate_local(
             date_match = True
             if pd.notna(date_i) and pd.notna(other[date_col]):
                 date_match = abs((date_i - other[date_col]).days) <= date_tolerance_days
-            # if name_i == "arbonics":
-            #     print(f"Comparing {name_i} with {other[name_col]}: "
-            #           f"name_match={name_match}, deal_match={deal_match}, "
-            #           f"series_match={series_match}, loc_match={loc_match}, "
-            #           f"date_match={date_match}")
             truth_count = 0
             for truth_value in [name_match, deal_match, series_match, loc_match, date_match]:
                 if truth_value:
@@ -410,15 +422,12 @@ def fuzzy_deduplicate_local(
 def deduplicate_funding_deals_two_step_partial_overlap(df: pd.DataFrame, min_overlap=2) -> pd.DataFrame:
     df = df.copy()
 
-    # --------------------
-    # Normalize base fields
-    # --------------------
     df['name'] = df['name'].str.strip().str.lower()
     df['series'] = df['series'].str.strip().str.upper()
     df['domain'] = df['domain'].str.strip().str.lower()
     df['date'] = pd.to_datetime(df['date'])
     df['deal_size_clean'] = df['deal_size'].fillna(0).astype(float).map(lambda x: f"{x:.2f}")
-    df['Investor Set'] = df['investors'].map(normalize_investors_to_set)
+    df['investor_set'] = df['investors'].map(normalize_investors_to_set)
 
     # --------------------------
     # Step 1: Dedup by structure
@@ -433,7 +442,7 @@ def deduplicate_funding_deals_two_step_partial_overlap(df: pd.DataFrame, min_ove
 
     for idx, row in structure_dedup.iterrows():
         # if idx % 2 == 0:
-        current_set = row['Investor Set']
+        current_set = row['investor_set']
         is_duplicate = False
 
         for existing_set in used_sets:
@@ -447,7 +456,7 @@ def deduplicate_funding_deals_two_step_partial_overlap(df: pd.DataFrame, min_ove
 
     deduped_df = structure_dedup.loc[keep_indices]
 
-    return deduped_df.drop(columns=['deal_size_clean', 'Investor Set']).reset_index(drop=True).sort_values(by="name")
+    return deduped_df.drop(columns=['deal_size_clean', 'investor_set']).reset_index(drop=True).sort_values(by="name")
 
 def check_similarity(current_row, previous_row):
     current_name = current_row["clean_name"]
@@ -460,44 +469,44 @@ def check_similarity(current_row, previous_row):
     if pd.notna(current_location) and pd.notna(previous_location):
         location_similarity = name_similarity(current_location, previous_location)
         if current_name == previous_name:
-            if location_similarity > 0.5:
-                # print("we are returning with location similarity 1")
+            if location_similarity > 0.7:
                 return True
         elif company_name_similarity > 0.8:
             if location_similarity > 0.8:
-                # print("we are returning with location similarity 2")
                 return True
+            elif location_similarity<0.45:
+                return False
     if pd.notna(previous_domain) and pd.notna(current_domain):
         domain_similarity = name_similarity(current_domain, previous_domain)
         if current_name == previous_name:
             if domain_similarity > 0.8:
-                # print("we are returning with domain similarity 1")
                 return True
         elif company_name_similarity > 0.8:
-            # print("we are returning with domain similarity 2")
             if domain_similarity > 0.95:
                 return True
     if company_name_similarity > 0.9:
-        # print("It's just the name is really similar")
-        return True
+        if (pd.notna(domain_similarity) and domain_similarity > 0.95) or \
+        (pd.notna(location_similarity) and location_similarity > 0.8):
+            return True
+        else:
+            return False  # Avoid merging just on name similarity
     # print("we are returning false")
     return False
-        
+
             
 
 def new_deal(deals, row,clean_name, investor_map, id_map, company_uuid=None):
     # companies = companies.copy()
     deals = deals.copy()
-    # clean_name = row["Company Clean"]
+    # clean_name = row["clean_name"]
     if clean_name not in investor_map:
         investor_map[clean_name] = []
-    lead_investors = row["investors"].strip()
+    lead_investors = row["investors"]
     if not pd.isna(lead_investors):
-        lead_investors = [inv.strip().lower() for inv in lead_investors.split(",")]
-        # lead_investors = lead_investors.strip().lower().split(",")
+        lead_investors = lead_investors.strip().lower().split(",")
         if lead_investors:
             investor_map[clean_name] = list(set(lead_investors + investor_map[clean_name]))
-    # investor_map[clean_name] = list(set(row["Lead Investors"].strip().lower().split(",") + investor_map[clean_name]))
+    # investor_map[clean_name] = list(set(row["investors"].strip().lower().split(",") + investor_map[clean_name]))
 
     if clean_name not in id_map:
         company_uuid = str(uuid.uuid4()) 
@@ -505,9 +514,9 @@ def new_deal(deals, row,clean_name, investor_map, id_map, company_uuid=None):
 
     deal_id = str(uuid.uuid4())
     temp = {
-        "deal_id": deal_id,
+        "deal_uuid": deal_id,
         "company_uuid": id_map[clean_name],
-        "name": clean_name,
+        "name": row["name"],
         "deal_size": row["deal_size"],
         "currency": row["currency"],
         "series": row["series"],
@@ -515,7 +524,7 @@ def new_deal(deals, row,clean_name, investor_map, id_map, company_uuid=None):
         "investors": row["investors"],
         "source": row["source"]
     }
-    temp_df = pd.DataFrame([temp]).set_index("deal_id")
+    temp_df = pd.DataFrame([temp]).set_index("deal_uuid")
     deals = pd.concat([deals, temp_df])
 
     return deals, investor_map, id_map
@@ -527,7 +536,7 @@ def new_company(companies, row,clean_name, investor_map, id_map, company_uuid=No
         investor_map[clean_name] = []
     lead_investors = row["investors"]
     if pd.notna(lead_investors):
-        lead_investors = [inv.strip().lower() for inv in lead_investors.split(",")]
+        lead_investors = lead_investors.strip().lower().split(",")
         investor_map[clean_name] = list(set(lead_investors+ investor_map[clean_name]))
 
 
@@ -537,7 +546,7 @@ def new_company(companies, row,clean_name, investor_map, id_map, company_uuid=No
 
     temp = {
         "company_uuid": company_uuid,
-        "name": clean_name,
+        "name": row["name"],
         "domain": row["domain"],
         "location": row["location"],
         "tagline": row["tagline"],
@@ -551,7 +560,7 @@ def new_company(companies, row,clean_name, investor_map, id_map, company_uuid=No
 def update_company(companies, row, clean_name, investor_map, id_map):
     companies = companies.copy()
     company_uuid = id_map.get(clean_name)
-    lead_investors = row["investor"]
+    lead_investors = row["investors"]
     if not pd.isna(lead_investors):
         try:
             lead_investors = lead_investors.strip().lower().split(",")
@@ -564,7 +573,7 @@ def update_company(companies, row, clean_name, investor_map, id_map):
         investor_map[clean_name] = []
     combined_investors = list(set(investor_map[clean_name] + lead_investors))
     investor_map[clean_name] = combined_investors
-    companies.at[company_uuid, "investor"] = combined_investors  # wrap list in another list
+    companies.at[company_uuid, "investors"] = combined_investors  # wrap list in another list
     if pd.notna(row["domain"]):
         companies.at[company_uuid, "domain"] = row["domain"]
     return companies
@@ -578,46 +587,125 @@ def new_entry(companies, deals, row, name,investor_map, id_map):
     return companies, deals, investor_map, id_map
 
 
-
-def get_clean_name(clean_names,name):
+def get_clean_name_with_location(clean_names, name, location):
     for i in clean_names[::-1]:
-        if name_similarity(i, name) > 0.7:
-            return i
-    return name
+        if name_similarity(i.split("||")[0], name) > 0.7:
+            # Check if locations are also similar
+            existing_loc = i.split("||")[1] if "||" in i else ""
+            if name_similarity(existing_loc, location) > 0.8:
+                return i
+    return f"{name}||{location}"
+
 
 def compact_df(clean_data):
     df = clean_data.copy()
     df["clean_name"] = df["name"].str.strip().str.lower()
+
     companies = pd.DataFrame(columns=["company_uuid", "name", "domain", "location", "tagline", "investors"]).set_index("company_uuid")
     companies["investors"] = companies["investors"].astype(object)
-    deals = pd.DataFrame(columns=["deal_id", "company_uuid", "name", "deal_size", "currency", "series", "date", "investors", "source"]).set_index("deal_id")
+
+    deals = pd.DataFrame(columns=["deal_uuid", "company_uuid", "name", "deal_size", "currency", "series", "date", "investors", "source"]).set_index("deal_uuid")
+
     investor_map = {}
     id_map = {}
     clean_names = []
+
     for index, row in df.iterrows():
-        if index % 20 == 0:
-            print(f"Processing {index + 1}/{df.shape[0]} rows...")
-        # print(f"Processing {index}, with company name {row['Company Clean']}")
-        if index != 0:
-            previous_row = df.iloc[index - 1]
-            # print(f"Comparing with previous row: {previous_row['Company Clean']}")
-            if check_similarity(row,previous_row):
-                # print(f"Found similar company: {row['Company Clean']} to {previous_row['Company Clean']}")
-                clean_name = get_clean_name(clean_names, row["clean_name"])
-                # print(f" The clean name that we found is {clean_name}")
-                # print(f"Here is the before: {companies.iloc[-1].to_dict()}")
-                companies = update_company(companies, row, clean_name, investor_map, id_map)
-                deals, investor_map, id_map = new_deal(deals, row, clean_name, investor_map, id_map, company_uuid=id_map.get(row["clean_name"]))
-                # print(f"Here is the after: {companies.iloc[-1].to_dict()}")
+        try:
+            print(f"\n🔍 Row {index}: {row['name']} - {row['location']}")
+            current_name = row["clean_name"]
+            current_location = row["location"]
+
+            clean_name = get_clean_name_with_location(clean_names, current_name, current_location)
+            print(f"🧼 clean_name = '{clean_name}'")
+
+            if index != 0:
+                previous_row = df.iloc[index - 1]
+                if check_similarity(row, previous_row):
+                    # ✅ Reuse clean_name from previous row
+                    clean_name = get_clean_name_with_location(
+                        clean_names, previous_row["clean_name"], previous_row["location"]
+                    )
+                    print(f"♻️  Reusing clean_name from previous: {clean_name}")
+
+                    companies = update_company(companies, row, clean_name, investor_map, id_map)
+                    print(f"🔁 Using id_map.get('{clean_name}') → {id_map.get(clean_name)}")
+
+                    deals, investor_map, id_map = new_deal(
+                        deals, row, clean_name, investor_map, id_map,
+                        company_uuid=id_map.get(clean_name)
+                    )
+                else:
+                    print("➕ New clean_name — adding entry")
+                    clean_names.append(clean_name)
+
+                    companies, deals, investor_map, id_map = new_entry(
+                        companies, deals, row, clean_name, investor_map, id_map
+                    )
             else:
-                clean_names = list(set(clean_names + [row["clean_name"]]))
-                # if row["Company Clean"] in clean_names:
-                # print(f"No similarity found, adding new entry for {row['Company Clean']}")
-                companies, deals, investor_map, id_map = new_entry(companies, deals, row, row["clean_name"], investor_map, id_map)
-        else:
-            # clean_names = list(set(clean_names + [row["Company Clean"]]))
-            companies, deals, investor_map, id_map = new_entry(companies, deals, row, row["clean_name"], investor_map, id_map)            
+                print("📌 First row — adding entry")
+                clean_names.append(clean_name)
+
+                companies, deals, investor_map, id_map = new_entry(
+                    companies, deals, row, clean_name, investor_map, id_map
+                )
+
+        except Exception as e:
+            print(f"❌ ERROR on row {index} - {row['name']}: {e}")
+            import traceback
+            traceback.print_exc()
+
+    print("\n✅ Finished compact_df")
     return companies, deals
+
+def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000) -> bool:
+    try:
+        # Normalize protocol
+        if not url.startswith("http"):
+            url = "https://" + url
+
+        response = requests.get(url, timeout=timeout)
+        if response.status_code >= 400:
+            return False  # Unreachable or error
+
+        content = response.text.lower()
+
+        # Check for very short responses
+        if len(content) < min_html_length:
+            return False
+
+        # Keywords that often indicate a parked or placeholder domain
+        parking_signals = [
+            "buy this domain", "this domain is for sale", "parked by", "domain parking",
+            "is available for purchase", "get this domain", "register your domain"
+        ]
+
+        # Keywords often present on legitimate company websites
+        company_signals = ["about us", "product", "team", "careers", "contact", "services", "solutions"]
+
+        # If parking phrases are found, it's not valid
+        if any(phrase in content for phrase in parking_signals):
+            return False
+
+        # If at least one company-related keyword exists, it's likely valid
+        if any(keyword in content for keyword in company_signals):
+            return True
+
+        # Fallback: HTML is long and no parking signals — assume valid
+        return True
+
+    except requests.exceptions.RequestException:
+        return False  # Timeout, DNS error, etc.
+
+def clean_domains(companies):
+    url_list = []
+    for _, row in companies.iterrows():
+        domain = row["domain"]
+        if not pd.isna(domain) and is_valid_company_url(domain):
+            url_list.append(domain)
+        else:
+            url_list.append(pd.NA)
+    return url_list
 
 def cleaning(df):
     #first we clean the desl size columns
@@ -627,9 +715,11 @@ def cleaning(df):
     df = deduplicate_funding_deals_two_step_partial_overlap(df)
     # finally we separate
     companies, deals = compact_df(df)
+    # only keep the domains that actually exist
+    companies["domain"] = clean_domains(companies)
     return companies, deals
 
 
-# all_data = pd.read_csv("../all_data.csv")[['Company', 'Deal Size', 'Series', 'Tagline', 'Location','Lead Investors', 'Domain', 'Date', 'Source']]
+# all_data = pd.read_csv("../all_data.csv")[['name', 'Deal Size', 'series', 'tagline', 'location','investors', 'domain', 'date', 'source']]
 # companies, funding = clean_and_split_df(all_data)
 # print(funding)

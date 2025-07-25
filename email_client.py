@@ -4,7 +4,7 @@ from email.header import decode_header
 from bs4 import BeautifulSoup
 from config import EMAIL_ADDRESS, EMAIL_PASSWORD, IMAP_SERVER, WATCHLIST
 from uid_tracker import is_uid_seen, mark_uid_seen
-
+from parser import ctvc 
 
 def fetch_unread_newsletters():
     imap = imaplib.IMAP4_SSL(IMAP_SERVER)
@@ -121,4 +121,8 @@ def fetch_unread_newsletters():
     imap.logout()
     return messages
 
-
+print(f"{WATCHLIST=}")
+result = fetch_unread_newsletters()
+sender = result[0]["sender"]
+# sender_function_map = {"hello@ctvc.co",:None,"newsletter@keepcool.co":None}
+print(ctvc(result[0]["html"]))

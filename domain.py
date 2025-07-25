@@ -54,14 +54,15 @@ chunk_size = math.ceil(len(clean_data) / 8)
 start = (chunk_index - 1) * chunk_size
 end = chunk_index * chunk_size
 companies_chunk = clean_data[start:end]
-url_list = []
-for index, row in companies_chunk.iterrows():
-    domain = row["Domain"]
-    # if index%20==0:
-    #     print(f"Processing {index+1}/{(clean_data.shape[0])}")
-    if not pd.isna(domain) and is_valid_company_url(domain):
-        url_list.append(domain)
-    else:
-        url_list.append("Not a valid domain")
-url_list = pd.DataFrame(url_list, columns=["Domains"])
-url_list.to_csv(f"./domain_list_chunk_{chunk_index}.csv", index=False)
+
+def clean_domains():
+    url_list = []
+    for _, row in companies_chunk.iterrows():
+        domain = row["Domain"]
+        if not pd.isna(domain) and is_valid_company_url(domain):
+            url_list.append(domain)
+        else:
+            url_list.append(pd.NA)
+    return url_list
+# url_list = pd.DataFrame(url_list, columns=["Domains"])
+# url_list.to_csv(f"./domain_list_chunk_{chunk_index}.csv", index=False)
