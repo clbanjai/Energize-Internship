@@ -1,72 +1,112 @@
+import warnings
+import pandas as pd
 
 from db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
-from parser_new_cleaned import ctvc, fortune, keepcool,eusubstack, cleaning
-from affinity import enrich_df
-import pandas as pd
+from parser_new_cleaned import ctvc, fortune, keepcool, eusubstack, cleaning
 from newsletter import get_new_ctvc, get_new_forutne, get_new_keepcool, get_new_eusubstack
-
-import warnings
+from affinity import enrich_df
 from embeddings import embed_companies
+
+# ─────────────────────────────────────────────────────────────
+# CONFIG
+# ─────────────────────────────────────────────────────────────
 warnings.filterwarnings("ignore")
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
-tech_stack = {"ctvc":(get_new_ctvc,ctvc),"fortune":(get_new_forutne,fortune),"keepcool":(get_new_keepcool,keepcool),"eusubstack":(get_new_eusubstack,eusubstack)}
+NEWSLETTER_SOURCES = {
+    "ctvc": (get_new_ctvc, ctvc),
+    "fortune": (get_new_forutne, fortune),
+    "keepcool": (get_new_keepcool, keepcool),
+    "eusubstack": (get_new_eusubstack, eusubstack),
+}
 
-def fetch_newsletter_data(tech_stack = {"ctvc":(get_new_ctvc,ctvc),"fortune":(get_new_forutne,fortune),"keepcool":(get_new_keepcool,keepcool),"eusubstack":(get_new_eusubstack,eusubstack)}):
+# ─────────────────────────────────────────────────────────────
+# PIPELINE STAGES
+# ─────────────────────────────────────────────────────────────
+def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
-    for k, v in tech_stack.items():
-        new_deal_func, df_func = v
-        new_deals = new_deal_func()
-        print(f"We have {len(new_deals)} {k} newsletters")
-        count = 1
-        if new_deals:
-            for new_url in new_deals:
-                print(count)
-                df = df_func(new_url)
+    for name, (fetch_urls, parse_func) in sources.items():
+        new_urls = fetch_urls()
+        print(f"📩 Found {len(new_urls)} new {name} newsletters")
+        if new_urls:
+            for i, url in enumerate(new_urls, start=1):
+                print(f"   ↳ Parsing {name} newsletter #{i}")
+                df = parse_func(url)
                 if df is not None and not df.empty:
-                    print(f"concatenating {k} to all_data")
-                    all_data = pd.concat([all_data,df])
+                    all_data = pd.concat([all_data, df])
+                else:
+                    print(f"   ⚠️ Failed to parse {name} newsletter #{i}")
     return all_data
 
 
-all_data = fetch_newsletter_data()
-companies, deals = cleaning(all_data)
+def resolve_companies(companies: pd.DataFrame, deals: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    db_companies = fetch_all("companies")
+    new_companies = pd.DataFrame()
 
-
-enriched = enrich_df(companies)
-
-
-db_companies = fetch_all("companies")
-
-to_keep = pd.DataFrame()
-for index, row in enriched.iterrows():
-    match = company_in_database(row, db_companies)
-    if match is not None:
-        existing_id = match["company_uuid"]
-        existing_name = match["name"]
+    for _, row in companies.iterrows():
+        match = company_in_database(row, db_companies)
         temp_id = row["company_uuid"]
-        to_change = deals[deals["company_uuid"] == temp_id]
 
-        for i, deal in to_change.iterrows():
-            print(f"🔁 Updating deal {deal['name']} from {temp_id} → {existing_id}")
-            deals.at[i, "company_uuid"] = existing_id
-            deals.at[i, "name"] = existing_name
+        if match is not None:
+            existing_id = match["company_uuid"]
+            existing_name = match["name"]
+            deals.loc[deals["company_uuid"] == temp_id, "company_uuid"] = existing_id
+            deals.loc[deals["company_uuid"] == existing_id, "name"] = existing_name
+            print(f"🔁 Matched existing company: {existing_name}")
+        else:
+            print(f"➕ New company: {row['name']} ({row['location']})")
+            new_companies = pd.concat([new_companies, row.to_frame().T])
+
+    return new_companies.reset_index(drop=True), deals
+
+
+def upload_new_companies(companies: pd.DataFrame):
+    if companies.empty:
+        print("✅ No new companies to upload.")
+        return
+
+    print(f"\n🧬 Enriching and uploading {len(companies)} new companies...")
+    companies["embedding"] = companies.apply(embed_companies, axis=1)
+    upload_dataframe(companies, "companies")
+
+
+def upload_new_deals(deals: pd.DataFrame):
+    print("\n🔎 Checking for unseen deals...")
+    new = unseen_deals(deals)
+    if new is not None and not new.empty:
+        print(f"✅ Uploading {len(new)} new deals")
+        upload_dataframe(new, "funding")
     else:
-        print(f"➕ New company to add: {row['name']} ({row['location']})")
-        to_keep = pd.concat([to_keep, row.to_frame().T])
+        print("✅ No new deals to upload.")
 
 
-print("checking for not seen deals")
-new_deals = unseen_deals(deals)
-print("\n🧬 Embedding new companies...")
-to_keep["embedding"] = to_keep.apply(embed_companies, axis=1)
-if to_keep.index.name == "company_uuid":
-    to_keep = to_keep.reset_index()
+# ─────────────────────────────────────────────────────────────
+# MAIN EXECUTION
+# ─────────────────────────────────────────────────────────────
+def main():
+    print("🚀 Starting newsletter ingestion pipeline...\n")
+    
+    # 1. Fetch and parse all newsletter data
+    raw_data = fetch_newsletter_data(NEWSLETTER_SOURCES)
+    if raw_data is not None and not raw_data.empty:
+        # 2. Clean and separate into companies / deals
+        print(raw_data)
+        
+        companies, deals = cleaning(raw_data)
 
-if "index" in to_keep.columns:
-    to_keep = to_keep.drop(columns=["index"])
+        # 3. Enrich company data from Affinity
+        enriched_companies = enrich_df(companies)
 
-upload_dataframe(to_keep, "companies")
-upload_dataframe(new_deals, "funding")  # filtered deals should be final
+        # 4. Match or add new companies
+        new_companies, updated_deals = resolve_companies(enriched_companies, deals)
 
-print(f"✅ Uploaded {to_keep.shape[0]} new companies and {new_deals.shape[0]} total deals.")
+        # 5. Upload new companies to Supabase
+        upload_new_companies(new_companies)
+
+        # 6. Upload deals that are not yet in Supabase
+        upload_new_deals(updated_deals)
+
+        print(f"\n🎉 Pipeline complete: {new_companies.shape[0]} new companies, {updated_deals.shape[0]} total deals processed.")
+
+if __name__ == "__main__":
+    main()

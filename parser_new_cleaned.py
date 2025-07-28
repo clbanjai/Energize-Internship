@@ -225,18 +225,17 @@ def ctvc(url):
     """
     Extracts the 'Deals of the Week' section from a CTVC newsletter URL and returns it as a DataFrame.
     """
-    deals_text = ctvc_deals(url)
-    if "No 'Deals of the Week' section found." in deals_text or "Failed to fetch page" in deals_text:
+    deals = ctvc_deals(url)
+    if deals:
+        df = dataframe_OPENAI(deals,climate_only=True)
+        if df is not None:
+            date = ctvc_date(url)
+            df['date'] = date
+            df["source"] = url
+
+        return df
+    else:# response = requests.get(url, verify=False, timeout=5)
         return None
-    # response = requests.get(url, verify=False, timeout=5)
-    date = ctvc_date(url)
-    df = dataframe_OPENAI(deals_text,climate_only=True)
-    if df is not None:
-    # print(df)
-    # include the date in the DataFrame
-        df['date'] = date
-        df["source"] = url
-    return df
 
 def fortune(url):
     deals = fortune_deals(url)
@@ -249,7 +248,7 @@ def fortune(url):
             df["source"] = url
         return df
     else:
-        return "We couldn't extract any deals"
+        return None
             
 # print(fortune("https://fortune.com/2025/06/27/what-makes-an-ai-avatar-seem-human-according-to-synthesias-ceo/"))
 # fortune_data#.to_csv("fortune_data.csv",index=False)    

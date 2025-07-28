@@ -9,7 +9,7 @@ from PIL import Image
 import pytesseract
 
 
-def fortune_deals(url):
+def fallback_fortune_deals(url):
     headers = {
         "User-Agent": "Mozilla/5.0"
     }
@@ -32,15 +32,64 @@ def fortune_deals(url):
                         end_index = text.find(keyword)
             deals = text[start_index:end_index]
             return deals
-                # if  in text or  in text or :
-                #     end_index = text.find("FUNDS")
-                #     deals = text[start_index:end_index]
-                #     return deals
         else:
             print(f"Failed to fetch: {response.status_code}")
     except Exception as e:
         print(f"Error occuer {e}")
         return None
+    
+
+def fortune_deals(url):
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    try:
+        response = requests.get(url, headers=headers, verify=False, timeout=5)
+        if response.status_code != 200:
+            print(f"Failed to fetch: {response.status_code}")
+            return None
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        # Find the <h3> tag with "VENTURE DEALS"
+        venture_header = None
+        for h3 in soup.find_all("h3"):
+            if "VENTURE DEALS" in h3.get_text(strip=True).upper():
+                venture_header = h3
+                break
+
+        if not venture_header:
+            print("VENTURE DEALS section not found.")
+            return None
+
+        deals = []
+        current = venture_header.find_next_sibling("p")
+
+        while current:
+            # Stop condition: check if a <b> tag contains a section header like "FUNDS + FUNDS OF FUNDS" or "PRIVATE EQUITY"
+            b_tag = current.find("b")
+            if b_tag:
+                b_text = b_tag.get_text(strip=True).upper()
+                if "FUNDS + FUNDS OF FUNDS" in b_text or "PRIVATE EQUITY" in b_text:
+                    break
+
+            a_tag = current.find("a", href=True)
+            if a_tag:
+                link = a_tag["href"]
+                domain = extract_domain(link)
+                raw_text = current.get_text(separator=" ", strip=True).lstrip("–-•·")
+                deals.append(f"{raw_text} with a domain of {domain}")
+
+            current = current.find_next_sibling("p")
+
+        return "\n".join(deals) if deals else None
+
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return None
+
+
 def fortune_date(url):
     str_date = url[20:30]
     return datetime.strptime(str_date,"%Y/%m/%d").date()
@@ -231,7 +280,7 @@ def ctvc_deals(url: str) -> str:
             break
 
     if not deals_header:
-        return "No 'Deals of the Week' section found."
+        return None
 
     # Extract content until the next heading of same or higher level
     deals_text = []
