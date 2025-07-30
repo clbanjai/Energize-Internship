@@ -11,6 +11,11 @@ class QueryRequest(BaseModel):
     query: str
     match_count: int = 10
 
+
+@app.get("/")
+def root():
+    return {"status": "OK"}
+
 @app.post("/enhanced-company-search")
 def enhanced_company_search(req: QueryRequest):
     try:
