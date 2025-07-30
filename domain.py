@@ -5,7 +5,7 @@ import pandas as pd
 import math
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from shared_files.config import GOOGLE_API_KEY, CSE_ID
+from config import GOOGLE_API_KEY, CSE_ID
 
 
 def google_search(query, api_key, cse_id, num_results=5):

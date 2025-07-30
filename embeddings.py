@@ -1,7 +1,8 @@
-from shared_files.config import OPENAI_API_KEY, SUPABASE_API_KEY,SUPABASE_API_URL
+from config import OPENAI_API_KEY, SUPABASE_API_KEY,SUPABASE_API_URL
 from supabase import create_client, Client
 from openai import OpenAI
 import pandas as pd
+from config import OPENAI_API_KEY, SUPABASE_API_KEY,SUPABASE_API_URL
 
 client = OpenAI()
 

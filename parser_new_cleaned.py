@@ -15,7 +15,7 @@ from newsletter import ctvc_date, ctvc_deals, fortune_deals, fortune_date, keepc
 from difflib import SequenceMatcher
 from openai import OpenAI
 
-from shared_files.config import OPENAI_API_KEY, THESIS
+from config import OPENAI_API_KEY, THESIS
 
 
 def name_similarity(name1, name2):
