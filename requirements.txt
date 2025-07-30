@@ -4,6 +4,9 @@ python-dotenv
 requests
 openai
 requests-html
+fastapi
+uvicorn
+supabase
 # imap-tools
 # email
 # os

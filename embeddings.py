@@ -33,11 +33,33 @@ def fetch_all_companies_without_embeddings(batch_size=1000, max_rows=5000):
 
     return all_rows
 
+def enhance_query_semantically(raw_query: str) -> str:
+    """
+    Reformulates the user's input to be clearer and more useful for embedding-based semantic search.
+    """
+    system_prompt = (
+        "You are a helpful assistant that reformulates vague or casual user queries "
+        "into precise, information-rich descriptions of climate or tech startups. "
+        "Do not answer the query, just rewrite it for embedding search. "
+        "Focus on domain, sector, region, and startup type if applicable."
+    )
+    
+    user_prompt = f"User query: \"{raw_query}\""
+
+    completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ]
+)
+    return completion.choices[0].message.content
+
 
 def generate_embedding(text):
     response = client.embeddings.create(
         model="text-embedding-3-small",
-        input=text
+        input=enhance_query_semantically(text)
     )
     return response.data[0].embedding
 
