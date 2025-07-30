@@ -1,15 +1,16 @@
 import warnings
 import pandas as pd
 
-from db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
 from parser_new_cleaned import ctvc, fortune, keepcool, eusubstack, cleaning
 from newsletter import get_new_ctvc, get_new_forutne, get_new_keepcool, get_new_eusubstack
 from affinity import enrich_df
-from embeddings import embed_companies
+import sys
+import os 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# ─────────────────────────────────────────────────────────────
-# CONFIG
-# ─────────────────────────────────────────────────────────────
+from shared_files.embeddings import embed_companies
+from shared_files.db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
+
 warnings.filterwarnings("ignore")
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
@@ -20,9 +21,6 @@ NEWSLETTER_SOURCES = {
     "eusubstack": (get_new_eusubstack, eusubstack),
 }
 
-# ─────────────────────────────────────────────────────────────
-# PIPELINE STAGES
-# ─────────────────────────────────────────────────────────────
 def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
     for name, (fetch_urls, parse_func) in sources.items():
@@ -80,30 +78,20 @@ def upload_new_deals(deals: pd.DataFrame):
         print("✅ No new deals to upload.")
 
 
-# ─────────────────────────────────────────────────────────────
-# MAIN EXECUTION
-# ─────────────────────────────────────────────────────────────
 def main():
     print("🚀 Starting newsletter ingestion pipeline...\n")
     
-    # 1. Fetch and parse all newsletter data
     raw_data = fetch_newsletter_data(NEWSLETTER_SOURCES)
-    if raw_data is not None and not raw_data.empty:
-        # 2. Clean and separate into companies / deals
-        print(raw_data)
+    if raw_data is not None and not raw_data.empty:        
         
         companies, deals = cleaning(raw_data)
 
-        # 3. Enrich company data from Affinity
         enriched_companies = enrich_df(companies)
 
-        # 4. Match or add new companies
         new_companies, updated_deals = resolve_companies(enriched_companies, deals)
 
-        # 5. Upload new companies to Supabase
         upload_new_companies(new_companies)
 
-        # 6. Upload deals that are not yet in Supabase
         upload_new_deals(updated_deals)
 
         print(f"\n🎉 Pipeline complete: {new_companies.shape[0]} new companies, {updated_deals.shape[0]} total deals processed.")

@@ -2,11 +2,11 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import sys
 import math
-from config import GOOGLE_API_KEY, CSE_ID
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from shared_files.config import GOOGLE_API_KEY, CSE_ID
+
 
 def google_search(query, api_key, cse_id, num_results=5):
     service = build("customsearch", "v1", developerKey=api_key)

@@ -1,9 +1,9 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import pandas as pd
-from config import AFFINITY_API_KEY
 from difflib import SequenceMatcher
 import time
+from shared_files.config import AFFINITY_API_KEY
 
 fields_to_extract = [
     "Location",

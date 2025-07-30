@@ -1,9 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from embeddings import generate_embedding
 from supabase import create_client
-from db_client import supabase
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
+from shared_files.embeddings import generate_embedding
+
+from shared_files.db_client import supabase
 
 app = FastAPI()
 

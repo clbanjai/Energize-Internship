@@ -1,13 +1,15 @@
 import requests
 import pandas as pd
 import uuid
-from config import SUPABASE_API_URL, SUPABASE_API_KEY
+from shared_files.config import SUPABASE_API_URL, SUPABASE_API_KEY
 from supabase import create_client, Client
-from embeddings import semantic_search, create_embedding
-from parser_new_cleaned import name_similarity
+from shared_files.embeddings import semantic_search, create_embedding
 import numpy as np
 from datetime import datetime
+from venture_funding_pipeline.parser_new_cleaned import name_similarity
+
 # Table names
+
 COMPANIES_TABLE = "companies"
 FUNDINGS_TABLE = "funding"
 
@@ -203,7 +205,6 @@ def deal_in_database(row,deals,date_tolerance_days = 60):
                     return True
     return False
 
-from db_client import deal_in_database
 def unseen_deals(df):
     unseen = pd.DataFrame()
     deals = fetch_all("funding")

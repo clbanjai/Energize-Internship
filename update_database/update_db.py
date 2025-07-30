@@ -1,9 +1,14 @@
 from aiohttp import BasicAuth
 import aiohttp
 import asyncio
-from config import AFFINITY_API_KEY
-from db_client import fetch_all
+
 import pandas as pd
+import sys
+import os 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from shared_files.config import AFFINITY_API_KEY
+from shared_files.db_client import fetch_all
+
 print("Fetching companies")
 companies = pd.read_csv("companies.csv")
 print("Finished fetching")

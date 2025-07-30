@@ -10,11 +10,12 @@ from difflib import SequenceMatcher
 import numpy as np
 import re
 
-from config import OPENAI_API_KEY, THESIS
 from newsletter import ctvc_date, ctvc_deals, fortune_deals, fortune_date, keepcool_date, keepcool_deals, eu_substack_date, eu_substack_deals
 
 from difflib import SequenceMatcher
 from openai import OpenAI
+
+from shared_files.config import OPENAI_API_KEY, THESIS
 
 
 def name_similarity(name1, name2):
