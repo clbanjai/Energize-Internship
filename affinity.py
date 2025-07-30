@@ -200,7 +200,12 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                         if org_domains:
                             for org_dom in org_domains:
                                 if org_dom in domain:
-                                    return org, get_field_value_by_id(org_id)
+                                    if pd.notna(location) and location:
+                                        location = location.lower()
+                                    field_values = get_field_value_by_id(org_id)
+                                    if location_check(location,field_values):
+                                        print("passed location check")
+                                        return org, field_values
             if pd.notna(location) and location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
                 for org in data:
@@ -303,7 +308,7 @@ def affinity_enrich(row):
         if org:
             affinity_ID = org["id"]
             enriched_fields["name"] = org.get("name", name)
-            enriched_fields["domain"] = org.get("domain", domain)
+            enriched_fields["domain"] = org["domain"] if org.get("domain") else domain
 
             for k, v in field_values.items():
                 k_norm = normalize_key(k)

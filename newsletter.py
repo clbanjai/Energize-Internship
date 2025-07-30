@@ -116,15 +116,15 @@ def fortune_term_sheet_page_news(page_url):
                 return urls
             except Exception as e:
                 print(f"Error parsing JSON: {e}")
-                return None 
+                return [] 
         else:
             print("No JSON-LD script tag found.")
-            return None 
+            return [] 
     else:
         print(f"Failed to scrape. Status code: {response.status_code}")
-        return None 
+        return [] 
 
-def get_new_forutne(seen_file_path: str = "private_data/fortune_newsletters.json", archive_url: str = "https://fortune.com/tag/term-sheet/") -> list:
+def get_new_forutne(seen_file_path: str = "private_data/fortune_newsletters.json", archive_url: str = "https://fortune.com/tag/term-sheet/",update=True) -> list:
     try:
         with open(seen_file_path, "r") as f:
             seen_links = (json.load(f))
@@ -137,7 +137,7 @@ def get_new_forutne(seen_file_path: str = "private_data/fortune_newsletters.json
     for link in links:
         if link not in seen_links:
             new_links.append(link)
-    if new_links:
+    if new_links and update:
         seen_links.extend(new_links)
         os.makedirs(os.path.dirname(seen_file_path), exist_ok=True)
         with open(seen_file_path, "w") as f:
@@ -153,7 +153,7 @@ def extract_domain(url: str) -> str:
     return domain
 
 
-def get_new_keepcool(newsletter_page = "https://www.keepcool.co/archive?tags=Newsletter&page=1",seen_file_path = "private_data/keepcool_newsletters.json"):
+def get_new_keepcool(newsletter_page = "https://www.keepcool.co/archive?tags=Newsletter&page=1",seen_file_path = "private_data/keepcool_newsletters.json",update=True):
     try:
         with open(seen_file_path, "r") as f:
             seen_links = (json.load(f))
@@ -181,9 +181,10 @@ def get_new_keepcool(newsletter_page = "https://www.keepcool.co/archive?tags=New
                 seen_links.append(full_url)
                 # Check if the URL is a newsletter link
                 links.append(full_url)
-    os.makedirs(os.path.dirname(seen_file_path), exist_ok=True)
-    with open(seen_file_path,"w") as f:
-        json.dump(seen_links,f,indent=2)
+    if update:
+        os.makedirs(os.path.dirname(seen_file_path), exist_ok=True)
+        with open(seen_file_path,"w") as f:
+            json.dump(seen_links,f,indent=2)
     return links
 
 def keepcool_deals(url: str):
@@ -233,7 +234,7 @@ def keepcool_deals(url: str):
         current = current.find_next_sibling()
     result = ""
     for deal in funding_blurbs:
-        result += f"{deal["raw_text"]} with a domain of {extract_domain(deal["source_link"])} \n"
+        result += f"{deal['raw_text']} with a domain of {extract_domain(deal['source_link'])} \n"
     return result.replace("•","")
 
 def keepcool_date(url: str) -> str:
@@ -314,7 +315,7 @@ def ctvc_date(url: str) -> datetime.date:
 
 
 def get_new_ctvc(seen_file_path: str = "private_data/ctvc_newsletters.json",
-                 archive_url: str = "https://www.ctvc.co/tag/newsletter/") -> list:
+                 archive_url: str = "https://www.ctvc.co/tag/newsletter/",update=True) -> list:
     # Load seen URLs
     try:
         with open(seen_file_path, "r") as f:
@@ -338,7 +339,7 @@ def get_new_ctvc(seen_file_path: str = "private_data/ctvc_newsletters.json",
             new_links.append(link)
 
     # Update seen file with new links
-    if new_links:
+    if new_links and update:
         with open(seen_file_path, "w") as f:
             updated_seen = seen_file + [{"url": link} for link in new_links]
             json.dump(updated_seen, f, indent=2)
@@ -346,7 +347,7 @@ def get_new_ctvc(seen_file_path: str = "private_data/ctvc_newsletters.json",
     return new_links
 
 
-def get_new_eusubstack(seen_file_path = "private_data/eusubstrack_newsletters.json",newsletter_page = "https://europeantech.substack.com/archive"):
+def get_new_eusubstack(seen_file_path = "private_data/eusubstrack_newsletters.json",newsletter_page = "https://europeantech.substack.com/archive",update=True):
     response = requests.get(newsletter_page)
     try:
         with open(seen_file_path, "r") as f:
