@@ -3,12 +3,11 @@ from pydantic import BaseModel
 from supabase import create_client
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
-from shared_files.embeddings import generate_embedding
+from embeddings import generate_embedding
 
-from shared_files.db_client import supabase
+from db_client import supabase
 
 app = FastAPI()
 
