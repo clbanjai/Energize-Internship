@@ -8,6 +8,7 @@ fastapi
 uvicorn
 supabase
 pillow
+pytesseract
 # imap-tools
 # email
 # os
