@@ -4,7 +4,7 @@ import requests
 import uuid
 import ast
 import re
-from domain import find_best_company_site
+# from domain import find_best_company_site
 
 from difflib import SequenceMatcher
 import numpy as np
@@ -219,14 +219,14 @@ def dataframe_OPENAI(text: str,climate_only=False) -> pd.DataFrame:
     return None
 
 
-def populate_domains(df):
-    df = df.copy()
-    for row in df.itertuples():
-        domain = find_best_company_site(row.name,row.location)
-        if domain:
-            df.at[row.Index,"domain"] = domain
-    return df
-from bs4 import BeautifulSoup
+# def populate_domains(df):
+#     df = df.copy()
+#     for row in df.itertuples():
+#         # domain = find_best_company_site(row.name,row.location)
+#         if domain:
+#             df.at[row.Index,"domain"] = domain
+#     return df
+# from bs4 import BeautifulSoup
 
 
 def ctvc(url):
@@ -242,8 +242,8 @@ def ctvc(url):
             df["source"] = url
             try:
                 df["domain"] = pd.NA
-                df_new = populate_domains(df)
-                return df_new
+                # df_new = populate_domains(df)
+                return df
             except Exception as e:
                 return df
         return df
