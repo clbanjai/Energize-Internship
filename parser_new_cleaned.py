@@ -290,8 +290,8 @@ def eusubstack(url):
             df["source"] = url
             try:
                 df["domain"] = pd.NA
-                df_new = populate_domains(df)
-                return df_new
+                # df_new = populate_domains(df)
+                return df
             except Exception as e:
                 return df
         return df
