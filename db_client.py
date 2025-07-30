@@ -1,12 +1,12 @@
 import requests
 import pandas as pd
 import uuid
-from shared_files.config import SUPABASE_API_URL, SUPABASE_API_KEY
+from config import SUPABASE_API_URL, SUPABASE_API_KEY
 from supabase import create_client, Client
-from shared_files.embeddings import semantic_search, create_embedding
+from embeddings import semantic_search, create_embedding
 import numpy as np
 from datetime import datetime
-from venture_funding_pipeline.parser_new_cleaned import name_similarity
+from parser_new_cleaned import name_similarity
 
 # Table names
 
