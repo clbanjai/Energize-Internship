@@ -6,10 +6,13 @@ from newsletter import get_new_ctvc, get_new_forutne, get_new_keepcool, get_new_
 from affinity import enrich_df
 import sys
 import os 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from shared_files.embeddings import embed_companies
-from shared_files.db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
+# from shared_files.embeddings import embed_companies
+# from shared_files.db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
+from embeddings import embed_companies
+from db_client import company_in_database, fetch_all, unseen_deals, upload_dataframe
+
 
 warnings.filterwarnings("ignore")
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
