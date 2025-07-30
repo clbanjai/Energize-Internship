@@ -4,6 +4,28 @@ import requests
 import pandas as pd
 import sys
 import math
+from config import GOOGLE_API_KEY, CSE_ID
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+def google_search(query, api_key, cse_id, num_results=5):
+    service = build("customsearch", "v1", developerKey=api_key)
+    res = service.cse().list(q=query, cx=cse_id, num=num_results).execute()
+    return res.get("items", [])
+ 
+
+
+def find_best_company_site(company, location, num_results=10):
+    query = f'{company}, {location} -site:linkedin.com -site:crunchbase.com -site:facebook.com -site:twitter.com -site:medium.com'
+    results = google_search(query, GOOGLE_API_KEY, CSE_ID, num_results)
+    for item in results:
+        url = item["link"]
+        title = item["title"].lower()
+        if (
+            "home" in title or "official" in title or company.lower() in title
+        ) and url.count("/") <= 3:
+            return url
+    return None
 
 def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000) -> bool:
     try:
@@ -44,25 +66,25 @@ def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000
     except requests.exceptions.RequestException:
         return False  # Timeout, DNS error, etc.
 
-chunk_index = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
+# chunk_index = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+# assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"
 
-clean_data = pd.read_csv("./private_data/clean_data.csv")
-clean_data = clean_data.sort_values(by="Company", ascending=True).reset_index(drop=True)
+# clean_data = pd.read_csv("./private_data/clean_data.csv")
+# clean_data = clean_data.sort_values(by="Company", ascending=True).reset_index(drop=True)
 
-chunk_size = math.ceil(len(clean_data) / 8)
-start = (chunk_index - 1) * chunk_size
-end = chunk_index * chunk_size
-companies_chunk = clean_data[start:end]
+# chunk_size = math.ceil(len(clean_data) / 8)
+# start = (chunk_index - 1) * chunk_size
+# end = chunk_index * chunk_size
+# companies_chunk = clean_data[start:end]
 
-def clean_domains():
-    url_list = []
-    for _, row in companies_chunk.iterrows():
-        domain = row["Domain"]
-        if not pd.isna(domain) and is_valid_company_url(domain):
-            url_list.append(domain)
-        else:
-            url_list.append(pd.NA)
-    return url_list
+# def clean_domains():
+#     url_list = []
+#     for _, row in companies_chunk.iterrows():
+#         domain = row["Domain"]
+#         if not pd.isna(domain) and is_valid_company_url(domain):
+#             url_list.append(domain)
+#         else:
+#             url_list.append(pd.NA)
+#     return url_list
 # url_list = pd.DataFrame(url_list, columns=["Domains"])
 # url_list.to_csv(f"./domain_list_chunk_{chunk_index}.csv", index=False)

@@ -354,7 +354,6 @@ def enrich_df(companies_df):
         result.append(affinity_enrich(row))
     return pd.DataFrame(result)
 
-print(get_field_value_by_id(296110040))
 # print(name_similarity("24M","24 M Technologies"))
 # print(get_company_by_name("twelve",domain="twelve.co",location="Berkeley, California"))
 #    name, location, domain, uuid, tagline, investors = row
