@@ -27,7 +27,7 @@ NEWSLETTER_SOURCES = {
 def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
     for name, (fetch_urls, parse_func) in sources.items():
-        new_urls = fetch_urls() or []
+        new_urls = fetch_urls(update=True) or []
         print(f"📩 Found {len(new_urls)} new {name} newsletters")
         if new_urls:
             for i, url in enumerate(new_urls, start=1):
@@ -48,7 +48,7 @@ def resolve_companies(companies: pd.DataFrame, deals: pd.DataFrame) -> tuple[pd.
         match = company_in_database(row, db_companies)
         temp_id = row["company_uuid"]
 
-        if match is not None:
+        if match is not None and not match.empty:
             existing_id = match["company_uuid"]
             existing_name = match["name"]
             deals.loc[deals["company_uuid"] == temp_id, "company_uuid"] = existing_id
@@ -68,17 +68,36 @@ def upload_new_companies(companies: pd.DataFrame):
 
     print(f"\n🧬 Enriching and uploading {len(companies)} new companies...")
     companies["embedding"] = companies.apply(embed_companies, axis=1)
-    upload_dataframe(companies, "companies")
+
+    for i, row in companies.iterrows():
+        try:
+            print(f"🔄 Uploading company: {row['name']} (UUID: {row['company_uuid']})")
+            upload_dataframe(row.to_frame().T, "companies")
+        except Exception as e:
+            print(f"❌ Failed to upload company: {row.get('name', '[unknown]')}")
+            print(f"   ↳ Error: {e}\n")
+            continue
 
 
 def upload_new_deals(deals: pd.DataFrame):
     print("\n🔎 Checking for unseen deals...")
     new = unseen_deals(deals)
-    if new is not None and not new.empty:
-        print(f"✅ Uploading {len(new)} new deals")
-        upload_dataframe(new, "funding")
-    else:
+
+    if new is None or new.empty:
         print("✅ No new deals to upload.")
+        return
+
+    print(f"✅ Uploading {len(new)} new deals")
+    new = new.reset_index()  # <-- Critical fix
+
+    for i, row in new.iterrows():
+        try:
+            print(f"🔄 Uploading deal for company UUID: {row['company_uuid']}")
+            upload_dataframe(row.to_frame().T, "funding")
+        except Exception as e:
+            print(f"❌ Failed to upload deal (UUID: {row.get('company_uuid', '[unknown]')})")
+            print(f"   ↳ Error: {e}\n")
+            continue
 
 
 def main():
@@ -92,7 +111,6 @@ def main():
         enriched_companies = enrich_df(companies)
 
         new_companies, updated_deals = resolve_companies(enriched_companies, deals)
-
         upload_new_companies(new_companies)
 
         upload_new_deals(updated_deals)

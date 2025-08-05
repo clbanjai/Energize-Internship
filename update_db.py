@@ -1,18 +1,28 @@
 from aiohttp import BasicAuth
 import aiohttp
 import asyncio
-
+from affinity import fetch_list, in_energize_affinity
 import pandas as pd
+import ast
 # import sys
 # import os 
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config import AFFINITY_API_KEY
-from db_client import fetch_all
+from db_client import supabase, fetch_all
 
-print("Fetching companies")
-companies = pd.read_csv("companies.csv")
-print("Finished fetching")
+# print("Fetching companies")
+# companies = pd.read_csv("companies.csv")
+# print("Finished fetching")
 semaphore = asyncio.Semaphore(10)  # Limit to 10 concurrent requests
+
+def literal(string):
+    if pd.isna(string):
+        return None
+    else:
+        try:
+            return ast.literal_eval(string)
+        except Exception as e:
+            return string
 
 async def fetch_field_values(session, org_id):
     url = f"https://api.affinity.co/field-values?organization_id={org_id}"
@@ -35,31 +45,11 @@ async def fetch_field_values(session, org_id):
         return None
 
 
-async def fetch_all(org_ids):
+async def fetch_all_field_values(org_ids):
     async with aiohttp.ClientSession() as session:
         tasks = [fetch_field_values(session, oid) for oid in org_ids]
         return await asyncio.gather(*tasks)
 
-org_ids = ['283677000',
- '268252178',
- '224626100',
- '1555826',
- '290584264',
- '114272919',
- '263185041',
- '297884313',
- '287971148',
- '224686696',
- '286194309',
- '291928705',
- '222181321',
- '145558012',
- '278518352',
- '299967428',
- '1607977',
- '162592950',
- '287621926',
- '125394565']
  
 field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
@@ -88,17 +78,17 @@ field_mapping = {'Investment Stage': 3007023,
                     'Total Funding Amount (EUR)': 3007048, 
                     'Last Funding Amount (EUR)': 3007047, 'Last Month Twitter Followers': 3007035, 'Employee Departures: Last 3 Months (#)': 3051579, 'Employee Departures: Last 3 Months (%)': 3051578, 'Employee Departures: Last 3 Months (Leadership)': 3051581, 'Employee Hires: Last 3 Months (#)': 3051577, 'Employee Hires: Last 3 Months (%)': 3051576, 'Employee Hires: Last 3 Months (Leadership)': 3051580, 'Employees (Current)': 3051587, 'Employees: 1 Month Ago': 3051586, 'Employees: 3 Months Ago': 3051585, 'Employees: 6 Months Ago': 3051584, 'Employees: 12 Months Ago': 3051583, 'Employees: 24 Months Ago': 3051582, 'Employees: Growth MoM (%)': 3051575, 'Employees: Growth QoQ (%)': 3051574, 'Employees: Growth YoY (%)': 3051573, 'LinkedIn Profile (Founders/CEOs)': 3051572, 'Strategy': 4075354, 'Diverse Founder (Y/N)?': 3069421, 'ARR 2023 ($)': 3226858, 'Relevant Events': 3364216, 'ARR 2024': 4367478, 'Energize Relationship': 3026453, 'Margin': 3068948, 'ARR 2021 ($)': 3068961, 'ARR 2022 ($)': 3068970, 'Deep Dive': 3010026, 'Financial Impact': 4582456, 'Engagement Tier': 3713299, 'Engagement Impact': 4582457}
 
-def extract_field_values(list_of_field_outputs,fields_to_extract=[
+def extract_field_values(list_of_field_outputs,fields_to_extract= [
+    "Location",
     "Employees (Current)",
     "Employees: Growth YoY (%)",
     "Investment Stage",
     "Last Funding Amount (USD)",
     "Investors",
     "LinkedIn Profile (Founders/CEOs)",
-    "Location",
-    "Investors",
-    "Description"
-]):
+    "Industry",
+    "Business Models",
+    "Technologies"]):
     info = {i: None for i in fields_to_extract}
     reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
 
@@ -118,51 +108,132 @@ def extract_field_values(list_of_field_outputs,fields_to_extract=[
     return info
 
 
-df = companies[companies["affinity_id"] != "Not in Affinity"]
-df = df.drop("embedding",axis=1)
-df.to_csv("befre.csv",index=False)
-print("saved original into csv")
-# Step 1: Fetch all field values in bulk
-import time
-
-print("bulk fetching")
-start_time = time.time()
-
-all_field_outputs = asyncio.run(fetch_all(df["affinity_id"].tolist()))
-
-end_time = time.time()
-print("finished fetching from affinity")
-print(f"Time taken: {end_time - start_time:.2f} seconds")
-
 # Step 2: Loop over the DataFrame rows with the fetched results
-for row, fields in zip(df.itertuples(), all_field_outputs):
-    if fields is None:
-        print(f"[{row.affinity_id}] Skipped due to fetch failure.")
-        continue
-    current = [
-        row.employees_current,
-        row.employees_growth_yoy,
-        row.investment_stage,
-        row.last_funding_amount_usd
-    ]
+def generate_updates(df, all_field_outputs, pipeline):
+    print(f"this is pipeline info:\n it's an object of type {type(pipeline)} of length {len(pipeline)}")
 
-    # Parse new field values
-    new_values = extract_field_values(fields)
-    new = [
-        new_values["Employees (Current)"],
-        new_values["Employees: Growth YoY (%)"],
-        new_values["Investment Stage"],
-        new_values["Last Funding Amount (USD)"]
-    ]
+    # Build the dictionary once
+    field_output_dict = {
+        entry[0]['entity_id']: entry
+        for entry in all_field_outputs
+        if entry and isinstance(entry, list) and len(entry) > 0
+    }
 
-    if current != new:
-        df.loc[row.Index, [
-            "employees_current",
-            "employees_growth_yoy",
-            "investment_stage",
-            "last_funding_amount_usd"
-        ]] = new
+    updates = []
 
-print("saving to csv")
-df.to_csv("after.csv",index=False)
+    for row in df.itertuples():
+        try:
+            affinity_id = int(row.affinity_id)
+        except ValueError:
+            continue
 
+        fields = field_output_dict.get(affinity_id)
+
+        if not fields:
+            continue
+
+        new_values = extract_field_values(fields)
+
+        current = [
+            row.employees_current,
+            row.employees_growth_yoy,
+            row.investment_stage,
+            row.last_funding_amount_usd,
+            row.in_energize_affinity,
+            row.industry,
+            row.business_models,
+            row.technologies
+        ]
+        current = [literal(i) for i in current]
+
+        new = [
+            new_values["Employees (Current)"],
+            new_values["Employees: Growth YoY (%)"],
+            new_values["Investment Stage"],
+            new_values["Last Funding Amount (USD)"],
+            in_energize_affinity(row.affinity_id, pipeline),
+            new_values["Industry"],
+            new_values["Business Models"],
+            new_values["Technologies"]
+        ]
+
+        if current != new:
+            print(f"Updating {row.name} ({row.affinity_id})\nFrom: {current}\nTo:   {new}")
+            updates.append({
+                "company_uuid": row.company_uuid,
+                "employees_current": new[0],
+                "employees_growth_yoy": new[1],
+                "investment_stage": new[2],
+                "last_funding_amount_usd": new[3],
+                "in_energize_affinity": new[4],
+                "industry": new[5],
+                "business_models": new[6],
+                "technologies": new[7]
+            })
+
+    return updates
+
+
+def update_supabase(updates):
+    for update in updates:
+        try:
+            company_uuid = update["company_uuid"]
+            update_fields = {k: v for k, v in update.items() if k != "company_uuid"}
+            supabase.table("companies").update(update_fields).eq("company_uuid", company_uuid).execute()
+        except Exception as e:
+            print(f"Updating {company_uuid} with: {update_fields}")
+            raise e
+
+# ---- MAIN WORKFLOW ----
+def main():
+    print("Fetching data from Supabase...")
+
+    all_companies = fetch_all()
+    # Convert
+    # all_companies = pd.read_csv("../companies.csv")
+    df = all_companies[all_companies["affinity_id"]!="Not in Affinity"]
+    df = df.drop(columns=["embedding"], errors="ignore")
+    org_ids = df["affinity_id"].tolist()
+    # print(f"{org_ids=}")
+    print("Fetching data from Affinity...")
+    import time
+
+    print("bulk fetching")
+    start_time = time.time()
+    # with open("field_outs.json","r") as f:
+    #     all_field_outputs = json.load(f)
+    all_field_outputs = asyncio.run(fetch_all_field_values(org_ids))
+
+    end_time = time.time()
+    print(f"Time taken: {end_time - start_time:.2f} seconds")
+
+    print("finished fetching from affinity")
+    # output_ids = [org["entity_id"] for org in all_field_outputs if org is not None]
+    # print(f"{output_ids=}")
+    # return all_field_outputs
+    print("Comparing and preparing updates...")
+    pipeline = set(fetch_list()["entity_id"].to_list())
+    updates = generate_updates(df, all_field_outputs,pipeline)
+
+    print(f"Pushing {len(updates)} updates to Supabase...")
+    print(updates)
+    update_supabase(updates)
+    print(f"✅ Done. updated a total of {len(updates)} companies")
+
+if __name__ == '__main__':
+    main()
+
+# print(main())
+# print((main()))
+# print("fetching companies")
+# companies  = fetch_all()
+# print("done fetching")
+# df = companies[companies["affinity_id"]!="Not in Affinity"]
+# print("starting to extract field_values")
+
+# all_field_outputs = asyncio.run(fetch_all_field_values(df["affinity_id"].to_list()))
+
+# import json 
+# print("dumping into json")
+# with open("field_outs.json",mode="w") as f:
+#     json.dump(all_field_outputs,f,indent=4)

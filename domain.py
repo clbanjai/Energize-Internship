@@ -1,70 +1,70 @@
 
-# from bs4 import BeautifulSoup
-# import requests
-# import pandas as pd
-# import math
-# from googleapiclient.discovery import build
-# from googleapiclient.errors import HttpError
-# from config import GOOGLE_API_KEY, CSE_ID
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+import math
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from config import GOOGLE_API_KEY, CSE_ID
 
 
-# def google_search(query, api_key, cse_id, num_results=5):
-#     service = build("customsearch", "v1", developerKey=api_key)
-#     res = service.cse().list(q=query, cx=cse_id, num=num_results).execute()
-#     return res.get("items", [])
+def google_search(query, api_key, cse_id, num_results=5):
+    service = build("customsearch", "v1", developerKey=api_key)
+    res = service.cse().list(q=query, cx=cse_id, num=num_results).execute()
+    return res.get("items", [])
  
 
 
-# def find_best_company_site(company, location, num_results=10):
-#     query = f'{company}, {location} -site:linkedin.com -site:crunchbase.com -site:facebook.com -site:twitter.com -site:medium.com'
-#     results = google_search(query, GOOGLE_API_KEY, CSE_ID, num_results)
-#     for item in results:
-#         url = item["link"]
-#         title = item["title"].lower()
-#         if (
-#             "home" in title or "official" in title or company.lower() in title
-#         ) and url.count("/") <= 3:
-#             return url
-#     return None
+def find_best_company_site(company, location,tagline="", num_results=10):
+    query = f'{company}, {location}, {tagline} -site:linkedin.com -site:crunchbase.com -site:facebook.com -site:twitter.com -site:medium.com'
+    results = google_search(query, GOOGLE_API_KEY, CSE_ID, num_results)
+    for item in results:
+        url = item["link"]
+        title = item["title"].lower()
+        if (
+            "home" in title or "official" in title or company.lower() in title
+        ) and url.count("/") <= 3:
+            return url
+    return None
 
-# def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000) -> bool:
-#     try:
-#         # Normalize protocol
-#         if not url.startswith("http"):
-#             url = "https://" + url
+def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000) -> bool:
+    try:
+        # Normalize protocol
+        if not url.startswith("http"):
+            url = "https://" + url
 
-#         response = requests.get(url, timeout=timeout)
-#         if response.status_code >= 400:
-#             return False  # Unreachable or error
+        response = requests.get(url, timeout=timeout)
+        if response.status_code >= 400:
+            return False  # Unreachable or error
 
-#         content = response.text.lower()
+        content = response.text.lower()
 
-#         # Check for very short responses
-#         if len(content) < min_html_length:
-#             return False
+        # Check for very short responses
+        if len(content) < min_html_length:
+            return False
 
-#         # Keywords that often indicate a parked or placeholder domain
-#         parking_signals = [
-#             "buy this domain", "this domain is for sale", "parked by", "domain parking",
-#             "is available for purchase", "get this domain", "register your domain"
-#         ]
+        # Keywords that often indicate a parked or placeholder domain
+        parking_signals = [
+            "buy this domain", "this domain is for sale", "parked by", "domain parking",
+            "is available for purchase", "get this domain", "register your domain"
+        ]
 
-#         # Keywords often present on legitimate company websites
-#         company_signals = ["about us", "product", "team", "careers", "contact", "services", "solutions"]
+        # Keywords often present on legitimate company websites
+        company_signals = ["about us", "product", "team", "careers", "contact", "services", "solutions"]
 
-#         # If parking phrases are found, it's not valid
-#         if any(phrase in content for phrase in parking_signals):
-#             return False
+        # If parking phrases are found, it's not valid
+        if any(phrase in content for phrase in parking_signals):
+            return False
 
-#         # If at least one company-related keyword exists, it's likely valid
-#         if any(keyword in content for keyword in company_signals):
-#             return True
+        # If at least one company-related keyword exists, it's likely valid
+        if any(keyword in content for keyword in company_signals):
+            return True
 
-#         # Fallback: HTML is long and no parking signals — assume valid
-#         return True
+        # Fallback: HTML is long and no parking signals — assume valid
+        return True
 
-#     except requests.exceptions.RequestException:
-#         return False  # Timeout, DNS error, etc.
+    except requests.exceptions.RequestException:
+        return False  # Timeout, DNS error, etc.
 
 # # chunk_index = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 # # assert 1 <= chunk_index <= 8, "Chunk index must be between 1 and 8"

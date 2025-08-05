@@ -11,7 +11,7 @@ import numpy as np
 import re
 
 from newsletter import ctvc_date, ctvc_deals, fortune_deals, fortune_date, keepcool_date, keepcool_deals, eu_substack_date, eu_substack_deals
-
+from domain import find_best_company_site
 from difflib import SequenceMatcher
 from openai import OpenAI
 
@@ -219,13 +219,13 @@ def dataframe_OPENAI(text: str,climate_only=False) -> pd.DataFrame:
     return None
 
 
-# def populate_domains(df):
-#     df = df.copy()
-#     for row in df.itertuples():
-#         # domain = find_best_company_site(row.name,row.location)
-#         if domain:
-#             df.at[row.Index,"domain"] = domain
-#     return df
+def populate_domains(df):
+    df = df.copy()
+    for row in df.itertuples():
+        domain = find_best_company_site(row.name,row.location)
+        if domain:
+            df.at[row.Index,"domain"] = domain
+    return df
 # from bs4 import BeautifulSoup
 
 
@@ -242,8 +242,8 @@ def ctvc(url):
             df["source"] = url
             try:
                 df["domain"] = pd.NA
-                # df_new = populate_domains(df)
-                return df
+                df_new = populate_domains(df)
+                return df_new
             except Exception as e:
                 return df
         return df
@@ -274,6 +274,12 @@ def keepcool(url):
             date = keepcool_date(url)
             df["date"] = date
             df["source"] = url
+            try:
+                df["domain"] = pd.NA
+                df_new = populate_domains(df)
+                return df_new
+            except Exception as e:
+                return df
         return df
     else:
         return None
@@ -737,7 +743,5 @@ def cleaning(df):
     companies["domain"] = clean_domains(companies)
     return companies, deals
 
-
-# all_data = pd.read_csv("../all_data.csv")[['name', 'Deal Size', 'series', 'tagline', 'location','investors', 'domain', 'date', 'source']]
-# companies, funding = clean_and_split_df(all_data)
-# print(funding)
+if __name__ =="__main__":
+    print(ctvc("https://www.ctvc.co/epa-puts-emissions-rules-in-danger-257/")[["name","tagline","location","domain"]])

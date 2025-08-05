@@ -1,21 +1,70 @@
-name: Email monitor
+name: Run Funding Intelligence Pipeline
 
 on:
-   workflow_dispatch:
-jobs:
-  monitor-emails:
-    runs-on: ubuntu-latest
-    steps:
-        - name: checkout repository
-          uses: actions/checkout@v4
-        - name: Set up Python # remember to update requirements.txt
-          uses: actions/setup-python@v4
-          with:
-            python-version: '3.10'
-        - name: Install dependencies
-          run: pip install -r requirements.txt
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'  # Runs every day at 06:00 UTC
 
-        - name: Run email monitor
-          run: python {file_name}.py 
-        
-          # No output to upload {file_name}.py is expected to handle update the database by itself
+jobs:
+  funding-pipeline:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      need_tesseract: ${{ steps.check.outputs.need_tesseract }}
+
+    env:
+      SUPABASE_API_URL: ${{ secrets.SUPABASE_API_URL }}
+      SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+      AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Check if eusubstack has new deals
+        id: check
+        run: |
+          python check_eusubstack.py
+        continue-on-error: false
+      
+      - name: Conditionally install tesseract-ocr
+        if: steps.check.outputs.need_tesseract == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+
+      - name: Git sync before pipeline
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull origin main --rebase
+
+      - name: Run the venture funding pipeline
+        run: |
+          python main.py
+
+      - name: Commit and push updated newsletter tracker files
+        run: |
+          # Stage changes
+          git add private_data/*.json
+
+          # Check if there’s anything to commit
+          if git diff --cached --quiet; then
+            echo "✅ No newsletter tracker changes detected. Skipping commit."
+          else
+            git commit -m "chore: update newsletter trackers with new funding deals [skip ci]"
+            git push origin main
+          fi

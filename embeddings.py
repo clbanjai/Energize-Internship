@@ -107,9 +107,10 @@ def embedding_search(query_embedding, top_k=10):
     ).execute()
     return response.data
 
-def semantic_search(query,top_k):
+def semantic_search(query,top_k=5):
     query_embedding = create_embedding(query)
     search_result = embedding_search(query_embedding,top_k)
     return search_result
 
-# pd.DataFrame(search_companies_by_semantics(query_embedding,50))
+# if __name__ = "__main"
+# print(pd.DataFrame(semantic_search("Permitting")))

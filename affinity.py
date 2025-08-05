@@ -91,8 +91,20 @@ def patient_get(url, auth = HTTPBasicAuth("",AFFINITY_API_KEY), max_retries=5, b
 all_orgs = pd.read_csv("private_data/energize_affinity_ids.csv")
 id_set = set(all_orgs["id"].values)
 
-def in_energize_affinity(id):
-    return id in id_set
+def fetch_list(id=153336):
+    url = f'https://api.affinity.co/lists/{id}/list-entries'
+    response = requests.get(url, auth=HTTPBasicAuth(" ",AFFINITY_API_KEY))
+    if response.status_code == 200:
+        data = response.json()
+        return pd.DataFrame(data)
+    
+def in_energize_affinity(id,pipeline):
+    if not isinstance(id,int):
+        id = int(id)
+    if id in pipeline:
+        return True
+    else:
+        return False
 
 us_data = pd.read_csv("private_data/uscities.csv")
 cities = set(us_data["city"].str.lower().values)
@@ -176,11 +188,9 @@ def get_field_value_by_id(company_id, fields_to_extract = [
 
 def get_company_by_name(company_name, domain=None,location=None,investors=None):
 
-    search_name = company_name.replace(" ","")
+    url = f"https://api.affinity.co/organizations?term={company_name}"
 
-    url = f"https://api.affinity.co/organizations?term={search_name}"
-
-    response = response = patient_get(url)
+    response = patient_get(url)
     if response is None:
         return (None, None)
 
@@ -204,7 +214,6 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                                         location = location.lower()
                                     field_values = get_field_value_by_id(org_id)
                                     if location_check(location,field_values):
-                                        print("passed location check")
                                         return org, field_values
             if pd.notna(location) and location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
@@ -213,7 +222,7 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                     if name_score > 0.6:
                         org_id = org["id"]
                         field_values = get_field_value_by_id(org_id)
-                        if field_values and field_values["Location"]:
+                        if field_values and "Location" in field_values and field_values["Location"]:
                             if in_US(location):
                                 city, state = field_values["Location"]["city"], field_values["Location"]["state"]
                                 city = city.lower() if city else None
@@ -231,14 +240,16 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
             if investors:
                 investors = [inv.lower().strip() for inv in investors]  # Normalize investor names to lowercase
                 for org in data:
-                    org_id = org["id"]
-                    field_values = get_field_value_by_id(org_id)
-                    if field_values and field_values["Investors"]:
-                        org_investors = field_values["Investors"]
-                        for inv in org_investors:
-                            inv = inv.lower().strip()  # Normalize investor names to lowercase
-                            if inv in investors:
-                                return org, field_values
+                    name_score = name_similarity(org["name"].lower(), company_name)
+                    if name_score>0.7:
+                        org_id = org["id"]
+                        field_values = get_field_value_by_id(org_id)
+                        if field_values and "Investors" in field_values and field_values["Investors"]:
+                            org_investors = field_values["Investors"]
+                            for inv in org_investors:
+                                inv = inv.lower().strip()  # Normalize investor names to lowercase
+                                if inv in investors:
+                                    return org, field_values
             return (None, None)
         else:
             return (None, None)
@@ -276,15 +287,15 @@ fields_to_extract = [
 ]
 fields_to_extract = [normalize_key(f) for f in fields_to_extract]
 
-def affinity_enrich(row):
+def affinity_enrich(row,pipeline):
     in_energize = False
     affinity_ID = None
-    name = row["name"]
-    location = row["location"]
-    domain = row["domain"]
-    uuid = row.name if "company_uuid" not in row else row["company_uuid"] # since uuid is the index
-    tagline = row["tagline"]
-    investors = row["investors"]
+    name = row.name
+    location = row.location
+    domain = row.domain
+    uuid = row.Index
+    tagline = row.tagline
+    investors = row.investors
 
     enriched_fields = {
         "company_uuid": uuid,
@@ -313,7 +324,6 @@ def affinity_enrich(row):
             for k, v in field_values.items():
                 k_norm = normalize_key(k)
                 if k_norm == "location" and isinstance(v, dict):
-                    print("fixing location")
                     if v.get("country", "").lower() in ["united states", "united states of america", "us", "usa"]:
                         enriched_fields["location"] = f"{v.get('city')}, {v.get('state')}"
                     else:
@@ -323,7 +333,7 @@ def affinity_enrich(row):
                 elif v is not None:
                     enriched_fields[k_norm] = v
 
-            if in_energize_affinity(affinity_ID):
+            if in_energize_affinity(affinity_ID,pipeline):
                 in_energize = True
 
         enriched_fields["in_energize_affinity"] = in_energize
@@ -350,31 +360,14 @@ def array_to_tuples(array):
 
 def enrich_df(companies_df):
     result = []
-    for index, row in companies_df.iterrows():
-        result.append(affinity_enrich(row))
+    pipeline = set(fetch_list()["entity_id"].to_list())
+    for row in companies_df.itertuples():
+        result.append(affinity_enrich(row,pipeline))
     return pd.DataFrame(result)
 
-# print(name_similarity("24M","24 M Technologies"))
-# print(get_company_by_name("twelve",domain="twelve.co",location="Berkeley, California"))
-#    name, location, domain, uuid, tagline, investors = row
-# row = {"company_uuid":"12312314","name":"twelve","location":"Berkeley, CA","domain":"twelve.co","tagline":"Should not be in the output","investors":None}
-# print(affinity_enrich(row))
-# print(get_company_by_name("xcelerate",domain="https://excelerateenergy.com/",location="Singapore City, Singapore",investors=[' exacta capital partners', 'altair capital', ' federated hermes']))
-# print(get_field_value_by_id(279217482,["Employees: Growth YoY (%)"]))
-# print(affinity_enrich(row,0))
-# string = "60hertz energy"
-# print(string.replace(" ", ""))
-# print(get_company_by_name("Tyba",domain="tyba.ai"))
 
-# temp = {'name': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'amply',
-#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'ecocharge'},
-#  'domain': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'https://www.amply.com/',
-#   'c500497b-198d-48cf-93bc-f6673dcf53fd': None},
-#  'location': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'Paris, France',
-#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'Chicago, IL'},
-#  'tagline': {'319e73ab-db20-4e0e-8109-4c13033d77c3': 'Battery analytics startup',
-#   'c500497b-198d-48cf-93bc-f6673dcf53fd': 'Clean energy project finance platform'},
-#  'investors': {'319e73ab-db20-4e0e-8109-4c13033d77c3': [' ecosystem ventures',
-#    'xora innovation'],
-#   'c500497b-198d-48cf-93bc-f6673dcf53fd': ['undisclosed investors']}}
-# print(enrich_df(pd.DataFrame(temp))["investors"])
+if __name__=="__main__":
+    # print()
+    # print(affinity_enrich({"name":"bedrock robotics","location":"San Francisco, CA","tagline":"founded by veterans of waymo and segment","domain":"https://bedrockrobotics.com/","investors":"Eclipse 8VC"},pipeline=set(fetch_list()["entity_id"].to_list())))
+    print(get_company_by_name("bedrock robotics","https://bedrockrobotics.com/","San Francisco, CA","Eclipse, 8VC"))
+    # print(get_field_value_by_id(297969466))
