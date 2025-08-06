@@ -9,7 +9,7 @@ uvicorn
 supabase
 pillow
 pytesseract
-googleapiclient
+google-api-python-client
 # imap-tools
 # email
 # os
