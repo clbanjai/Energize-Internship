@@ -1,20 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from supabase import create_client
-import os
-import sys
-
-
+from typing import Optional, Dict
+import requests
 from embeddings import generate_embedding
-
 from db_client import supabase
+from config import SUPABASE_API_KEY, SUPABASE_API_URL
 
 app = FastAPI()
 
 class QueryRequest(BaseModel):
-    query: str
+    query: Optional[str] = None
     match_count: int = 10
-
+    filters: Optional[Dict[str, str]] = None  # e.g. {"series": "eq.Series A"}
 
 @app.get("/")
 def root():
@@ -23,11 +20,70 @@ def root():
 @app.post("/enhanced-company-search")
 def enhanced_company_search(req: QueryRequest):
     try:
-        embedding = generate_embedding(req.query)
-        result = supabase.rpc("match_companies_by_embedding", {
-            "query_embedding": embedding,
-            "match_count": req.match_count
-        }).execute()
-        return result.data
+        headers = {
+            "apikey": SUPABASE_API_KEY,
+            "Authorization": f"Bearer {SUPABASE_API_KEY}",
+            "Accept": "application/json"
+        }
+
+        base_url = f"{SUPABASE_API_URL}/rest/v1/companies_funding"
+        params = req.filters.copy() if req.filters else {}
+
+        # Case 1: Only filters, no query
+        if not req.query:
+            response = requests.get(
+                base_url,
+                headers=headers,
+                params={**params, "limit": str(req.match_count)}
+            )
+            response.raise_for_status()
+            results = response.json()
+
+        # Case 2 & 3: Semantic query (with or without filters)
+        else:
+            # Step 1: Generate query embedding
+            embedding = generate_embedding(req.query)
+
+            # Step 2: Call Supabase RPC for semantic match
+            match_result = supabase.rpc("match_companies_by_embedding", {
+                "query_embedding": embedding,
+                "match_count": 100  # get more and post-filter if needed
+            }).execute()
+
+            uuids = [r["company_uuid"] for r in match_result.data]
+            if not uuids:
+                return []
+
+            # Step 3: Filter semantic matches using filters if provided
+            uuid_filter = ",".join(sorted(set(uuids)))
+            params["company_uuid"] = f"in.({uuid_filter})"
+
+            response = requests.get(
+                base_url,
+                headers=headers,
+                params={**params, "limit": str(req.match_count)}
+            )
+            response.raise_for_status()
+            results = response.json()
+            seen = set()
+            unique_results = []
+
+            for item in results:
+                cid = item.get("company_uuid")
+                if cid not in seen:
+                    seen.add(cid)
+                    unique_results.append(item)
+
+            results = unique_results
+
+
+        # Remove internal-use fields
+        for item in results:
+            item.pop("embedding", None)
+            item.pop("company_uuid", None)
+            item.pop("deal_uuid", None)
+
+        return results
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
