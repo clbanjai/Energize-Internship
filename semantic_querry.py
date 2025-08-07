@@ -23,6 +23,7 @@ class QueryRequest(BaseModel):
     match_count: int = 10
     filters: Optional[Dict[str, str]] = None  # e.g. {"series": "eq.Series A"}
 
+
 @app.get("/")
 def root():
     return {"status": "OK"}

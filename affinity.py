@@ -365,5 +365,7 @@ def enrich_df(companies_df):
 if __name__=="__main__":
     # print()
     # print(affinity_enrich({"name":"bedrock robotics","location":"San Francisco, CA","tagline":"founded by veterans of waymo and segment","domain":"https://bedrockrobotics.com/","investors":"Eclipse 8VC"},pipeline=set(fetch_list()["entity_id"].to_list())))
-    print(get_company_by_name("archive",domain=None,location="San Francisco, CA",investors=None))
+    print(get_company_by_name("sensmore",domain=None,location="New Lambton, Australia",investors=None))
     # print(get_field_value_by_id(297969466))
+    # print(fetch_list())
+    pass
