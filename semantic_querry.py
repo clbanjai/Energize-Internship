@@ -1,12 +1,22 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Security
+from fastapi.security.api_key import APIKeyHeader
+
 from pydantic import BaseModel
 from typing import Optional, Dict
 import requests
 from embeddings import generate_embedding
 from db_client import supabase, cosine_similarity
-from config import SUPABASE_API_KEY, SUPABASE_API_URL
+from config import SUPABASE_API_KEY, SUPABASE_API_URL, SEMANTAI_API_KEY
 
 app = FastAPI()
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+
+
+def verify_api_key(api_key: str = Security(api_key_header)):
+    if api_key != SEMANTAI_API_KEY:
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    return api_key
 
 class QueryRequest(BaseModel):
     query: Optional[str] = None
@@ -18,7 +28,7 @@ def root():
     return {"status": "OK"}
 
 @app.post("/enhanced-company-search")
-def enhanced_company_search(req: QueryRequest):
+def enhanced_company_search(req: QueryRequest,api_key: str = Depends(verify_api_key)):
     try:
         headers = {
             "apikey": SUPABASE_API_KEY,

@@ -198,10 +198,6 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
         json = response.json()
         if json and json["organizations"]:
             data = json["organizations"]
-            if len(data)==1:
-                org = data[0]
-                field_values = get_field_value_by_id(org["id"])
-                return org, field_values
             if pd.notna(domain) and domain:
                 for org in data:
                     if name_similarity(org["name"], company_name) > 0.6:

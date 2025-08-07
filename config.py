@@ -18,5 +18,7 @@ AFFINITY_API_KEY = os.getenv("AFFINITY_API_KEY")
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 CSE_ID = os.getenv("CSE_ID")
+
+SEMANTAI_API_KEY = os.getenv("SEMANTAI_API_KEY")
 # NEWSLETTERS = os.getenv("NEWSLETTERS").split(",")
 
