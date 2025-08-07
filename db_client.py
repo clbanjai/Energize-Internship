@@ -95,16 +95,24 @@ example_deal = [[
 ]]
 
 # insert_deals(example_deal)
-def cosine_similarity(vec1,vec2):
-        # Compute cosine similarity
-    if isinstance(vec1,list):
-        vec1 = np.array(vec1)
-    if isinstance(vec2,list):
-        vec2 = np.array(vec2)
-    if isinstance(vec1,str):
-        vec1 = np.array(create_embedding(vec1))
-    if isinstance(vec2,str):
-        vec2 = np.array(create_embedding(vec2))
+import numpy as np
+import ast  # for safe string-to-list conversion
+
+def cosine_similarity(vec1, vec2):
+    # Convert strings that look like lists (e.g. "[0.1, 0.2, 0.3]") to actual Python lists
+    def ensure_array(v):
+        if isinstance(v, str):
+            try:
+                v = ast.literal_eval(v)  # safely parse string to list
+            except (ValueError, SyntaxError):
+                v = create_embedding(v)  # fallback: assume it's raw text and embed it
+        if isinstance(v, list):
+            v = np.array(v)
+        return v
+
+    vec1 = ensure_array(vec1)
+    vec2 = ensure_array(vec2)
+
     similarity = np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
     return float(similarity)
 
