@@ -9,7 +9,7 @@ from db_client import supabase, cosine_similarity
 from config import SUPABASE_API_KEY, SUPABASE_API_URL, SEMANTAI_API_KEY
 
 app = FastAPI()
-api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
 
 
