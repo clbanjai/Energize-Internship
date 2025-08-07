@@ -2,8 +2,8 @@ name: Run Funding Intelligence Pipeline
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 6 * * *'  # Runs every day at 06:00 UTC
+  #schedule:
+  #  - cron: '0 6 * * *'  # Runs every day at 06:00 UTC
 
 jobs:
   funding-pipeline:
