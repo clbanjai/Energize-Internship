@@ -3,7 +3,11 @@ from requests.auth import HTTPBasicAuth
 import pandas as pd
 from difflib import SequenceMatcher
 import time
+import ast
 from config import AFFINITY_API_KEY
+import json
+with open("private_data/pod_name_map.json","r") as f:
+    pod_name_map = json.load(f)
 
 fields_to_extract = [
     "Location",
@@ -116,9 +120,49 @@ def in_US(location):
         return city in cities and state in states
     else:
         return larger_location[0].lower() in states or larger_location[0].lower() in cities
-    
+def get_person_info(id):
+    url = f"https://api.affinity.co/persons/{id}?with_current_organizations=true"
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-def get_field_value_by_id(company_id, fields_to_extract = [
+    response = requests.get(url, headers=headers, auth=HTTPBasicAuth("", AFFINITY_API_KEY))
+    if response.status_code==200:
+        data = response.json()
+        return data
+
+def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract):
+    info = {i: None for i in fields_to_extract}
+    reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
+
+    for field_output in list_of_field_outputs: 
+        field_id = field_output.get("field_id")
+        if field_id in reverse_mapping:
+            field_value = field_output.get("value")
+            field_name = reverse_mapping[field_id]
+            if field_value is not None:
+                if field_name in info and info[field_name] is not None:
+                    if not isinstance(info[field_name], list):
+                        info[field_name] = [info[field_name]]
+                    if field_name == "Pod":
+                        if str(field_value) in pod_name_map:
+                            field_value = pod_name_map[str(field_value)]
+                        else:
+                            person_info = get_person_info(field_value)
+                            field_value = f"{person_info["first_name"]} {person_info["last_name"]}"
+                    info[field_name].append(field_value)
+                else:
+                    if field_name=="Pod":
+                        if str(field_value) in pod_name_map:
+                            field_value = pod_name_map[str(field_value)]
+                        else:
+                            person_info = get_person_info(field_value)
+                            field_value = f"{person_info["first_name"]} {person_info["last_name"]}"
+                    info[field_name] = field_value
+
+    return info
+
+def get_field_value_by_id(company_id, pod_name_map = pod_name_map,fields_to_extract = [
     "Employees (Current)",
     "Employees: Growth YoY (%)",
     "Investment Stage",
@@ -127,11 +171,14 @@ def get_field_value_by_id(company_id, fields_to_extract = [
     "LinkedIn Profile (Founders/CEOs)",
     "Location",
     "Investors",
-    "Description"
+    "Description",
+    "Pod",
+    "Deep Dive"
 ]):
     field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
                     'Year Founded': 3007049,
+                    "Pod":3009283,
                     'Number of Employees': 3007043, 
                     'Location': 3007052, 
                     'Industry': 3007051, 
@@ -168,20 +215,7 @@ def get_field_value_by_id(company_id, fields_to_extract = [
     # return list_of_field_outputs
     if list_of_field_outputs:
         # Invert the mapping to get id → name, but only for requested fields
-        reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
-
-        for field_output in list_of_field_outputs: 
-            field_id = field_output.get("field_id")
-            if field_id in reverse_mapping:
-                field_value = field_output.get("value")
-                field_name = reverse_mapping[field_id]
-                if field_value is not None:
-                    if field_name in info and info[field_name] is not None:
-                        if not isinstance(info[field_name], list):
-                            info[field_name] = [info[field_name]]
-                        info[field_name].append(field_value)
-                    else:
-                        info[field_name] = field_value
+        info = extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract)
 
     return info
 
@@ -263,7 +297,9 @@ AFFINITY_FIELD_NAME_MAP = {
     "Business Models": "business_models",
     "Technologies": "technologies",
     "Location": "location",
-    "Investors": "investors"
+    "Investors": "investors",
+    "Deep Dive": "deep_dive_tag",
+    "Pod":"pod"
 }
 
 def normalize_key(key):
@@ -353,13 +389,30 @@ def array_to_tuples(array):
     """
     return [tuple(row) for row in array]
 
-
+def array_columns(val):
+    if isinstance(val,list):
+        return val
+    if isinstance(val,str):
+        try:
+            parsed = ast.literal_eval(val)
+            if isinstance(parsed,list):
+                return [str(item).strip() for item in parsed]
+            return [parsed]
+        except Exception:
+            return [v.strip() for v in val.split(",") if v.strip()]
+    return []
 def enrich_df(companies_df):
     result = []
     pipeline = set(fetch_list()["entity_id"].to_list())
     for row in companies_df.itertuples():
         result.append(affinity_enrich(row,pipeline))
-    return pd.DataFrame(result)
+    df = pd.DataFrame(result)
+    temp = df.copy()
+    # print(f"these are the temp columns \n{list(temp.columns)}")
+    columns_to_fix = ["linkedin_profile","industry","business_models","technologies","deep_dive_tag","pod"]
+    for i in columns_to_fix:
+        df[i] = temp[i].apply(array_columns)
+    return df
 
 
 if __name__=="__main__":

@@ -1,7 +1,7 @@
 from aiohttp import BasicAuth
 import aiohttp
 import asyncio
-from affinity import fetch_list, in_energize_affinity
+from affinity import fetch_list, in_energize_affinity, extract_field_values
 import pandas as pd
 import ast
 # import sys
@@ -9,7 +9,9 @@ import ast
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config import AFFINITY_API_KEY
 from db_client import supabase, fetch_all
-
+import json
+with open("private_data/field_mapping.json","r") as f:
+    field_mapping = json.load(f)
 # print("Fetching companies")
 # companies = pd.read_csv("companies.csv")
 # print("Finished fetching")
@@ -51,67 +53,8 @@ async def fetch_all_field_values(org_ids):
         return await asyncio.gather(*tasks)
 
  
-field_mapping = {'Investment Stage': 3007023, 
-                     'Description': 3007050,
-                    'Year Founded': 3007049,
-                    'Number of Employees': 3007043, 
-                    'Location': 3007052, 
-                    'Industry': 3007051, 
-                    'Last Funding Date': 3007032, 
-                    'Investors': 3007025, 
-                    'Source of Introduction': 3007022, 
-                    'Total Funding Amount (USD)': 3007029, 
-                    'Last Funding Amount (USD)': 3007030, 
-                    'LinkedIn URL': 3698262, 
-                    'LinkedIn Headcount': 5188170, 
-                    'Dealroom.co URL': 3007034, 
-                    'Corporate Industries': 3007044, 
-                    'Service Industries': 3007040, 
-                    'Technologies': 3007039, 
-                    'Income Streams': 3007042, 
-                    'Business Models': 3007046, 
-                    'Ownership Types': 3007041, 
-                    'Total Tweets': 3007038, 
-                    'Last Month Change in Twitter Followers': 3007036, 
-                    'Last Month Twitter Favorites': 3007037, 
-                    'Client Focus': 3007045, 
-                    'Total Funding Amount (EUR)': 3007048, 
-                    'Last Funding Amount (EUR)': 3007047, 'Last Month Twitter Followers': 3007035, 'Employee Departures: Last 3 Months (#)': 3051579, 'Employee Departures: Last 3 Months (%)': 3051578, 'Employee Departures: Last 3 Months (Leadership)': 3051581, 'Employee Hires: Last 3 Months (#)': 3051577, 'Employee Hires: Last 3 Months (%)': 3051576, 'Employee Hires: Last 3 Months (Leadership)': 3051580, 'Employees (Current)': 3051587, 'Employees: 1 Month Ago': 3051586, 'Employees: 3 Months Ago': 3051585, 'Employees: 6 Months Ago': 3051584, 'Employees: 12 Months Ago': 3051583, 'Employees: 24 Months Ago': 3051582, 'Employees: Growth MoM (%)': 3051575, 'Employees: Growth QoQ (%)': 3051574, 'Employees: Growth YoY (%)': 3051573, 'LinkedIn Profile (Founders/CEOs)': 3051572, 'Strategy': 4075354, 'Diverse Founder (Y/N)?': 3069421, 'ARR 2023 ($)': 3226858, 'Relevant Events': 3364216, 'ARR 2024': 4367478, 'Energize Relationship': 3026453, 'Margin': 3068948, 'ARR 2021 ($)': 3068961, 'ARR 2022 ($)': 3068970, 'Deep Dive': 3010026, 'Financial Impact': 4582456, 'Engagement Tier': 3713299, 'Engagement Impact': 4582457}
-
-def extract_field_values(list_of_field_outputs,fields_to_extract= [
-    "Location",
-    "Employees (Current)",
-    "Employees: Growth YoY (%)",
-    "Investment Stage",
-    "Last Funding Amount (USD)",
-    "Investors",
-    "LinkedIn Profile (Founders/CEOs)",
-    "Industry",
-    "Business Models",
-    "Technologies",
-    "Deep Dive"]):
-    info = {i: None for i in fields_to_extract}
-    reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
-
-    for field_output in list_of_field_outputs: 
-        field_id = field_output.get("field_id")
-        if field_id in reverse_mapping:
-            field_value = field_output.get("value")
-            field_name = reverse_mapping[field_id]
-            if field_value is not None:
-                if field_name in info and info[field_name] is not None:
-                    if not isinstance(info[field_name], list):
-                        info[field_name] = [info[field_name]]
-                    info[field_name].append(field_value)
-                else:
-                    info[field_name] = field_value
-
-    return info
-
-
 # Step 2: Loop over the DataFrame rows with the fetched results
-def generate_updates(df, all_field_outputs, pipeline):
-    print(f"this is pipeline info:\n it's an object of type {type(pipeline)} of length {len(pipeline)}")
+def generate_updates(df, all_field_outputs, pipeline,field_mapping,pod_name_map):
 
     # Build the dictionary once
     field_output_dict = {
@@ -133,8 +76,7 @@ def generate_updates(df, all_field_outputs, pipeline):
         if not fields:
             continue
 
-        new_values = extract_field_values(fields)
-
+        new_values = extract_field_values(fields,field_mapping,pod_name_map)
         current = [
             row.employees_current,
             row.employees_growth_yoy,
@@ -144,7 +86,8 @@ def generate_updates(df, all_field_outputs, pipeline):
             row.industry,
             row.business_models,
             row.technologies,
-            row.deep_dive_tag
+            row.deep_dive_tag,
+            row.pod
         ]
         current = [literal(i) for i in current]
 
@@ -157,11 +100,11 @@ def generate_updates(df, all_field_outputs, pipeline):
             new_values["Industry"],
             new_values["Business Models"],
             new_values["Technologies"],
-            new_values["Deep Dive"]
+            new_values["Deep Dive"],
+            new_values["Pod"]
         ]
 
         if current != new:
-            print(f"Updating {row.name} ({row.affinity_id})\nFrom: {current}\nTo:   {new}")
             updates.append({
                 "company_uuid": row.company_uuid,
                 "employees_current": new[0],
@@ -172,7 +115,8 @@ def generate_updates(df, all_field_outputs, pipeline):
                 "industry": new[5],
                 "business_models": new[6],
                 "technologies": new[7],
-                "deep_dive_tag":new[8]
+                "deep_dive_tag":new[8],
+                "pod":new[9]
             })
 
     return updates
@@ -190,6 +134,9 @@ def update_supabase(updates):
 
 # ---- MAIN WORKFLOW ----
 def main():
+    import json
+    with open("private_data/pod_name_map.json","r") as f:
+        pod_name_map = json.load(f)
     print("Fetching data from Supabase...")
 
     all_companies = fetch_all()
@@ -209,10 +156,10 @@ def main():
     print("finished fetching from affinity")
     print("Comparing and preparing updates...")
     pipeline = set(fetch_list()["entity_id"].to_list())
-    updates = generate_updates(df, all_field_outputs,pipeline)
+
+    updates = generate_updates(df, all_field_outputs,pipeline,field_mapping,pod_name_map)
 
     print(f"Pushing {len(updates)} updates to Supabase...")
-    print(updates)
     update_supabase(updates)
     print(f"✅ Done. updated a total of {len(updates)} companies")
 
