@@ -1,7 +1,7 @@
 from aiohttp import BasicAuth
 import aiohttp
 import asyncio
-from affinity import fetch_list, in_energize_affinity, extract_field_values
+from affinity import fetch_list, in_energize_affinity, extract_field_values, array_columns
 import pandas as pd
 import ast
 # import sys
@@ -17,14 +17,16 @@ with open("private_data/field_mapping.json","r") as f:
 # print("Finished fetching")
 semaphore = asyncio.Semaphore(10)  # Limit to 10 concurrent requests
 
-def literal(string):
-    if pd.isna(string):
+def literal(input):
+    if isinstance(input,list):
+        return input
+    if pd.isna(input):
         return None
     else:
         try:
-            return ast.literal_eval(string)
+            return ast.literal_eval(input)
         except Exception as e:
-            return string
+            return input
 
 async def fetch_field_values(session, org_id):
     url = f"https://api.affinity.co/field-values?organization_id={org_id}"
@@ -52,7 +54,7 @@ async def fetch_all_field_values(org_ids):
         tasks = [fetch_field_values(session, oid) for oid in org_ids]
         return await asyncio.gather(*tasks)
 
- 
+
 # Step 2: Loop over the DataFrame rows with the fetched results
 def generate_updates(df, all_field_outputs, pipeline,field_mapping,pod_name_map):
 
@@ -97,11 +99,11 @@ def generate_updates(df, all_field_outputs, pipeline,field_mapping,pod_name_map)
             new_values["Investment Stage"],
             new_values["Last Funding Amount (USD)"],
             in_energize_affinity(row.affinity_id, pipeline),
-            new_values["Industry"],
-            new_values["Business Models"],
-            new_values["Technologies"],
-            new_values["Deep Dive"],
-            new_values["Pod"]
+            array_columns(new_values["Industry"]),
+            array_columns(new_values["Business Models"]),
+            array_columns(new_values["Technologies"]),
+            array_columns(new_values["Deep Dive"]),
+            array_columns(new_values["Pod"])
         ]
 
         if current != new:
@@ -165,18 +167,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # all_companies = fetch_all()
+    # df = all_companies[all_companies["affinity_id"]!="Not in Affinity"]
 
-# print(main())
-# print((main()))
-# print("fetching companies")
-# companies  = fetch_all()
-# print("done fetching")
-# df = companies[companies["affinity_id"]!="Not in Affinity"]
-# print("starting to extract field_values")
-
-# all_field_outputs = asyncio.run(fetch_all_field_values(df["affinity_id"].to_list()))
-
-# import json 
-# print("dumping into json")
-# with open("field_outs.json",mode="w") as f:
-#     json.dump(all_field_outputs,f,indent=4)

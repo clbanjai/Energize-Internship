@@ -6,6 +6,23 @@ import time
 import ast
 from config import AFFINITY_API_KEY
 import json
+
+import re
+AFFINITY_FIELD_NAME_MAP = {
+    "LinkedIn Profile (Founders/CEOs)": "linkedin_profile",
+    "Employees (Current)": "employees_current",
+    "Employees: Growth YoY (%)": "employees_growth_yoy",
+    "Investment Stage": "investment_stage",
+    "Last Funding Amount (USD)": "last_funding_amount_usd",
+    "Industry": "industry",
+    "Business Models": "business_models",
+    "Technologies": "technologies",
+    "Location": "location",
+    "Investors": "investors",
+    "Deep Dive": "deep_dive_tag",
+    "Pod":"pod"
+}
+
 with open("private_data/pod_name_map.json","r") as f:
     pod_name_map = json.load(f)
 
@@ -131,7 +148,7 @@ def get_person_info(id):
         data = response.json()
         return data
 
-def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract):
+def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract=list(AFFINITY_FIELD_NAME_MAP.keys())):
     info = {i: None for i in fields_to_extract}
     reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
 
@@ -162,19 +179,7 @@ def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields
 
     return info
 
-def get_field_value_by_id(company_id, pod_name_map = pod_name_map,fields_to_extract = [
-    "Employees (Current)",
-    "Employees: Growth YoY (%)",
-    "Investment Stage",
-    "Last Funding Amount (USD)",
-    "Investors",
-    "LinkedIn Profile (Founders/CEOs)",
-    "Location",
-    "Investors",
-    "Description",
-    "Pod",
-    "Deep Dive"
-]):
+def get_field_value_by_id(company_id, pod_name_map = pod_name_map):
     field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
                     'Year Founded': 3007049,
@@ -215,7 +220,7 @@ def get_field_value_by_id(company_id, pod_name_map = pod_name_map,fields_to_extr
     # return list_of_field_outputs
     if list_of_field_outputs:
         # Invert the mapping to get id → name, but only for requested fields
-        info = extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract)
+        info = extract_field_values(list_of_field_outputs,field_mapping,pod_name_map)
 
     return info
 
@@ -265,7 +270,7 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                                 city, country = field_values["Location"]["city"], field_values["Location"]["country"]
                                 city = city.lower() if city else None# to standerdize and avoid issues with capitalization
                                 country = country.lower() if country else None
-                                if country and country in location or country and country in location:  
+                                if country and country in location or city and city in location:  
                                     return org, field_values
             if investors:
                 investors = [inv.lower().strip() for inv in investors]  # Normalize investor names to lowercase
@@ -286,21 +291,6 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
     else:
         return f"Error: {response.status_code}, {response.text}"
 
-import re
-AFFINITY_FIELD_NAME_MAP = {
-    "LinkedIn Profile (Founders/CEOs)": "linkedin_profile",
-    "Employees (Current)": "employees_current",
-    "Employees: Growth YoY (%)": "employees_growth_yoy",
-    "Investment Stage": "investment_stage",
-    "Last Funding Amount (USD)": "last_funding_amount_usd",
-    "Industry": "industry",
-    "Business Models": "business_models",
-    "Technologies": "technologies",
-    "Location": "location",
-    "Investors": "investors",
-    "Deep Dive": "deep_dive_tag",
-    "Pod":"pod"
-}
 
 def normalize_key(key):
     return AFFINITY_FIELD_NAME_MAP.get(key, re.sub(r"[^\w\s]", "", key.lower()).replace(" ", "_"))
@@ -416,9 +406,15 @@ def enrich_df(companies_df):
 
 
 if __name__=="__main__":
+    
     # print()
+    df = pd.DataFrame([{"name":"SunSave","location":"London, UK","tagline":"Sunsave is a subscription-based platform that helps households to save solar battery system.","domain":"sunsave.energy","investors":"IPGL"}])
+    print(get_field_value_by_id(285823358))
+    # for row in df.itertuples():
+    #     print(affinity_enrich(row,pipeline=set(fetch_list()["entity_id"].to_list())))
     # print(affinity_enrich({"name":"bedrock robotics","location":"San Francisco, CA","tagline":"founded by veterans of waymo and segment","domain":"https://bedrockrobotics.com/","investors":"Eclipse 8VC"},pipeline=set(fetch_list()["entity_id"].to_list())))
-    print(get_company_by_name("sensmore",domain=None,location="New Lambton, Australia",investors=None))
-    # print(get_field_value_by_id(297969466))
+    # print(get_company_by_name("sensmore",domain=None,location="New Lambton, Australia",investors=None))
+    # print(get_field_value_by_id(290241095,pod_name_map))
+    # print(pod_name_map["117554472"])
     # print(fetch_list())
-    pass
+    

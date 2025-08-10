@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, Dict, List
 import requests
+
 from embeddings import generate_embedding
 from db_client import supabase, cosine_similarity
 from config import SUPABASE_API_KEY, SUPABASE_API_URL
@@ -73,25 +74,24 @@ def enhanced_company_search(req: QueryRequest):
             return clean_result(response.json(), req.match_count)
 
         # --- Case 2: Semantic query (with or without filters) ---
-            embedding = generate_embedding(req.query)
+        embedding = generate_embedding(req.query)
 
-            # Step 2: Semantic search via Supabase RPC
-            match_result = supabase.rpc("match_companies_by_embedding", {
-                "query_embedding": embedding,
+        match_result = supabase.rpc("match_companies_by_embedding", {
+            "query_embedding": embedding,
             "match_count": 100
-            }).execute()
+        }).execute()
 
-            uuids = [r["company_uuid"] for r in match_result.data]
-            if not uuids:
-                return []
+        uuids = [r["company_uuid"] for r in match_result.data]
+        if not uuids:
+            return []
 
         # Add semantic UUID filter
         params["company_uuid"] = f"in.({','.join(sorted(set(uuids)))})"
         params["limit"] = "100"  # fetch enough to filter/rank
 
         response = requests.get(base_url, headers=headers, params=params)
-            response.raise_for_status()
-            results = response.json()
+        response.raise_for_status()
+        results = response.json()
 
         # --- Optional: re-rank by similarity if no explicit ordering ---
         if not req.order_by:
