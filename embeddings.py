@@ -112,5 +112,5 @@ def semantic_search(query,top_k=5):
     search_result = embedding_search(query_embedding,top_k)
     return search_result
 
-# if __name__ = "__main"
-# print(pd.DataFrame(semantic_search("Permitting")))
+if __name__ == "__main__":
+    print(pd.DataFrame(semantic_search("Permitting"))[["name","tagline"]])

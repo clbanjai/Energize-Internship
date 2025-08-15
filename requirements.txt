@@ -11,6 +11,7 @@ pillow
 pytesseract
 google-api-python-client
 aiohttp
+msal
 # imap-tools
 # email
 # os

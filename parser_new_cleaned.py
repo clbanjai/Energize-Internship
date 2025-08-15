@@ -296,8 +296,8 @@ def eusubstack(url):
             df["source"] = url
             try:
                 df["domain"] = pd.NA
-                # df_new = populate_domains(df)
-                return df
+                df_new = populate_domains(df)
+                return df_new
             except Exception as e:
                 return df
         return df
@@ -744,4 +744,5 @@ def cleaning(df):
     return companies, deals
 
 if __name__ =="__main__":
-    print(ctvc("https://www.ctvc.co/epa-puts-emissions-rules-in-danger-257/")[["name","tagline","location","domain"]])
+    # print(ctvc("https://www.ctvc.co/epa-puts-emissions-rules-in-danger-257/")[["name","tagline","location","domain"]])
+    print(eusubstack("https://europeantech.substack.com/p/european-tech-weekly-week-29"))

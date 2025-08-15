@@ -1,0 +1,416 @@
+Target Company
+
+Brief Description
+
+States Operate In
+
+In PPR States
+
+Volume
+
+Value
+
+AHJ Fragmentation
+
+Strategic Fit Score
+
+Ameresco
+
+Large-scale ESCO and infrastructure projects
+
+National
+
+TRUE
+
+High
+
+High
+
+TRUE
+
+8
+
+Catalyze
+
+C&I solar + storage for real estate portfolios
+
+TX, GA, CA
+
+TRUE
+
+High
+
+High
+
+TRUE
+
+8
+
+DSD Renewables
+
+C&I and public solar with REIT partnerships
+
+TX, FL, CA
+
+TRUE
+
+High
+
+High
+
+TRUE
+
+8
+
+Endurant Energy
+
+Battery and microgrid developer for institutions
+
+NY, CA, FL
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+Aggreko Energy Transition Solutions
+
+Temporary and distributed energy systems
+
+FL, TX, GA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+Convergent Energy + Power
+
+Commercial battery storage developer
+
+TX, NY, CA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+ForeFront Power
+
+Solar for schools, muni, government
+
+CA, TX, FL
+
+TRUE
+
+High
+
+Medium
+
+TRUE
+
+7
+
+Summit Ridge Energy
+
+Largest U.S. community solar developer
+
+IL, MD, GA, TX
+
+TRUE
+
+High
+
+Medium
+
+TRUE
+
+7
+
+Pivot Energy
+
+Community and C&I solar developer
+
+CO, TX, IL, GA
+
+TRUE
+
+High
+
+Medium
+
+TRUE
+
+7
+
+Scale Microgrids
+
+Commercial microgrid developer
+
+TX, FL, GA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+EV Realty
+
+EV infrastructure developer targeting real estate
+
+TX, FL, CA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+Zeem Solutions
+
+Depot-as-a-service for medium-duty fleets
+
+TX, FL, GA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+Forum Mobility
+
+EV truck depot operator at ports/logistics
+
+TX, CA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+Voltera
+
+EV charging infrastructure for fleets
+
+TX, FL, GA
+
+TRUE
+
+Medium
+
+High
+
+TRUE
+
+7
+
+NineDot Energy
+
+Battery storage developer in urban areas
+
+NY
+
+FALSE
+
+Medium
+
+High
+
+TRUE
+
+6
+
+Greenskies Clean Energy
+
+C&I solar for schools and municipalities
+
+FL, TX, GA
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+Reactivate
+
+Community solar in LMI areas
+
+IL, TX, GA
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+Available Power
+
+DER developer with utility partnerships
+
+TX, FL, GA
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+Encore Renewable Energy
+
+Brownfield solar and storage
+
+VT, FL, MA
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+New Columbia Solar
+
+Urban solar developer in DC area
+
+DC, MD, VA
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+BlueWave Solar
+
+Community and agrivoltaic solar
+
+MA, ME, FL
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+PowerFlex
+
+Commercial solar + EV integration
+
+CA, TX, FL
+
+TRUE
+
+Medium
+
+Medium
+
+TRUE
+
+6
+
+King Energy
+
+Small commercial rooftop solar
+
+TX, FL, AZ
+
+TRUE
+
+High
+
+Low
+
+TRUE
+
+6
+
+Origo Energy
+
+Community solar with utility contracts
+
+NY, IL, ME
+
+FALSE
+
+Medium
+
+Medium
+
+TRUE
+
+5
+
+Sunwealth
+
+Solar developer for nonprofits and SMEs
+
+MA, GA, NY
+
+TRUE
+
+Medium
+
+Low
+
+TRUE
+
+5
+

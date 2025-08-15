@@ -27,7 +27,7 @@ NEWSLETTER_SOURCES = {
 def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
     for name, (fetch_urls, parse_func) in sources.items():
-        new_urls = fetch_urls(update=True) or []
+        new_urls = fetch_urls(update=False) or []
         print(f"📩 Found {len(new_urls)} new {name} newsletters")
         if new_urls:
             for i, url in enumerate(new_urls, start=1):
@@ -102,13 +102,16 @@ def upload_new_deals(deals: pd.DataFrame):
 
 def main():
     print("🚀 Starting newsletter ingestion pipeline...\n")
+    import json
     
     raw_data = fetch_newsletter_data(NEWSLETTER_SOURCES)
+    # raw_data = pd.read_csv("raw_data.csv")
     if raw_data is not None and not raw_data.empty:        
         
         companies, deals = cleaning(raw_data)
-
+        # raw_data.to_csv("raw_data.csv",index=False)
         enriched_companies = enrich_df(companies)
+
 
         new_companies, updated_deals = resolve_companies(enriched_companies, deals)
         upload_new_companies(new_companies)

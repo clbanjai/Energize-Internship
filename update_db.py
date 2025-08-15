@@ -167,6 +167,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # all_companies = fetch_all()
-    # df = all_companies[all_companies["affinity_id"]!="Not in Affinity"]
-

@@ -78,7 +78,7 @@ def enhanced_company_search(req: QueryRequest):
 
         match_result = supabase.rpc("match_companies_by_embedding", {
             "query_embedding": embedding,
-            "match_count": 100
+            "match_count": 50
         }).execute()
 
         uuids = [r["company_uuid"] for r in match_result.data]

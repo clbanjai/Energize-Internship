@@ -6,9 +6,11 @@ import time
 import ast
 from config import AFFINITY_API_KEY
 import json
-
+from embeddings import generate_embedding
+from db_client import cosine_similarity
 import re
 AFFINITY_FIELD_NAME_MAP = {
+    "Description": "description",
     "LinkedIn Profile (Founders/CEOs)": "linkedin_profile",
     "Employees (Current)": "employees_current",
     "Employees: Growth YoY (%)": "employees_growth_yoy",
@@ -51,7 +53,7 @@ def same_word_count(name1,name2):
     return len(words_1) == len(words_2)
 
 def location_check(location,field_values):
-    if field_values and field_values["Location"]:
+    if field_values and "Location" in field_values and field_values["Location"] and location:
         if in_US(location):
             city, state = field_values["Location"]["city"], field_values["Location"]["state"]
             city = city.lower() if city else None
@@ -148,7 +150,9 @@ def get_person_info(id):
         data = response.json()
         return data
 
-def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract=list(AFFINITY_FIELD_NAME_MAP.keys())):
+def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract=list(AFFINITY_FIELD_NAME_MAP.keys()), extra_fields=None):
+    if extra_fields:
+        fields_to_extract+=extra_fields
     info = {i: None for i in fields_to_extract}
     reverse_mapping = {v: k for k, v in field_mapping.items() if k in fields_to_extract}
 
@@ -179,7 +183,7 @@ def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields
 
     return info
 
-def get_field_value_by_id(company_id, pod_name_map = pod_name_map):
+def get_field_value_by_id(company_id, pod_name_map = pod_name_map,extra_fields=None):
     field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
                     'Year Founded': 3007049,
@@ -220,19 +224,21 @@ def get_field_value_by_id(company_id, pod_name_map = pod_name_map):
     # return list_of_field_outputs
     if list_of_field_outputs:
         # Invert the mapping to get id → name, but only for requested fields
-        info = extract_field_values(list_of_field_outputs,field_mapping,pod_name_map)
+        info = extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,extra_fields=extra_fields)
 
     return info
 
 
-def get_company_by_name(company_name, domain=None,location=None,investors=None):
+def get_company_by_name(company_name, domain=None,location=None,investors=None,description=None,strict = True):
 
     url = f"https://api.affinity.co/organizations?term={company_name}"
-
+    company_name = company_name.strip().lower()
     response = patient_get(url)
     if response is None:
         return (None, None)
-
+    if description:
+        description_embedding = generate_embedding(description.strip().lower())
+        desciption_hash = {}
     if response.status_code == 200:
         json = response.json()
         if json and json["organizations"]:
@@ -248,7 +254,9 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                                     if pd.notna(location) and location:
                                         location = location.lower()
                                     field_values = get_field_value_by_id(org_id)
-                                    if location_check(location,field_values):
+                                    if strict and location_check(location,field_values):
+                                        return org, field_values
+                                    else: 
                                         return org, field_values
             if pd.notna(location) and location:# if we have the locatoin then we loop through the outputs until there's a match
                 location = location.lower()
@@ -285,6 +293,30 @@ def get_company_by_name(company_name, domain=None,location=None,investors=None):
                                 inv = inv.lower().strip()  # Normalize investor names to lowercase
                                 if inv in investors:
                                     return org, field_values
+            if description and not strict:
+                description = description.lower().strip()
+                for org in data:
+                    if org["name"].lower().strip()==company_name:
+
+                        org_id = org["id"]
+                        field_values = get_field_value_by_id(org_id)
+                        if field_values and "Description" in field_values and field_values["Description"]:
+                            org_description = field_values["Description"].lower().strip()
+                            org_description_embedding = generate_embedding(org_description)
+                            desciption_hash[org_id] = cosine_similarity(description_embedding, org_description_embedding)
+                sorted_desc = sorted(desciption_hash.items(), key=lambda x: x[1], reverse=True)
+                if sorted_desc:
+                    best_match_id = sorted_desc[0][0]
+                    for org in data:
+                        if org["id"] == best_match_id:
+                            field_values = get_field_value_by_id(best_match_id)
+                            return org, field_values
+            if not strict:
+                for org in data:
+                    if org["name"].lower().strip()==company_name:
+                        org_id = org["id"]
+                        field_values = get_field_value_by_id(org_id)
+                        return org, field_values
             return (None, None)
         else:
             return (None, None)
@@ -305,7 +337,9 @@ fields_to_extract = [
     "LinkedIn Profile (Founders/CEOs)",
     "Industry",
     "Business Models",
-    "Technologies"
+    "Technologies",
+    "Deep Dive",
+    "Pod"
 ]
 fields_to_extract = [normalize_key(f) for f in fields_to_extract]
 
@@ -408,12 +442,11 @@ def enrich_df(companies_df):
 if __name__=="__main__":
     
     # print()
-    df = pd.DataFrame([{"name":"SunSave","location":"London, UK","tagline":"Sunsave is a subscription-based platform that helps households to save solar battery system.","domain":"sunsave.energy","investors":"IPGL"}])
-    print(get_field_value_by_id(285823358))
+    # df = pd.DataFrame([{"name":"SunSave","location":"London, UK","tagline":"Sunsave is a subscription-based platform that helps households to save solar battery system.","domain":"sunsave.energy","investors":"IPGL"}])
     # for row in df.itertuples():
     #     print(affinity_enrich(row,pipeline=set(fetch_list()["entity_id"].to_list())))
     # print(affinity_enrich({"name":"bedrock robotics","location":"San Francisco, CA","tagline":"founded by veterans of waymo and segment","domain":"https://bedrockrobotics.com/","investors":"Eclipse 8VC"},pipeline=set(fetch_list()["entity_id"].to_list())))
-    # print(get_company_by_name("sensmore",domain=None,location="New Lambton, Australia",investors=None))
+    print(get_company_by_name("archive",domain="archivesale.com",location="San Francisco, CA",investors=None))
     # print(get_field_value_by_id(290241095,pod_name_map))
     # print(pod_name_map["117554472"])
     # print(fetch_list())
