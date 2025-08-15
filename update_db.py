@@ -166,4 +166,6 @@ def main():
     print(f"✅ Done. updated a total of {len(updates)} companies")
 
 if __name__ == '__main__':
-    main()
+    # main()
+    all_companies = fetch_all()
+    print(f"Fetched {len(all_companies)} companies from Supabase.")

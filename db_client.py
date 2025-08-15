@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import uuid
 from config import SUPABASE_API_URL, SUPABASE_API_KEY
-from supabase import create_client, Client
+from supabase import create_client, Client, ClientOptions
 from embeddings import semantic_search, create_embedding
 import numpy as np
 from datetime import datetime
@@ -14,20 +14,46 @@ COMPANIES_TABLE = "companies"
 FUNDINGS_TABLE = "funding"
 
 
-supabase: Client = create_client(SUPABASE_API_URL,SUPABASE_API_KEY)
+supabase: Client = create_client(SUPABASE_API_URL,SUPABASE_API_KEY,options=ClientOptions(postgrest_client_timeout=180))
 
-def fetch_all(table="companies",batch_size=1000, max_rows=50000):
+
+# fetch all rows while excluding large columns like 'embedding'
+def fetch_all(
+    table: str = "companies",
+    batch_size: int = 1000,
+    max_rows: int = 50000,
+    exclude: tuple = ("embedding",),
+    columns: list | None = None,
+):
+    # Build the select clause
+    if columns is None:
+        # Probe one row to learn the column names (small, 1-row cost)
+        probe = supabase.table(table).select("*").limit(1).execute()
+        sample = probe.data[0] if probe.data else {}
+        wanted_cols = [c for c in sample.keys() if c not in set(exclude)]
+        if not wanted_cols:
+            raise ValueError("No columns to select after applying exclusions.")
+        select_clause = ",".join(wanted_cols)
+    else:
+        select_clause = ",".join(columns)
+
     all_rows = []
-    for offset in range(0, max_rows, batch_size):
-        response = supabase.table(table)\
-            .select("*")\
-            .range(offset, offset + batch_size - 1)\
+    for start in range(0, max_rows, batch_size):
+        resp = (
+            supabase
+            .table(table)
+            .select(select_clause)
+            .order("company_uuid")                         # deterministic pagination
+            .range(start, start + batch_size - 1)
             .execute()
-
-        rows = response.data
+        )
+        rows = resp.data or []
         if not rows:
-            break  # Exit early if no more results
+            break
         all_rows.extend(rows)
+        if len(rows) < batch_size:
+            break
+
     return pd.DataFrame(all_rows)
 
 # db_client.py (or separate utilities module)
