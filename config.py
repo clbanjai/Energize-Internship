@@ -22,8 +22,8 @@ CSE_ID = os.getenv("CSE_ID")
 SEMANTAI_API_KEY = os.getenv("SEMANTAI_API_KEY")
 # NEWSLETTERS = os.getenv("NEWSLETTERS").split(",")
 
-client_id = os.getenv("client_id")
-client_secret = os.getenv("client_secret")
-tenant_id = os.getenv("tenant_id")
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
+tenant_id = os.getenv("TENANT_ID")
 mailbox = os.getenv("mailbox")
 
