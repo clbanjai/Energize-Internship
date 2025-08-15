@@ -1,4 +1,4 @@
-from config import AFFINITY_API_KEY, client_id, client_secret, tenant_id,mailbox
+from config import AFFINITY_API_KEY, CLIENT_ID, CLIENT_SECRET, TENANT_ID,MAILBOX
 from msal import ConfidentialClientApplication
 import requests
 from requests.auth import HTTPBasicAuth
@@ -19,15 +19,15 @@ def check_termination(email):
         if authorization_code in body:
             return True
     return False
-def get_new_emails(user=mailbox,update_seen=True):
+def get_new_emails(user=MAILBOX,update_seen=True):
     """
     Fetches the latest emails from the specified mailbox using Microsoft Graph API.
     """
-    authority = f"https://login.microsoftonline.com/{tenant_id}"
+    authority = f"https://login.microsoftonline.com/{TENANT_ID}"
     app = ConfidentialClientApplication(
-        client_id,
+        CLIENT_ID,
         authority=authority,
-        client_credential=client_secret
+        client_credential=CLIENT_SECRET
     )
     
     token_response = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
