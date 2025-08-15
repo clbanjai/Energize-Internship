@@ -177,11 +177,11 @@ def company_in_database(row: dict, db: pd.DataFrame) -> pd.Series:
     location = str(row.get("location", "")).lower().strip()
     domain = row.get("domain")
     tagline = str(row.get("tagline", "")).lower().strip()
-    affinity_id = str(row.get("Affinity ID", "")).strip()
+    affinity_id = str(row.get("affinity_id", "")).strip()
 
-    # A. Match by Affinity ID
+    # A. Match by affinity_id
     if affinity_id.isnumeric():
-        match = db[db["Affinity ID"].astype(str) == affinity_id]
+        match = db[db["affinity_id"].astype(str) == affinity_id]
         if not match.empty:
             print("BY affinity ID match")
             return match.iloc[0]
@@ -202,22 +202,6 @@ def company_in_database(row: dict, db: pd.DataFrame) -> pd.Series:
             if location_match(location, matching_location):
                 print("By location Match")
                 return matching_row  # Already a Series
-
-    # D. Semantic fallback
-    embedding_input = f"{name}, {location}, {tagline}"
-    semantic_matches = pd.DataFrame(semantic_search(embedding_input, 5))
-    name_emb = create_embedding(name)
-    loc_emb = create_embedding(location)
-    tag_emb = create_embedding(tagline)
-
-    for _, match in semantic_matches.iterrows():
-        name_sim = cosine_similarity(name_emb, match.get("name", ""))
-        loc_sim = cosine_similarity(loc_emb, match.get("location", ""))
-        tag_sim = cosine_similarity(tag_emb, match.get("tagline", ""))
-        avg_sim = (name_sim + loc_sim + tag_sim) / 3
-        if avg_sim > 0.7:
-            print("By semantic match")
-            return match  # Already a Series
 
     return None
 
