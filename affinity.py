@@ -170,7 +170,7 @@ def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields
                             field_value = pod_name_map[str(field_value)]
                         else:
                             person_info = get_person_info(field_value)
-                            field_value = f"{person_info["first_name"]} {person_info["last_name"]}"
+                            field_value = f"{person_info['first_name']} {person_info['last_name']}"
                     info[field_name].append(field_value)
                 else:
                     if field_name=="Pod":

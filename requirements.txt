@@ -12,6 +12,7 @@ pytesseract
 google-api-python-client
 aiohttp
 msal
+asyncio
 # imap-tools
 # email
 # os
