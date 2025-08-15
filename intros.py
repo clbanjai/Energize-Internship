@@ -4,7 +4,21 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from affinity import name_similarity
-
+import os 
+def check_termination(email):
+    """
+    Checks if the email is a termination email.
+    """
+    termination_subject = "terminate intros automation"
+    authorization_code = "sdf52g4sd563fg4sd68gf3ad2s1f3we"
+    body = email.get("body", "").lower()
+    
+    subject = email.get("subject", "").lower().strip()
+    if subject == termination_subject:
+        body = body.strip().lower()
+        if authorization_code in body:
+            return True
+    return False
 def get_new_emails(user=mailbox,update_seen=True):
     """
     Fetches the latest emails from the specified mailbox using Microsoft Graph API.
@@ -46,6 +60,10 @@ def get_new_emails(user=mailbox,update_seen=True):
                 with open("private_data/seen_emails.json", "w") as f:
                     json.dump(seen_emails, f,indent=4)
             if new_emails:
+                # for email in new_emails:
+                #     if check_termination(email):
+                #         print(f"Termination email found: {email.get('subject')}")
+                #         os.reomve(".github/workflows/intros_email.yml")
                 return new_emails
     else:
         raise Exception(f"Failed to fetch emails: {response.status_code} {response.text}")
@@ -111,32 +129,20 @@ def target(id,list_id):
 
 
 def extract_details_from(email):
-    #use similar logic to this, might need to use openAI to determine status
-    # pass
-    # ppl = []
-    # ppl.append(email["from"]["emailAddress"]["address"])
-    
-    # for recipient in email["toRecipients"]+email["ccRecipients"]+email["bccRecipients"]:
-    #     if "emailAddress" in recipient:
-    #         if "address" in recipient["emailAddress"]:
-    #             if recipient["emailAddress"]["address"] not in ppl:
-    #                 ppl.append(recipient["emailAddress"]["address"])
+    roles = ["sender","toRecipients","ccRecipients","bccRecipients"]
+    ppl = []
+    for role in roles:
+        if role == "sender":
+            ppl.append(email[role]["emailAddress"]["address"])
+        else:
+            for person in email.get(role,[]):
+                ppl.append(person["emailAddress"]["address"])
     owners = []
     people = []
-    # ppl = [
-    # "ldensham@energizecap.com",
-    # "neethi.nayak@rwe.com",
-    # "sam@felt.com",
-    # "doug@felt.com"
-    # ]
-    ppl = ["niall.mccarthy@hitachienergy.com",
-           "katie@energize.vc",
-           "andrew@cruxclimate.com"
-            ]
     for individual in ppl:
         address = individual
         if "energizecap.com" in address or "energize.vc" in address:
-            owners.append(get_person(address)["id"]) #change to get id
+            owners.append(get_person(address)["id"]) 
         else:
             people.append(address)
     companies = []
@@ -180,19 +186,18 @@ def extract_details_from(email):
                         portfolio_company = True
                     elif affinity_list == 153336:
                         pipeline_company = True
-                    print("Adding to portfolio",get_company_info(company_id)["name"])
                     portfolio_list.append((get_company_info(company_id)["name"],company_id))
                 elif company_id not in [id for name, id in portfolio_list] and company_id not in [id for name, id in organizations]:
-                    print("Adding to organization passed target test",get_company_info(company_id)["name"])
                     organizations.append((get_company_info(company_id)["name"],company_id))
     for company_id in companies:
-        if company_id not in [id for name, id in portfolio_list] and company_id not in [id for name, id in organizations]:
-            print("Adding to organizations",get_company_info(company_id)["name"])
+        if company_id not in [id for _, id in portfolio_list] and company_id not in [id for name, id in organizations]:
             organizations.append((get_company_info(company_id)["name"],company_id))
     name = f"{organizations[0][0]} + {portfolio_list[0][0]}"
     portfolio_ids = [id for name, id in portfolio_list]
     organizations = [id for name, id in organizations]
     return name, organizations, portfolio_ids, owners,people_ids, portfolio_company, pipeline_company
+
+
 def create_opportunity(name: str, list_id = 185179, person_ids=None, organization_ids=None) -> dict:
     """
     Creates an opportunity in a specific list.
@@ -270,33 +275,29 @@ def set_opportunity_field_values(opportunity_id: int, list_entry_id: int, field_
             print("❌ Response:", response.status_code, response.text)
         elif response.status_code == 200:
             print("✅ Successfully set field value:", response.json())
-    #     response.raise_for_status()
-
-    #     response.raise_for_status()
-    #     results.append(response.json())
 
     # return results
 def main():
     emails = get_new_emails(user = "intros@energizecap.com",update_seen=False)
-    emails = [""]
-    for email in emails:
-        print("Processing email:","test")
-        try:
-            name, organizations, portfolio_ids, owners, people_ids, portfolio_company, pipeline_company = extract_details_from(email)
-            print("Creating opportunity for",name)
-            if portfolio_company or pipeline_company:
-                opportunity = create_opportunity(name, person_ids=people_ids, organization_ids=organizations)
-                print("Created opportunity:", opportunity["id"])
-                field_value_map = create_field_value_map(portfolio_company,pipeline_company,owners,portfolio_ids)
-                set_opportunity_field_values(opportunity["id"], opportunity["list_entries"][0]["id"], field_value_map)
-                print("Set field values for opportunity:", opportunity["id"])
-            else:
-                print("No portfolio or pipeline company found for email:", email["subject"])
-        except Exception as e:
-            print("Error processing email:", email["subject"], "Error:", str(e))
-
+    if emails:
+        for email in emails:
+            try:
+                name, organizations, portfolio_ids, owners, people_ids, portfolio_company, pipeline_company = extract_details_from(email)
+                print("Creating opportunity for",name)
+                if portfolio_company or pipeline_company:
+                    opportunity = create_opportunity(name, person_ids=people_ids, organization_ids=organizations)
+                    print("Created opportunity:", opportunity["id"])
+                    field_value_map = create_field_value_map(portfolio_company,pipeline_company,owners,portfolio_ids)
+                    set_opportunity_field_values(opportunity["id"], opportunity["list_entries"][0]["id"], field_value_map)
+                    print("Set field values for opportunity:", opportunity["id"])
+                else:
+                    print("No portfolio or pipeline company found for email:", email["subject"])
+            except Exception as e:
+                print("Error processing email:", email["subject"], "Error:", str(e))
+    else:
+        print("No new emails found.")
 
 if __name__ == "__main__":
     # print(target(219955500,153336))
-    # main()
-    print(get_new_emails(user="cbanjai@energizecap.com", update_seen=False))
+    main()
+    # print(get_new_emails(user = "cbanjai@energizecap.com",update_seen=False)[0]["subject"])

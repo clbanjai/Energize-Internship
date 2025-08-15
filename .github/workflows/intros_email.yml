@@ -1,17 +1,14 @@
-name: Run Funding Intelligence Pipeline
+name: Intros Email Processing Affinity Automation
 
 on:
   workflow_dispatch:
   schedule:
-   - cron: '0 6 * * *'  # Runs every day at 06:00 UTC
+    - cron: '0 21 * * 1-5'  # Runs Mon-Fri at 4 PM America/Chicago (21:00 UTC)
 
 jobs:
   funding-pipeline:
     runs-on: ubuntu-latest
     
-    outputs:
-      need_tesseract: ${{ steps.check.outputs.need_tesseract }}
-
     env:
       SUPABASE_API_URL: ${{ secrets.SUPABASE_API_URL }}
       SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
@@ -33,24 +30,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Check OpenAI connectivity
-        run: |
-          set -e
-          nslookup api.openai.com || true
-          curl -sS -w "\nHTTP %{http_code}\n" https://api.openai.com/v1/models \
-            -H "Authorization: Bearer $OPENAI_API_KEY" -o /dev/null
-
-      - name: Check if eusubstack has new deals
-        id: check
-        run: |
-          python check_eusubstack.py
-        continue-on-error: false
-      
-      - name: Conditionally install tesseract-ocr
-        if: steps.check.outputs.need_tesseract == 'true'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tesseract-ocr
 
       - name: Git sync before pipeline
         run: |
@@ -58,9 +37,9 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git pull origin main --rebase
 
-      - name: Run the venture funding pipeline
+      - name: Run intros_scrypt
         run: |
-          python main.py
+          python intros.py
 
       - name: Commit and push updated newsletter tracker files
         run: |
