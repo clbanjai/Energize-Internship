@@ -88,3 +88,6 @@ def is_valid_company_url(url: str, timeout: int = 5, min_html_length: int = 2000
 # #     return url_list
 # # url_list = pd.DataFrame(url_list, columns=["Domains"])
 # # url_list.to_csv(f"./domain_list_chunk_{chunk_index}.csv", index=False)
+if __name__ == "__main__":
+    print("Testing domain finder...")
+    print(find_best_company_site("Greenlite", "New York, NY", "Permitting Platoform"))  # archive.io

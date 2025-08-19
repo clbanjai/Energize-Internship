@@ -6,7 +6,7 @@ from affinity import get_company_by_name, get_person_info
 from datetime import datetime
 from config import OPENAI_API_KEY
 import ast
-from parser_new_cleaned import classify_industry, client
+from parser_new_cleaned import client
 BASE_URL = "https://api.affinity.co"
 
 # Required headers for aiohttp Basic Auth
@@ -246,7 +246,6 @@ async def process_companies_parallel(input_text, output_csv_path="output.csv"):
     # Flatten results and convert to DataFrame
     for company_result in results:
         all_rows.extend(company_result)
-
     df = pd.DataFrame(all_rows).sort_values(by=["Company Name"])
     df.to_csv(output_csv_path, index=False)
 

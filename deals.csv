@@ -1,0 +1,567 @@
+company_uuid,name,deal_size,currency,series,date,investors,source
+aef486c5-7666-49c1-a58b-a69ba33bd149,1kommas,232.0,USD,SERIES B,2023-06-26,G2VP,https://europeantech.substack.com/p/european-tech-weekly-week-25
+cc3cb94d-c991-473b-b6c5-62935ca88b9e,= «xfarm,40.0,USD,SERIES C,2024-10-14,Partech,https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+9b27387f-ead6-4149-8d8a-94807aa32a8a,abatable,15.0,USD,SERIES A,2023-04-17,Azora Capital,https://europeantech.substack.com/p/european-tech-weekly-week-15
+1e3d95ca-2627-4b0d-b94e-2e1c982102dc,abbe-mobility,204.0,USD,GROWTH,2022-11-28,Various,https://europeantech.substack.com/p/european-tech-weekly-week-47
+423399e1-e9bb-4501-a68b-0bb650781997,accure,16.0,USD,SERIES B,2025-02-17,Incharge Capital,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+96187819-af7f-4cf0-89d1-016cdfd0caa4,actility,7.0,USD,GROWTH,2023-12-11,Various,https://europeantech.substack.com/p/european-tech-weekly-week-49-d4a
+fcfad555-57d7-4129-bdd2-801f73d01df6,aedifion,13.0,USD,SERIES A,2023-02-06,World Fund,https://europeantech.substack.com/p/european-tech-weekly-week-5
+0513cc25-66fc-47c0-ae16-af82038ed6c8,aerones,30.0,USD,SERIES A,2023-01-23,"Lightrock, Haniel",https://europeantech.substack.com/p/european-tech-weekly-week-3
+b744a9d1-d7bd-4737-b8d9-7bfc895f9c27,again,27.0,USD,SERIES A,2024-07-24,"GV, HV",https://europeantech.substack.com/p/european-tech-weekly-week-29-2024
+b744a9d1-d7bd-4737-b8d9-7bfc895f9c27,again,10.0,USD,SEED,2023-12-04,"ACME, GV, Atlantic Labs",https://europeantech.substack.com/p/european-tech-weekly-week-48-abe
+cbe9adc2-6e9e-4cd6-8b04-363c9a5b697b,agemia,38.0,USD,SERIES B,2024-12-16,Cathay Innovation,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+c9210b9f-3f3a-4cb2-b80b-d22f7ad8ac5a,agreena,49.0,USD,SERIES B,2023-04-03,HV Capital,https://europeantech.substack.com/p/european-tech-weekly-week-13
+759b5489-108f-4d56-a3f6-f46ef9a92c4f,agricarbon,11.0,USD,SERIES A,2023-12-11,Shell Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-49-d4a
+71c20e6f-ed2a-4024-a08b-aaae3c1bb234,aily labs,21.0,USD,SERIES A,2023-08-28,Insight Partners,https://europeantech.substack.com/p/european-tech-weekly-week-34
+ff8b34b6-46b0-4ff2-ad8a-522e32c0f2b1,aira,70.0,USD,SERIES B,2024-10-22,Various,https://europeantech.substack.com/p/european-tech-weekly-week-42-2024
+b14cf865-1e18-4720-ab8a-daee66835a73,airforestry,11.0,USD,SEED,2024-10-14,Northzone,https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+1edfe9d5-8cfb-4e4b-adb6-d4c01a231597,aisti,23.0,USD,SERIES A,2024-12-16,Various,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+b7be6fe4-b2cf-452f-93d4-0b51740ac296,alcemy,10.0,USD,SERIES A,2022-09-19,Galvanize Climate Solutions,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-4e8
+072829c3-c961-402e-bdbe-e3a6ef35bf69,allotrope energy,8.0,USD,SEED,2023-04-17,Suzano Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-15
+a79d0419-a555-49fe-91af-d13177e1d7be,altilium,9.0,USD,SERIES A,2025-01-13,SQM Lithium Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-2-2025
+0b8b7d22-ff1e-4dd0-b6a3-18f63bbc54ad,ambos energy,10.0,USD,SERIES A,2025-03-17,"Bpifrance, Eurazeo",https://europeantech.substack.com/p/european-tech-weekly-week-11-2025
+f849a9ea-cbde-49d5-8ca6-7b0793f24fb1,ampeco,13.0,USD,SERIES A,2023-01-30,BMV Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4
+c1264ac4-d50d-4550-a39a-013666e9417d,angsa robotics,3.0,USD,SEED,2023-06-19,Husqvarna Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-24
+ead4521c-ad9e-49e8-ba40-c4fd53e8ed27,anybotics,110.0,USD,SERIES B,2024-12-16,"Qualcomm Ventures, Supernova Invest",https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+fc9980c2-ca76-4012-b6a9-3cdb05612e6d,aquabattery,6.0,USD,SEED,2024-04-29,Various,https://europeantech.substack.com/p/european-tech-weekly-week-17-2024
+4025fed9-a6f8-44da-9363-567f285894d3,arabesque,35.0,USD,SERIES B,2022-06-27,Energy Impact Partners,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-2ff
+aebb10df-46c5-4982-a8a1-30c55b34b07a,arguseye,3.0,USD,SEED,2024-05-20,Voima Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+4f02be03-9e9b-484d-abfc-e011ff1a664e,ark capture solutions,2.0,USD,PRE-SEED,2025-03-31,Various,https://europeantech.substack.com/p/european-tech-weekly-week-13-2025
+a6716bff-f6e0-4b3d-bdb9-a9ccc25855e3,artem,2.0,USD,SEED,2024-12-16,Vireo Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+318fd87f-05a7-40d1-a8bd-ab53db32cca7,assetfloow,2.0,USD,SEED,2023-03-27,GED Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-12
+1698aba2-3fb9-47ee-9daf-9c23946068f7,astral systems,5.0,USD,SEED,2025-02-10,"Playfair Capital, Speedinvest",https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+d503d6c8-4248-4ecc-a219-19fc7999158a,atinary,5.0,USD,SEED,2023-10-02,AgFunder,https://europeantech.substack.com/p/european-tech-weekly-week-39
+08c3b52e-a222-43f0-a18c-a675ebf1b974,atlas metrics,6.0,USD,SEED,2023-04-03,"B2venture, Cherry Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-13
+3a5c43e7-c396-4ccd-8d71-fffd2d31e5df,atmio,6.0,USD,SEED,2024-06-24,Notion Capital,https://europeantech.substack.com/p/european-tech-weekly-week-25-2024
+62c26884-fdbe-45e7-b984-1a065ba3ed33,attilium metals,12.0,USD,SERIES A,2024-02-26,Various,https://europeantech.substack.com/p/european-tech-weekly-week-8-2024
+3eab5414-5ff2-4f78-9084-df9985164e3b,aviant,1.0,USD,SEED,2023-06-12,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23
+b7856b2a-b49c-40da-8df1-e68ee117b9cb,axelera ai,55.0,USD,SERIES A,2023-05-29,Various,https://europeantech.substack.com/p/european-tech-weekly-week-21
+072829c3-c961-402e-bdbe-e3a6ef35bf69,axle energy,11.0,USD,SEED,2024-08-05,Accel,https://europeantech.substack.com/p/european-tech-weekly-week-31-2024
+9634ce46-cc26-4b27-84f9-5e7078c909ad,ayora technologies,2.0,USD,SEED,2024-04-01,"J12, Twin Path Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+99204391-a57e-4134-8ed3-5ba3d9870877,baseload capital,59.0,USD,SERIES B,2024-09-09,ENGF,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+af312cfe-b0a1-44e8-9487-72b88d6af519,batene,10.0,USD,SEED,2022-11-14,Ocean Zero,https://europeantech.substack.com/p/european-tech-weekly-week-45
+4563f7dc-7548-4129-92b5-b33669b6bc5a,befc,17.0,USD,SERIES A,2023-06-12,Otium Capital,https://europeantech.substack.com/p/european-tech-weekly-week-23
+6167cb5b-b920-4f01-87a4-663248f8eb46,besirius,3.0,USD,SEED,2025-04-20,NAP,https://europeantech.substack.com/p/european-tech-weekly-week-16-2025
+0063e76f-9f94-412b-9196-c806f4a2c2e2,bezero carbon,82.0,USD,SERIES C,2025-01-20,GenZero,https://europeantech.substack.com/p/european-tech-weekly-week-3-2025
+10fadcfd-7c96-4ac4-9a61-33459912f9d1,bezero carbon,50.0,USD,SERIES B,2022-11-21,Quantum Energy Partners,https://europeantech.substack.com/p/european-tech-weekly-week-46
+683ef373-b7d4-4630-a8bb-ec71248c9a26,bforeal,10.0,USD,SERIES A,2025-01-13,Titanium Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-2-2025
+ab4de4a3-3764-4104-9e62-d5ad5f86bdd7,bio-logical,1.0,USD,SEED,2024-07-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-29-2024
+b0e64676-d2bd-4ac1-8dc0-ce94f4282298,bisly,4.0,USD,SEED,2023-10-23,Aconterra,https://europeantech.substack.com/p/european-tech-weekly-week-42-5fe
+32bde28b-48df-4156-93aa-60aa19ecbef1,bling energy,2.0,USD,SEED,2024-09-17,Joaquim Sérvulo Rodrigues,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+761444ee-e097-4a0d-8794-2133b6262f12,blixt,5.0,USD,SEED,2024-03-25,usv,https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+4846de4d-5681-4b03-9483-0950ab63a7e4,blue world,7.0,USD,SERIES B,2022-09-05,Deutz AG,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-75d
+1b5c11b4-6ae9-4345-96da-cd734907a7cc,boondmanager,35.0,USD,GROWTH,2024-03-04,Expedition Growth Capital,https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+35f3217f-714c-4ee6-8bfd-3bc339de5dc7,breathe,10.0,USD,SERIES A,2023-10-09,Lowercarbon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-40
+ee8a5ed5-9cd0-487f-919a-5f14b23ecb66,buddywise,4.0,USD,SEED,2024-04-01,"12, Kvanted",https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+cad2704b-33b2-4ccf-bfa8-aa1fff5a5098,build to zero,3.0,USD,SEED,2023-09-18,"Axon Partners, Digital 5 Investment",https://europeantech.substack.com/p/european-tech-weekly-week-37
+d0cb8d04-ab8c-472a-9198-d609f7897658,buynomics,30.0,USD,SERIES B,2025-03-24,Forestay Capital,https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+0df55f44-ac0f-47c7-b07f-e54fc7b767ee,byterat,4.0,USD,SEED,2023-10-30,Various,https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+99d80095-cfa2-4e85-b88d-4a22b7ad740e,c1 green chemicals,22.0,USD,SERIES A,2025-03-24,denkapparat,https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+57599d8a-5ee5-4f69-8980-09a64a0cc0f7,cactos,29.0,USD,SERIES A,2024-01-15,OP Finland Infrastructure,https://europeantech.substack.com/p/european-tech-weekly-week-2-2024
+57599d8a-5ee5-4f69-8980-09a64a0cc0f7,cactos,3.0,USD,SEED,2022-12-05,Superhero Capital,https://europeantech.substack.com/p/european-tech-weekly-week-48
+b0921b4b-b869-445f-b69c-12c670927ca4,caeli wind,12.0,USD,SERIES A,2024-05-20,Notion Capital,https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+e56702d6-d2ec-4fd1-ab3c-eb35cb813c94,camion,3.0,USD,PRE-SEED,2024-04-29,EQT Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-17-2024
+f4a5191c-6889-4695-9caa-95bdcb0482f1,capalo ai,4.0,USD,SEED,2025-03-24,"PROfounders, VentureFriends",https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+42e23dd9-208e-4791-906d-91214a258e52,carbmee,21.0,USD,SERIES A,2024-12-09,CommerzVentures,https://europeantech.substack.com/p/european-tech-weekly-week-49-2024
+f21f7ca3-6e26-4fbd-9b90-b69ffa0de26a,carbo culture,148.0,USD,SERIES,2023-12-04,"GenZero, Tesi, True Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-48-abe
+d98908d4-3adf-42a6-977f-65547e424e03,carbon maps,4.0,USD,SEED,2023-02-27,"Breega, Samaipata",https://europeantech.substack.com/p/european-tech-weekly-week-8
+5733bffb-ea56-4019-82be-d33ebb3e2be0,carbon re,5.0,USD,SEED,2022-11-14,Planet A Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-45
+e9650bad-e4a2-49d5-a456-9e6d67c93005,carbonable,1.0,USD,SEED,2023-03-27,Ethereal Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-12
+573e90ef-3fd5-48a9-b9e0-0bff1ebdc9cc,carbonchain,12.0,USD,SERIES A,2023-07-24,"USV, Voyager Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-29
+80ee5b93-73b5-4803-a2a8-c62e4f105b46,carbonfarm,3.0,USD,SEED,2023-10-30,Various,https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+b3f7a108-1953-4c5a-958e-960fca45720d,carbonpool,12.0,USD,SEED,2024-02-05,"Heartcore Capital, Vorwerk Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+c2e837b3-8b1c-45ab-a2c6-b76610391bb4,carbyon,17.0,USD,SERIES A,2024-09-09,Various,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+b9c1d741-82dd-43b0-9b19-55e685b9b280,carpecarbon,2.0,USD,SEED,2023-11-20,Various,https://europeantech.substack.com/p/european-tech-weekly-week-46-0b4
+2ece07f7-745a-4c7e-8011-d2f62679dd3f,ceartas,4.0,USD,SEED,2024-05-06,Earlybird,https://europeantech.substack.com/p/european-tech-weekly-week-18-2024
+244a65cb-3f5a-43a7-8824-c64eaaf1bda4,ceezer,11.0,USD,SERIES A,2024-01-29,HV Capital,https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+12e9a45d-5d14-47ae-b4bc-ab0feaeaf95f,celonis,400.0,USD,SERIES D,2022-08-29,QIA,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-eb6
+da92ef71-4cd2-44a8-896c-c4551b6380aa,cemvision,11.0,USD,SEED,2024-03-25,"Polar Structure, BackingMinds",https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+037476bb-04c1-4995-8b5a-ce00d3850eb5,cetoal,2.0,USD,SEED,2023-10-23,Howden Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-42-5fe
+ccfadba3-38e8-4eb3-bf00-dc9b3f5dea84,chapsvision,105.0,USD,GROWTH,2023-10-02,Qualium,https://europeantech.substack.com/p/european-tech-weekly-week-39
+1a4b6a65-df65-4543-a862-f66cac7488da,chapter 3,,,SEED,2025-01-27,"Rubio Impact Ventures, CapitalT",https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+18dc38ea-6ff9-48e0-bef3-17e720dc6191,chargetrip,41.0,USD,SERIES A,2023-03-27,HSBC Asset Mgmt,https://europeantech.substack.com/p/european-tech-weekly-week-12
+6e1285ed-8a2c-4891-ba2f-976441945467,chargex,13.0,USD,SERIES B,2023-07-10,Bayern Kapital,https://europeantech.substack.com/p/european-tech-weekly-week-27
+a8689d65-91cf-4b1d-a2ed-84b4c76807da,chooose,15.0,USD,SERIES A,2023-01-16,GenZero,https://europeantech.substack.com/p/european-tech-weekly-week-2
+b64b1198-e0e1-4079-b349-8999f45db02c,circularise,11.0,USD,SERIES A,2022-11-21,Brightlands Venture Partners,https://europeantech.substack.com/p/european-tech-weekly-week-46
+75378224-f175-47f5-8c9a-ee2d4fb6015a,claims carbon,4.0,USD,SEED,2022-11-28,Venza,https://europeantech.substack.com/p/european-tech-weekly-week-47
+b7f27c72-c3d4-4607-b97d-f779bd8624bd,cleannub,7.0,USD,SEED,2023-06-26,Integra Partners,https://europeantech.substack.com/p/european-tech-weekly-week-25
+04c7392a-137f-4c6b-b24b-025c828a5c9f,cleanwatts,18.0,USD,SERIES B,2024-11-05,Verdane,https://europeantech.substack.com/p/european-tech-weekly-week-44-2024
+04c7392a-137f-4c6b-b24b-025c828a5c9f,cleanwatts,26.0,USD,SERIES A,2022-07-04,Verdane,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-5a4
+a56420b0-3c80-49f8-93b4-85e0e0b6a648,clearly,4.0,USD,SEED,2024-08-19,"Pace Ventures, Nine Realms",https://europeantech.substack.com/p/european-tech-weekly-week-33-2024
+c4321bea-809b-48e8-bb6a-f4b775ab6499,climate x,18.0,USD,SERIES A,2024-07-02,cv,https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+78f7b071-650f-4ae2-bf59-14e796e8949e,climatealigned,2.0,USD,SEED,2023-09-11,"Pale blue dot, Frontline Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-36
+e1d78a6b-028d-47ea-8f01-37a202107e5d,climatecamp,4.0,USD,SEED,2025-03-31,Expon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-13-2025
+08b09f01-61e7-4b21-bb8b-7a33c61bc024,climateview,15.0,USD,SERIES A,2023-06-19,2050,https://europeantech.substack.com/p/european-tech-weekly-week-24
+5ef809ea-1e6b-4656-b0a2-65da0e93ebe7,climatiq,6.0,USD,SEED,2022-10-24,Singular,https://europeantech.substack.com/p/european-tech-weekly-week-42
+0fca3f4f-af8f-4356-a9f4-3f866f7d71f5,co2al,12.0,USD,SEED,2023-09-18,"BCG, Unusual Ventures, Partech",https://europeantech.substack.com/p/european-tech-weekly-week-37
+cb6feb30-1fe1-4bb2-b644-b9e1839173c4,cognitive design systems,2.0,USD,SEED,2023-11-13,Various,https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+edfb26ce-7099-4333-9966-b4b8bc1efcfd,companion.energy,2.0,USD,SEED,2024-05-20,"Ubermorgen Ventures, Cavalry Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+a25153c9-7198-4563-bfd5-ee6d08e35048,concrete4change,3.0,USD,SEED,2024-01-29,"Zacua Ventures, Counteract",https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+433ff9f2-a5d6-4a01-b8a8-e04020264895,connect earth,5.0,USD,SEED,2023-04-03,Gresham House Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-13
+1b00fead-2288-4c18-8bd2-36d2b69fbacb,connected energy,19.0,USD,SERIES A,2022-06-27,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-2ff
+b9fd3b77-11aa-47bf-a6c4-77fad1040e85,constellr,10.0,USD,SEED,2022-11-07,"squared, Lakestar",https://europeantech.substack.com/p/european-tech-weekly-week-44
+46420b54-4930-4f83-8e24-9abbd076f7d3,coolset,2.0,USD,SEED,2023-03-27,Global Cleantech Capital,https://europeantech.substack.com/p/european-tech-weekly-week-12
+7eebc5ae-a638-43da-acb1-493ae35f99df,copenhagen atomics,21.0,USD,SERIES C,2023-01-09,,https://europeantech.substack.com/p/european-tech-weekly-week-1
+fe8dc26d-e6a0-4880-a12f-1c720dc1fb4d,cordulus,3.0,USD,SEED,2024-11-11,Various,https://europeantech.substack.com/p/european-tech-weekly-week-45-2024
+d3c900a7-4d0f-490a-a52c-1f8a1540448e,core power,100.0,USD,SERIES C,2023-05-29,Various,https://europeantech.substack.com/p/european-tech-weekly-week-21
+7ab62e78-6ca1-40be-b3cc-874adae5be55,corpower ocean,35.0,USD,SERIES B,2024-10-22,NordicNinja VC,https://europeantech.substack.com/p/european-tech-weekly-week-42-2024
+7ecb1631-3fb5-4845-8d08-d779f6a7d05a,ctres,1.0,USD,SEED,2025-03-03,HTGF,https://europeantech.substack.com/p/european-tech-weekly-week-9-2025
+1d8e9634-7d7f-4330-a34a-5ed3bdb31d48,cumul.io,11.0,USD,SERIES A,2023-01-23,,https://europeantech.substack.com/p/european-tech-weekly-week-3
+4372da8d-6f42-4c21-b2e3-1aa422988926,cur8 earth,7.0,USD,PRE-SEED,2023-06-05,"CapitalT, GV",https://europeantech.substack.com/p/european-tech-weekly-week-22
+1f90f693-efd8-4f8d-bd8b-96834ca68fb5,customcells,62.0,USD,SERIES A,2022-12-12,Porsche Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-49
+69fb07ff-5c96-40b9-8a26-934abff5c53c,cyclize,5.0,USD,SEED,2024-02-26,UVC Partners,https://europeantech.substack.com/p/european-tech-weekly-week-8-2024
+847e5a7b-b369-4ff2-9d27-e90bac9ce073,cyib,4.0,USD,SEED,2022-10-24,Speedinvest,https://europeantech.substack.com/p/european-tech-weekly-week-42
+847e5a7b-b369-4ff2-9d27-e90bac9ce073,cylib,59.0,USD,SERIES A,2024-05-20,"World Fund, Porsche Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+847e5a7b-b369-4ff2-9d27-e90bac9ce073,cylib,13.0,USD,SEED,2023-02-20,World Fund,https://europeantech.substack.com/p/european-tech-weekly-week-7
+fd1654f1-8d64-4a45-9035-ecba281f2bb0,daato,5.0,USD,SEED,2024-03-25,kopa ventures,https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+fb2089c4-f954-4854-a7a7-70e958597f3a,dance,13.0,USD,SERIES B,2025-03-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-11-2025
+899a5150-e20c-4e66-b682-028f127eb584,datadome,42.0,USD,SERIES C,2023-04-03,InfraVia Growth,https://europeantech.substack.com/p/european-tech-weekly-week-13
+217c7fe9-3444-461a-bf16-6bf97cb9254f,dataform lab,1.0,USD,SEED,2024-06-11,Marathon Venture Capital,https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+9db121c2-4e07-4f24-aaeb-7485cc1dbbba,datamaran,20.0,USD,SERIES B,2022-09-26,Fortive,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-8e4
+804e03de-c154-4b4d-8086-5c95ae5829eb,dataops.live,18.0,USD,SERIES A,2023-05-29,Notion,https://europeantech.substack.com/p/european-tech-weekly-week-21
+2db71dfc-123c-4982-a87a-df3c2a695754,dayrize,4.0,USD,SEED,2023-05-29,Gresham House,https://europeantech.substack.com/p/european-tech-weekly-week-21
+4bec4e84-9fd2-4092-a65d-3e7cb443e5a1,deckmatch,1.0,USD,SEED,2023-08-21,"Alliance VC, Skyfall Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-33
+97697774-6ab4-4aa4-ae8b-6d76be7317b0,deedster,1.0,USD,SEED,2024-06-04,Wellstreet,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+766947c1-f5b4-4728-9d33-53403e9b0ad8,deepdots,6.0,USD,SEED,2025-06-08,Dawn Capital,https://europeantech.substack.com/p/european-tech-weekly-week-23-2025
+380e2ebb-a7e9-4948-8bc2-f35edba7feb5,deepl,300.0,USD,GROWTH,2024-06-04,Index Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-21-2024
+aa4da1b1-c578-4441-8fcd-30eb11b9fe66,delta green,2.0,USD,SEED,2024-06-04,Tilia Impact Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+0ef4d804-bf3b-41b8-baf5-1dab3514588e,deltia,5.0,USD,SEED,2024-05-06,Cavalry Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-18-2024
+1b7806ec-d93d-42bd-a062-56d8ad5d34e6,dema.ai,4.0,USD,SEED,2022-11-21,J12 Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-46
+1698aba2-3fb9-47ee-9daf-9c23946068f7,dendra systems,16.0,USD,SERIES B,2024-05-20,Zouk Capital,https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+c67a7f2a-0558-4dc7-8eb6-9449b5ba2c79,depoly,21.0,USD,SEED,2025-05-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-18-2025
+c67a7f2a-0558-4dc7-8eb6-9449b5ba2c79,depoly,14.0,USD,SEED,2023-07-03,"BASF VC, Wingman Venture",https://europeantech.substack.com/p/european-tech-weekly-week-26
+9bf506ae-cde6-4769-9ce9-9e79cd384109,dessia,3.0,USD,SEED,2024-10-08,Matterwave Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+7997e1c9-940d-4d22-862a-bba181fc9ee2,devterenergy,11.0,USD,SERIES B,2023-04-24,"Astelia, ETF Partners",https://europeantech.substack.com/p/european-tech-weekly-week-16
+b431613a-211a-412b-9d4c-bd1169ac72ac,deycle,6.0,USD,SERIES A,2024-12-16,Samaipata,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+6cb9bdb8-e560-49b9-b0c4-f141ae3203a7,dinmo,6.0,USD,SEED,2024-10-08,468 Capital,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+445b1985-bbfc-4ed6-90a5-184a8800e9c3,dioxycle,17.0,USD,SERIES A,2023-07-31,"Lowercarbon, Breakthrough Energy",https://europeantech.substack.com/p/european-tech-weekly-week-30
+d3f74971-8553-4857-af8e-ba1e296c62a3,doubleword,12.0,USD,SERIES A,2025-05-12,Dawn Capital,https://europeantech.substack.com/p/european-tech-weekly-week-19-2025
+9634ce46-cc26-4b27-84f9-5e7078c909ad,downforce technologies,4.0,USD,SEED,2024-06-19,Equator VC,https://europeantech.substack.com/p/european-tech-weekly-week-24-2024
+76d560f1-fddd-4999-9c82-dc607777b627,duramon,2.0,USD,SEED-EXT,2025-03-10,QBIT Capital,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+169f3964-8df3-4ca2-b135-6964306782b4,echandia,21.0,USD,SERIES A,2025-03-10,Klima,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+534fa6a8-7d3b-49cc-9a37-8693ccf8f41c,ecoplanet,17.0,USD,SERIES A,2025-01-27,EQT Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+d0d400f1-795c-47b5-9dc1-28e0b1c21f2f,ecotree,16.0,USD,SERIES B,2022-07-04,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-5a4
+b83a2971-6ea6-430d-8aef-2dca3202a9b7,ecovadis,500.0,USD,GROWTH,2022-06-20,"Astorg, Beyondnetzero",https://europeantech.substack.com/p/european-tech-weekly-series-a-and-e34
+c0fd3867-3730-41b3-b767-b087934ea92b,ecoworks,24.0,USD,SERIES A,2023-07-31,Various,https://europeantech.substack.com/p/european-tech-weekly-week-30
+eecf1d2c-9af2-43d6-b771-c3024cf5190d,eeden,20.0,USD,SERIES A,2025-05-05,Forbion,https://europeantech.substack.com/p/european-tech-weekly-week-18-2025
+21580ae3-760c-462c-ae59-d43dfe95ec7b,effy,21.0,USD,SERIES A,2023-04-03,Felix Capital,https://europeantech.substack.com/p/european-tech-weekly-week-13
+5d41f238-93df-491c-b319-705d2ddf6637,eilla ai,1.0,USD,SEED,2023-11-13,Eleven Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+73c17683-76e1-4162-9ee7-9223c5f5bc14,electricity maps,5.0,USD,SEED,2024-05-15,"Transition, Revent",https://europeantech.substack.com/p/european-tech-weekly-week-19-2024
+ac5424d8-4556-4096-b5e3-c739fd6775ca,eleport,130.0,USD,GROWTH,2024-03-18,Various,https://europeantech.substack.com/p/european-tech-weekly-week-11-2024
+56d17f23-474b-4493-a237-1d703206cd9f,elestor,10.0,USD,SERIES A,2022-09-05,Equinor Ventures,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-75d
+19de3dd7-6927-42bf-a039-1d83498aa39f,elise,8.0,USD,SERIES A,2022-09-12,Spark Capital,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-51b
+bd1fe471-0f7d-43f9-a928-1dcdc0cb5d46,elum,13.0,USD,SERIES B,2024-09-17,Energize Capital,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+4253688d-0755-4454-b231-256d4c228059,elyos energy,3.0,USD,SEED,2023-10-16,Rebel Fund,https://europeantech.substack.com/p/european-tech-weekly-week-41
+34e3dcb8-b85e-4b1f-a1d0-6438f8bf2915,elyse energy,127.0,USD,SERIES C,2024-12-09,Various,https://europeantech.substack.com/p/european-tech-weekly-week-49-2024
+eb1e8f99-8b61-41df-b42b-c9dba548f113,embeddable,6.0,USD,SEED,2024-12-16,OpenOcean,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+5685d58e-484f-4e76-8740-9708fb0b99de,ember,14.0,USD,SERIES A,2024-04-01,"Invent Capital, 2150, AENU",https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+5f0fb704-08d6-4abf-8e5d-b478ac36ff4c,embotech,27.0,USD,SERIES B,2024-12-16,"Emerald Technology Ventures, Yttrium",https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+098f842f-1ce5-4fe1-8699-fad326bff3e6,emidat,4.0,USD,SEED,2024-11-05,General Catalyst,https://europeantech.substack.com/p/european-tech-weekly-week-44-2024
+4592b7cb-0c3a-4f25-bbc8-74b65806f29d,enapi,8.0,USD,SEED,2025-01-27,Voyager Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+42074ac5-ed30-4e65-8d4a-1ef920b0b41f,energy dome,61.0,USD,SERIES B,2023-07-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-29
+9533b73c-0b47-4a88-9d9a-e2f672bd9e89,energy park,44.0,USD,SERIES C,2024-06-11,Zouk Capital,https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+42074ac5-ed30-4e65-8d4a-1ef920b0b41f,energydome,44.0,USD,SERIES B,2023-05-02,Various,https://europeantech.substack.com/p/european-tech-weekly-week-17
+21bdfc92-c433-41b3-ae35-9f2695649820,enersee,1.0,USD,SEED,2023-06-19,Peak,https://europeantech.substack.com/p/european-tech-weekly-week-24
+8263bcdd-c9d6-4756-83b0-2c465203a110,engflow,18.0,USD,SERIES A,2022-11-21,"Tiger Global, Firstminute, 2162",https://europeantech.substack.com/p/european-tech-weekly-week-46
+7ab24ddf-50e0-48e4-b06e-655f3fe6d4a0,enode,15.0,USD,SERIES A,2022-11-21,Climate Tech,https://europeantech.substack.com/p/european-tech-weekly-week-46
+bff0bec8-7162-4abb-a2ef-e6a295eb1a4b,enpal,228.0,USD,SERIES D,2023-01-16,Various,https://europeantech.substack.com/p/european-tech-weekly-week-2
+4f5c77ae-a91f-4d80-baaf-2e404ea5d95f,entalpic,9.0,USD,SEED,2024-09-09,Breega,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+241be2e2-756a-43c1-b92a-6375f8086539,enter 21,10.0,USD,SERIES A,2023-04-24,Target Global,https://europeantech.substack.com/p/european-tech-weekly-week-16
+a03dafaa-78f8-409f-a936-ee18d1361305,entroview,2.0,USD,SEED,2024-06-11,"AFI Ventures, Rethink Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+f39a50e3-9338-4feb-97c9-1dad7337b697,enviria,38.0,USD,SERIES A,2022-06-27,"Redalpine, Galileo Green",https://europeantech.substack.com/p/european-tech-weekly-series-a-and-2ff
+c71032d1-3f84-45f6-a7f2-8983938ef4fd,enviria energy,200.0,USD,SERIES B,2024-03-04,BlackRock,https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+51a809a4-2e68-4ea7-bdde-1fbd5d687bfd,eo charging,80.0,Unknown,GROWTH,2023-02-27,"Vortex Energy, Zouk Capital",https://europeantech.substack.com/p/european-tech-weekly-week-8
+eba41bfd-a100-4eee-8fff-f4bfbc7979f5,eoliann,1.0,USD,SEED,2022-11-28,Primo Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-47
+aa9afa98-733e-4d1e-8c4b-61e1ccdb1092,epilot,4.0,USD,GROWTH,2024-07-17,Expedition,https://europeantech.substack.com/p/european-tech-weekly-week-28-2024
+7b995df3-2f3c-4dfb-8fd6-d5ce0978a6c0,epoch biodesign,13.0,USD,SEED,2024-12-23,Lowercarbon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-51-2024
+673ecfb0-edac-456c-afb0-931379f5f196,epoch biodesign,18.0,USD,SERIES,2025-03-10,Extantia,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+53a87fc6-678d-4def-b33c-fc31b068f68c,epyr,3.0,USD,SEED,2025-02-10,"AENU, Daphni",https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+71283401-41af-4720-aa39-7a6c507f6522,est-floattech,4.0,USD,SEED,2024-02-26,Various,https://europeantech.substack.com/p/european-tech-weekly-week-8-2024
+c7244e88-3852-4fea-85e6-d03fc035613f,ethonai,17.0,USD,SERIES A,2024-06-04,Index Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+c7244e88-3852-4fea-85e6-d03fc035613f,ethonal,7.0,USD,SEED,2023-02-20,"Earlybird, La Famiglia",https://europeantech.substack.com/p/european-tech-weekly-week-7
+c72f00cb-fa36-4956-82d0-e31b03929ed4,ev.energy,60.0,USD,SERIES B,2023-07-31,National Grid Partners,https://europeantech.substack.com/p/european-tech-weekly-week-30
+4c32c77b-07ed-4a4e-b692-0c2716230717,evenergy,60.0,USD,GROWTH,2024-02-26,National Grid Partners,https://europeantech.substack.com/p/european-tech-weekly-week-8-2024
+1c0acb1f-dd0a-459b-8dde-9ddb0d74569e,evera,2.0,USD,SEED,2025-03-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+14682075-caaf-4538-a20f-1975530f6666,everdrop,83.0,USD,SERIES B,2022-07-18,Sofina,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-e62
+1ea67588-b109-4bd4-8a65-385a74ac7c4e,everyangle,3.0,USD,SEED,2022-11-07,"Sure Valley Ventures, Act VC",https://europeantech.substack.com/p/european-tech-weekly-week-44
+32508165-be89-44da-9461-4ae3e851bf2f,evio,3.0,USD,SEED,2024-04-01,Lince Capital,https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+8ba1b389-4253-4dec-94c9-3052c98a95e2,evolutela,20.0,USD,SERIES A,2024-11-05,"Nordea Growth Fund, Round2 Capital",https://europeantech.substack.com/p/european-tech-weekly-week-44-2024
+aed981aa-0443-4cce-a9d7-82b53fa2da1b,exactly,5.0,USD,SEED,2024-06-04,Speedinvest,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+6961ff09-bbc7-446f-9d09-e3306328b6a6,fabric,1.0,USD,SEED,2023-11-13,Seedcamp,https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+678e5cf9-f1c2-4722-9e98-ae69c7f07293,fairly made,16.0,USD,SERIES A,2025-04-08,Various,https://europeantech.substack.com/p/european-tech-weekly-week-14-2025
+7b0eee19-11bd-45a5-a466-1c39c3a0d0e5,fairmat,29.0,USD,SERIES B,2025-04-08,Slate,https://europeantech.substack.com/p/european-tech-weekly-week-14-2025
+416aaaa2-33b8-4ec4-899f-75d239f8a005,fastway,49.0,USD,SERIES C,2022-10-24,Azimut,https://europeantech.substack.com/p/european-tech-weekly-week-42
+622afb26-fd5e-4e59-8efa-5d6c6faa3456,feld.energy,2.0,USD,PRE-SEED,2024-11-18,HV Capital,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+0c4ef231-1c0b-4f9d-bed7-852727fde526,flocean,9.0,USD,SERIES A,2024-12-16,Various,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+0258f1d5-f40a-42e1-b463-1988367ad407,flower,27.0,USD,SERIES A,2024-08-19,Northzone,https://europeantech.substack.com/p/european-tech-weekly-week-33-2024
+782cc901-3757-4daf-83b0-4053d983eccc,flowx.ai,35.0,USD,SERIES A,2023-05-29,Dawn Capital,https://europeantech.substack.com/p/european-tech-weekly-week-21
+1db02fc8-31a5-4f83-b8d3-f2964cb89aee,focal point,18.0,USD,SERIES C,2022-09-12,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-51b
+622afb26-fd5e-4e59-8efa-5d6c6faa3456,focused energy,82.0,USD,SERIES A,2023-06-26,Prime Movers Lab,https://europeantech.substack.com/p/european-tech-weekly-week-25
+49634552-c558-43f0-9189-4e3d49c36931,foodpilot,5.0,USD,SEED,2024-02-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+ea5c00b6-1f90-4661-a5e3-1115c01110bf,formalize,16.0,USD,SERIES A,2024-03-11,BlackFin,https://europeantech.substack.com/p/european-tech-weekly-week-10-2024
+ce8f69ca-b9b4-40b6-9626-a30a216f2db3,forward earth,5.0,USD,SEED,2024-10-14,Mosaic Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+ce8f69ca-b9b4-40b6-9626-a30a216f2db3,forward earth,3.0,USD,PRE-SEED,2024-06-24,Speedinvest,https://europeantech.substack.com/p/european-tech-weekly-week-25-2024
+ced011cc-b645-427e-8e88-c502de2b301d,frequenz,13.0,USD,SERIES A,2022-10-10,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-c7e
+a6c0ef1b-a3ca-40aa-a294-b6bab4d82e39,fuergy,17.0,USD,SERIES B,2023-01-30,Pro Partners Holding,https://europeantech.substack.com/p/european-tech-weekly-week-4
+5d5fac9d-d866-407a-b9d5-50905bdcdfb2,furbnow,1.0,USD,SEED,2024-01-15,SFC Capital,https://europeantech.substack.com/p/european-tech-weekly-week-2-2024
+8402cc93-4629-4427-bf13-0afb91e59b04,fuse,11.0,USD,SERIES A,2024-06-11,YFM Equity Partners,https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+3b708ab1-1f26-4757-8942-6b8bfa189aa1,fusebox energy,3.0,USD,SEED,2025-01-27,Soulmates Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+ecbafdd3-6ebd-41b7-8776-7cfb39c118a6,gearset,55.0,USD,SERIES B,2022-06-27,Silversmith Capital,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-2ff
+27028e71-074a-42c3-b223-48fd42a61ea1,gendo,6.0,USD,SEED,2024-11-18,"PT, LEA Partners",https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+25397f01-5b03-4bc6-9b29-03f49f49a847,gitpod,25.0,USD,SERIES A,2022-11-07,Tom Preston-Werner,https://europeantech.substack.com/p/european-tech-weekly-week-44
+5a95df71-a7c6-4400-8813-95bfa33d48ee,glint solar,7.0,USD,SERIES A,2024-11-11,Smedvig Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-45-2024
+e3a58c1a-fa76-4f36-b719-a76c8ceb405e,goodcarbon,6.0,USD,SEED,2024-04-29,Ocean 14 Capital,https://europeantech.substack.com/p/european-tech-weekly-week-17-2024
+ec1bdaa6-ce54-4d82-81d1-8c4ca82e8f07,goodwings,2.0,USD,SEED,2023-08-28,Various,https://europeantech.substack.com/p/european-tech-weekly-week-34
+8d9609f2-afb6-4530-8989-9391d94cdcdd,gorilla,25.0,USD,SERIES B,2024-06-19,Headline,https://europeantech.substack.com/p/european-tech-weekly-week-24-2024
+f0a89383-ad04-4772-9666-332c0dda1f89,gradyent,30.0,USD,SERIES B,2025-04-08,Blue Earth Capital,https://europeantech.substack.com/p/european-tech-weekly-week-14-2025
+ce6ed7c4-6cf6-42f2-9299-6d73d94664b9,granular energy,9.0,USD,SEED,2023-10-09,Norrsken VC,https://europeantech.substack.com/p/european-tech-weekly-week-40
+23011c78-ccf3-46b1-803c-dc1102a6f99d,gravitee,30.0,USD,SERIES B,2022-09-12,RAC,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-51b
+b0fa151e-29b7-47a3-90a9-da1ee01ad6e3,green fusion,12.0,USD,SERIES A,2025-01-27,"HY Capital, XAnge",https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+731c0d16-c731-447a-8bd6-122bb7ba733b,green genius,111.0,USD,SERIES C,2024-10-08,EBRD,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+a4843c50-c114-4bf0-b15f-8f3230fdb956,green-y,3.0,USD,SEED,2024-05-15,Schweizer Kapital,https://europeantech.substack.com/p/european-tech-weekly-week-19-2024
+b8f55daf-8ada-48d3-904e-4048ec3562ce,greenbids,2.0,USD,SEED,2023-06-26,"Elaia Partners, Famille C Participations",https://europeantech.substack.com/p/european-tech-weekly-week-25
+b0fa151e-29b7-47a3-90a9-da1ee01ad6e3,greenfusion,3.0,USD,SEED,2023-02-27,BitStone Capital,https://europeantech.substack.com/p/european-tech-weekly-week-8
+5e0f0c33-7ddf-41f7-9433-b231f48e7e9c,greenly,52.0,USD,SERIES B,2024-03-25,FISV,https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+0bba4a12-c99e-4041-ba8e-be8da9220fb3,greenlyte,11.0,USD,PRE-A,2024-03-11,Earlybird,https://europeantech.substack.com/p/european-tech-weekly-week-10-2024
+0bba4a12-c99e-4041-ba8e-be8da9220fb3,greenlyte carbon,4.0,USD,SEED,2023-03-20,Earlybird,https://europeantech.substack.com/p/european-tech-weekly-week-11
+f6fedea9-79f4-4fba-895b-03101e5a9c3e,greenscope,3.0,USD,SEED,2024-09-09,Existing investors,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+3acc1c72-8afa-406d-ad51-287cb87d1550,greenspark,1.0,USD,SEED,2023-02-06,Fuel Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-5
+f941ee05-7342-445a-a6b3-446172a6e326,greyscout,4.0,USD,SEED,2023-11-13,"Act VC, Tribal",https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+e9adc61a-2533-4e52-b4ed-4ec8d296a531,gridbeyond,55.0,USD,SERIES C,2024-04-22,"Alantra, Klima",https://europeantech.substack.com/p/european-tech-weekly-week-16-2024
+056c4345-0b2f-487c-8691-4234b536c689,gridio,2.0,USD,SEED,2025-02-03,Neoinvesteeringud,https://europeantech.substack.com/p/european-tech-weekly-week-5-2025
+835d1cd7-bff5-4ab6-82ed-f5b8ef72cb3b,gridseve,244.0,USD,GROWTH,2022-08-15,Infracapital,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-be7
+35f0ffc8-ac2b-4c9b-8c2b-f462bdb382ae,h2green steel,193.0,USD,SERIES B,2022-09-05,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-75d
+42e1f965-51e0-4f90-9a57-bdd5f5784c61,harmonic security,7.0,USD,SEED,2023-10-23,Ten Eleven Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-42-5fe
+3cdaf93d-034a-448d-ba42-a1ea8de18309,hdm solar,13.0,USD,SERIES A,2024-02-05,"Angel Invest, DF Capital",https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+f449ec25-bdda-48b7-b4c6-051001e87f9d,heat geek,5.0,USD,SEED,2024-03-04,Transition,https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+2c67cb86-550e-446d-a879-758b437fe997,heatio,2.0,USD,SEED,2024-07-02,Ascension,https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+105cf217-5ea2-4a2d-9197-64ac968505aa,hexana,16.0,USD,SEED,2025-02-03,Bpifrance,https://europeantech.substack.com/p/european-tech-weekly-week-5-2025
+2bee1c61-8f99-4f9e-a8bd-19cccb15e454,hive power,4.0,USD,SEED,2024-12-23,Various,https://europeantech.substack.com/p/european-tech-weekly-week-51-2024
+07de98e3-6f12-415a-91c1-3583694e50d4,hosite,37.0,USD,SERIES B,2025-01-20,"Hy24, Suma Capital",https://europeantech.substack.com/p/european-tech-weekly-week-3-2025
+135749a7-338d-4304-adce-03301a76df22,hula earth,2.0,USD,SEED,2024-11-18,Pointo,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+d91d6da6-a2a5-49fa-bd19-5e9dde72a5d7,hyperfox,3.0,USD,SEED,2025-01-13,Various,https://europeantech.substack.com/p/european-tech-weekly-week-2-2025
+26805131-8992-4147-8ffa-a1c240c1fe76,hysopt,5.0,USD,SEED,2022-11-21,Various,https://europeantech.substack.com/p/european-tech-weekly-week-46
+5b37f5d8-1861-4232-b150-48ddbbc0c090,iceberg data lab,10.0,USD,SERIES A,2024-04-08,Beringea,https://europeantech.substack.com/p/european-tech-weekly-week-14-2024
+34222c79-d284-4d61-9038-194c1bd0a5a9,icustoms,2.0,USD,SEED,2024-04-01,Fuel Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+5344547a-896a-44ac-9634-de9d220e1951,identifal,2.0,USD,SEED,2024-09-09,United Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+ba59dee1-95e7-42c8-a219-a7e5f257acf8,illumion,3.0,USD,SEED,2024-12-09,Foresight Group,https://europeantech.substack.com/p/european-tech-weekly-week-49-2024
+b9cc0f54-23dc-4a1e-bc89-4439b723ede1,impact plus,2.0,USD,SEED,2023-07-24,Elevation Capital Partners,https://europeantech.substack.com/p/european-tech-weekly-week-29
+9463a6d0-5eb5-4371-8640-6df86909b817,in parallel,3.0,USD,SEED,2024-11-18,Lifeline Venture,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+4f7748fc-fed2-4ef0-bcc0-32b06954decd,incident.io,62.0,USD,SERIES B,2025-04-14,Insight Partners,https://europeantech.substack.com/p/european-tech-weekly-week-15-2025
+64faf0a2-a82b-4b65-921a-5e10bb713f70,infogrid,90.0,USD,SERIES B,2023-04-17,Northzone,https://europeantech.substack.com/p/european-tech-weekly-week-15
+ed208f3d-f8aa-42c3-83b7-a57749368a99,infrafleet,10.0,USD,SEED,2023-01-16,Octopus Investments,https://europeantech.substack.com/p/european-tech-weekly-week-2
+099a33f1-d84b-4bac-809f-c851d53dfd2f,infrared city,1.0,USD,SEED,2023-10-16,Xista Science Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-41
+f0bb2d7d-d2be-4521-82dc-d28f39c9c19d,inicio,2.0,USD,SEED,2023-10-09,"ISAI, Kima Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-40
+f0bb2d7d-d2be-4521-82dc-d28f39c9c19d,inicio,5.0,USD,SEED,2025-05-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-18-2025
+534fa6a8-7d3b-49cc-9a37-8693ccf8f41c,inplanet,1.0,USD,PRE-SEED,2023-01-30,Various,https://europeantech.substack.com/p/european-tech-weekly-week-4
+df67d7f5-f146-4faa-94e6-9940576ab410,inspeq ai,1.0,USD,SEED,2024-06-04,Sure Valley Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+b20afc3f-60be-48f6-9a72-d1fb89d9c178,instagrid,95.0,USD,SERIES C,2024-01-29,TVG,https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+f7ef4b1f-d658-4a5a-8313-95a216ca84da,instrugt,17.0,USD,SERIES A,2023-05-09,Blossom Capital,https://europeantech.substack.com/p/european-tech-weekly-week-18
+c6682953-0c7a-4021-8c92-e24e71e8d9f9,integritynext,106.0,USD,SERIES A,2023-03-27,EQT Growth,https://europeantech.substack.com/p/european-tech-weekly-week-12
+ede56737-7504-423b-8c47-aca32e7470cc,integrum esg,4.0,USD,SEED,2024-09-30,YFM Equity Partners,https://europeantech.substack.com/p/european-tech-weekly-week-39-2024
+182f7a71-582c-4f91-ac2e-5f8bcbf5e200,ionate,17.0,USD,SERIES A,2025-02-10,AlbionVC,https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+99cd3414-de36-4d91-af20-fe25d099d5f7,isometric,25.0,USD,SEED,2023-07-24,"Lowercarbon Capital, Plural",https://europeantech.substack.com/p/european-tech-weekly-week-29
+5fdd6383-ccc5-4184-bc7c-a7a530b2805b,iten,79.0,USD,SERIES B,2022-10-10,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-c7e
+4c32c77b-07ed-4a4e-b692-0c2716230717,j4energy,1.0,USD,SEED,2024-05-15,"RobolT, Tech4Planet",https://europeantech.substack.com/p/european-tech-weekly-week-19-2024
+64f94905-e351-4b3f-b84f-afa062420268,jimmy,15.0,USD,SERIES A,2022-10-31,Various,https://europeantech.substack.com/p/european-tech-weekly-week-43
+cb9e26d4-9c6b-4592-9895-66f66ff2e692,jolt energy,165.0,USD,GROWTH,2023-05-15,InfraRed Capital Partners,https://europeantech.substack.com/p/european-tech-weekly-week-19
+6ed57ca8-0c40-46d2-9854-308853733474,jua,16.0,USD,SEED,2024-02-13,"468 Capital, Green Generation",https://europeantech.substack.com/p/european-tech-weekly-week-6-2024
+6ed57ca8-0c40-46d2-9854-308853733474,jua,11.0,USD,SERIES A,2025-06-08,"Ananda IV, Future Energy",https://europeantech.substack.com/p/european-tech-weekly-week-23-2025
+8fbe03cd-74fd-4564-a0dc-70a1c21ac051,juer,1.0,USD,SEED,2022-11-21,Vector Venture Capital,https://europeantech.substack.com/p/european-tech-weekly-week-46
+263e1b49-d077-4e72-8cdf-bee650ed5cc4,kaizen,54.0,USD,GROWTH,2024-11-11,Guidepost Growth Equity,https://europeantech.substack.com/p/european-tech-weekly-week-45-2024
+ab4d5ce6-e8d8-419a-bb2a-a5ff87325444,karomia,2.0,USD,SEED,2025-03-03,"Entourage Ventures, imec.istart",https://europeantech.substack.com/p/european-tech-weekly-week-9-2025
+49db9626-edc8-481e-a90e-ad09ed7ad81a,kavaken,1.0,USD,SEED,2024-07-08,Various,https://europeantech.substack.com/p/european-tech-weekly-week-27-2024
+7f8babbc-9eec-49b3-a03f-ae4198e2cb8b,kern al,3.0,USD,SEED,2023-02-20,"Seedcamp, Faber",https://europeantech.substack.com/p/european-tech-weekly-week-7
+646e1774-d7fb-41aa-b125-660bad351a2c,kim,24.0,USD,SERIES A,2024-11-18,BNP Paribas,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+12539855-4575-4688-8c48-b5445dacff1f,kit-ar,3.0,USD,SEED,2024-03-04,"3XP Global, Blue Crow Capital",https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+6ec8426c-fc4b-4ad0-923d-2e3ba4e501f4,kive,7.0,USD,SEED,2022-10-24,"Heartcore, Creandum, EQT",https://europeantech.substack.com/p/european-tech-weekly-week-42
+32f7b4bf-b365-45e0-b75c-8fa7f5724a2f,klimate.co,4.0,USD,SEED,2023-10-23,"Eneco Ventures, Helen Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-42-5fe
+0154faaf-a458-4d80-9838-e2e79a4f6ac8,kolum,2.0,USD,SEED,2024-07-17,FoodLabs,https://europeantech.substack.com/p/european-tech-weekly-week-28-2024
+f2eb756f-7717-418c-aae1-7ec581e0e588,krafiblock,22.0,USD,SERIES B,2023-08-14,Shell Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-32
+99a263d2-9007-4f11-aba3-bf2626683150,kvistsolutions,1.0,USD,SEED,2025-03-03,Various,https://europeantech.substack.com/p/european-tech-weekly-week-9-2025
+5ee23cee-95d9-4fa8-949f-987c3fb9a459,langdock,3.0,USD,SEED,2024-04-29,"GC, La Famiglia",https://europeantech.substack.com/p/european-tech-weekly-week-17-2024
+01949ca8-e14b-4acf-86dd-51fe37ad6e9d,langfuse,4.0,USD,SEED,2023-11-13,Lightspeed,https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+96ecc66c-d75a-45dc-80b6-7152b0ffec72,liefergran,12.0,USD,SERIES A,2022-09-05,Capital,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-75d
+cea7e4fc-9c61-4b91-a8cb-a105d0103e56,lightsonic,4.0,USD,SEED,2025-05-12,Maki.ve,https://europeantech.substack.com/p/european-tech-weekly-week-19-2025
+25ecb7c4-abef-47fb-9a30-122d45db5a67,lina,19.0,USD,SERIES A,2024-04-01,Various,https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+33db0e46-bc12-4d2a-8601-7d4f339263f5,lithium salvage,2.0,USD,SEED,2025-02-10,Northstar,https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+baacb42b-8d1e-4420-aac2-ad0c5beb280b,liveeo,10.0,USD,SERIES B,2023-12-04,GreenCode Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-48-abe
+baacb42b-8d1e-4420-aac2-ad0c5beb280b,liveeo,27.0,USD,SERIES B,2024-07-02,"NordicNinja, DTCF",https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+02defaba-c183-47b1-ab2e-4a065452203d,loewi,1.0,USD,SEED,2023-05-29,Various,https://europeantech.substack.com/p/european-tech-weekly-week-21
+57e0be81-56a9-48e5-93b1-dcfb5cc0b476,luminance,40.0,USD,SERIES B,2024-04-08,March Capital,https://europeantech.substack.com/p/european-tech-weekly-week-14-2024
+5393660f-e925-4a30-a6c8-cc418a43f58b,lun 11,1.0,USD,SEED,2023-03-27,Various,https://europeantech.substack.com/p/european-tech-weekly-week-12
+68a007eb-6c8f-4cab-9347-dc612228a513,maeve aerospace,19.0,USD,SEED,2023-06-26,European Innovation Council,https://europeantech.substack.com/p/european-tech-weekly-week-25
+defada65-562a-4c7b-9152-adb120f0edb8,magic lane,3.0,USD,SEED,2024-05-20,No Such Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+70e41d2d-e2c4-422b-a708-947db3bd297a,mainteny,3.0,USD,SEED,2023-03-27,Cusp Capital,https://europeantech.substack.com/p/european-tech-weekly-week-12
+c0fc5a1a-dcb3-437c-b5f9-4e6fd6352bdc,maiven,2.0,USD,PRE-SEED,2025-03-31,Various,https://europeantech.substack.com/p/european-tech-weekly-week-13-2025
+e893115a-64d9-4aaf-947f-0294c9dc77de,makersite,8.0,USD,SERIES A,2022-10-24,Hitachi Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-42
+e6b7540f-591f-4351-b65e-fac14e817ca3,manex ai,9.0,USD,SEED,2025-06-08,"Lightspeed, BlueYard",https://europeantech.substack.com/p/european-tech-weekly-week-23-2025
+b3aba403-c907-43a6-992c-8838b03499e0,marcley,4.0,USD,SEED,2024-08-05,"VIRIDA, Venture Stars",https://europeantech.substack.com/p/european-tech-weekly-week-31-2024
+b0fa151e-29b7-47a3-90a9-da1ee01ad6e3,marvel fusion,70.0,USD,SERIES B,2024-09-30,HY Capital,https://europeantech.substack.com/p/european-tech-weekly-week-39-2024
+b27ba578-450d-4390-adad-2b9e20f82350,materrup,28.0,USD,SERIES A,2024-06-24,Eurazeo,https://europeantech.substack.com/p/european-tech-weekly-week-25-2024
+4e8daa60-9964-431b-83dc-b6d85436d0b3,maya climate,1.0,USD,SEED,2023-02-06,"Antler, HTGF",https://europeantech.substack.com/p/european-tech-weekly-week-5
+acb1c194-c6a8-4ea2-9a1c-2f5bcc932c1e,mespac,2.0,USD,SEED,2025-02-10,Axon Partners Group,https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+43f0f24c-b61a-4174-afae-8929c4374a98,meteomatics,22.0,USD,SERIES C,2025-02-03,Armira Growth,https://europeantech.substack.com/p/european-tech-weekly-week-5-2025
+e2950ada-93d5-4042-afa5-4c7f6331e47f,metergrid,4.0,USD,SEED,2024-12-09,Hager Group,https://europeantech.substack.com/p/european-tech-weekly-week-49-2024
+19d82de9-611f-4308-80a9-8ada4fd262b8,metris energy,3.0,USD,SEED,2024-01-29,"Octopus Ventures, Aenu VC",https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+e8f7a590-381c-4c6d-ad05-81ef6026cd55,metroc,2.0,USD,SEED,2023-08-28,Lifeline Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-34
+bb9a2974-2c9a-45f7-b545-74bf2dd7a61b,mitiga solutions,15.0,USD,SERIES A,2023-05-22,Kibo Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-20
+4d74c9fb-4583-48eb-92f1-43215a760d0e,monta,30.0,USD,SERIES A,2022-09-19,Energize Ventures,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-4e8
+4d74c9fb-4583-48eb-92f1-43215a760d0e,monta,87.0,USD,SERIES B,2024-01-29,"Energize Capital, GreenPoint Partners",https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+498a767f-6d61-449d-a37e-ed1a8259c4c0,montamo,6.0,USD,SEED,2025-04-08,Alter Equity,https://europeantech.substack.com/p/european-tech-weekly-week-14-2025
+b96ad0be-8e8a-4413-be32-d43fad7179c2,moonwatt,9.0,USD,SEED,2025-03-10,"Daphni, LEA Partners",https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+bff3e00e-9706-4539-ae2b-dae998f7b922,morfo,4.0,USD,SEED,2022-12-12,"Demeter, Raise Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-49
+73673f01-4ff7-415d-9988-2ad2aa63937e,myenergi,37.0,USD,SERIES B,2023-10-16,Energy Impact Partners,https://europeantech.substack.com/p/european-tech-weekly-week-41
+7504b780-bdac-445d-b398-63164b09ace8,nattergal,53.0,USD,SEED,2024-10-22,Landsdowne Partners,https://europeantech.substack.com/p/european-tech-weekly-week-42-2024
+af40861a-2c5c-41bd-89af-6289cf322524,naturbeads,10.0,USD,SERIES A,2024-11-18,Eos Advisory,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+b4e12a85-d9fa-4762-a357-eca0cfa2f548,naturemetrics,25.0,USD,SERIES B,2025-01-20,Just Climate,https://europeantech.substack.com/p/european-tech-weekly-week-3-2025
+16035671-0245-485d-823c-74fb2799873a,neoom,27.0,USD,SERIES B,2023-02-27,Summiteer,https://europeantech.substack.com/p/european-tech-weekly-week-8
+e2af23a0-3747-4e42-8b9b-ed69e21484eb,net zero company,6.0,USD,SEED,2024-07-02,Various,https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+2579881a-2640-46db-b448-3555f160959c,neustark,69.0,USD,SERIES B,2024-07-02,Decarbonization Partners,https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+bd1fbf10-48aa-43eb-8af9-b02017df6eeb,newcleo,151.0,USD,SERIES B,2024-10-08,Various,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+b7b102c1-cdbd-4b3f-b365-fadefaaf15da,nexos.ai,8.0,USD,SEED,2025-01-20,Index Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-3-2025
+1a525db5-5f90-43a1-9604-dd41ce2d0548,next matter,16.0,USD,SERIES A,2022-06-20,Omers Ventures,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-e34
+495e1ae2-24a6-4715-bd9c-3edc05c14aae,nido,5.0,USD,SEED,2025-02-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+e9e2baee-f6ac-4f5e-9fba-efda652e83ea,nium,3.0,USD,SEED,2023-06-12,AgFunder,https://europeantech.substack.com/p/european-tech-weekly-week-23
+7ae9dd67-1a2c-4ffb-b647-2f9176779a28,nodes & links,13.0,USD,SERIES B,2025-02-24,ETF Partners,https://europeantech.substack.com/p/european-tech-weekly-week-8-2025
+f1d6257b-6ed2-472f-adb7-e6a8cb275963,nord secunty,100.0,USD,GROWTH,2023-10-02,Warburg Pincus,https://europeantech.substack.com/p/european-tech-weekly-week-39
+6da36b11-a94a-45d6-9a14-441b9e6674b3,nortech al,3.0,USD,SEED,2023-10-30,"Indico, Earlybird-X",https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+3b7be94b-6557-42b1-9c44-d9c9f9dcda08,northvolt,4100.0,USD,GROWTH,2022-07-11,Various,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-672
+3b7be94b-6557-42b1-9c44-d9c9f9dcda08,northvolt,400.0,USD,GROWTH,2023-06-26,IMCO,https://europeantech.substack.com/p/european-tech-weekly-week-25
+8d83e5e8-8b03-4b24-b57b-b2c440e5ff21,notpla,26.0,USD,SERIES A,2024-09-30,"UB Forest industry, Green Growth Fund",https://europeantech.substack.com/p/european-tech-weekly-week-39-2024
+a3898c03-5bc2-41d7-b763-b3dae619cba3,novatronfusion,5.0,USD,SEED,2023-09-04,Climentum Capital,https://europeantech.substack.com/p/european-tech-weekly-week-35
+40b73e8f-9510-4504-83d8-1cf30aabbddf,numalis,5.0,USD,SEED,2023-11-13,Various,https://europeantech.substack.com/p/european-tech-weekly-week-45-a1f
+f5f481d1-8de0-49f0-baf5-a263415ab6d5,nyobolt,61.0,USD,SERIES B,2022-07-18,Hc,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-e62
+f5f481d1-8de0-49f0-baf5-a263415ab6d5,nyobolt,30.0,USD,SERIES B,2025-04-20,"1 Capital, Latitude",https://europeantech.substack.com/p/european-tech-weekly-week-16-2025
+1820fbda-41c0-4765-8aa7-a66b9d64e5f3,oblivious,6.0,USD,SEED,2023-04-24,Cavalry Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-16
+8ef1f955-7742-49ed-8095-b76b19b17ae0,ocell,10.0,USD,SERIES A,2025-02-03,Capnamic,https://europeantech.substack.com/p/european-tech-weekly-week-5-2025
+e6bdc699-e4d1-49a9-a1d0-df9072590b3f,octopus energy,550.0,USD,GROWTH,2022-08-01,CPPIB,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-a45
+4099ad10-8bac-46c2-9ff6-a48ce7c6b7fd,ocuco,66.0,USD,GROWTH,2023-08-21,Accel-KKR,https://europeantech.substack.com/p/european-tech-weekly-week-33
+32d9b4a4-ee7b-4e5c-92ae-ba73b1d93271,okto grid,3.0,USD,SEED,2023-01-23,Various,https://europeantech.substack.com/p/european-tech-weekly-week-3
+b3ff93df-77e0-41eb-9dd9-fac0bbb3a0c7,one click,43.0,USD,SERIES,2023-12-04,PSG Equity,https://europeantech.substack.com/p/european-tech-weekly-week-48-abe
+a0119f6f-0ed3-4b15-a516-4203c798897a,opcharge,36.0,USD,SERIES B,2023-07-03,Various,https://europeantech.substack.com/p/european-tech-weekly-week-26
+2ca36f9e-e304-4a75-a09e-1cf9423f6c5d,open forest protocol,4.0,USD,SEED,2023-01-16,Various,https://europeantech.substack.com/p/european-tech-weekly-week-2
+6fa223ae-57b5-4a27-abce-3ec75d7e1279,openvolt,2.0,USD,SEED,2023-09-25,Cavalry Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-38
+4ed45b17-e717-423b-b09f-93fc14819da6,opna,10.0,USD,SEED,2023-09-11,Atomico,https://europeantech.substack.com/p/european-tech-weekly-week-36
+7e7bff9a-3499-4ee4-aba4-8d12c9c81217,orbio earth,4.0,USD,SEED,2024-03-18,"ESA, Initialized Capital",https://europeantech.substack.com/p/european-tech-weekly-week-11-2024
+39c6b3dc-219a-41a4-9196-0941365d3e5d,orcanenergy,28.0,USD,SERIES C+,2022-10-03,TiLT,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-6e7
+6ebbd7d4-8b0e-4dac-852f-409b59d97091,ore energy,1.0,USD,SEED,2024-06-04,Positron Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-21-2024
+c613e755-e245-4448-b97b-e6a33619a21e,ororatech,28.0,USD,SERIES B,2024-10-22,Korys,https://europeantech.substack.com/p/european-tech-weekly-week-42-2024
+c613e755-e245-4448-b97b-e6a33619a21e,ororatech,15.0,USD,SERIES A,2022-12-05,Edaphon,https://europeantech.substack.com/p/european-tech-weekly-week-48
+b1e00b37-efc1-4259-9757-fbaf983b7c51,osapiens,26.0,USD,SERIES A,2023-10-02,Armia Growth,https://europeantech.substack.com/p/european-tech-weekly-week-39
+b1e00b37-efc1-4259-9757-fbaf983b7c51,osapiens,120.0,USD,SERIES B,2024-08-05,GS Growth,https://europeantech.substack.com/p/european-tech-weekly-week-31-2024
+267f904d-7590-402b-8032-5684b92e082d,otark,3.0,USD,SEED,2024-09-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-38-2024
+a84679a8-9752-4391-ab01-566b68655254,overstory,5.0,USD,SEED,2022-11-14,Convective Capital,https://europeantech.substack.com/p/european-tech-weekly-week-45
+509ff25d-7b22-408f-a48b-a79dd9ad151f,oxccu,22.0,USD,SERIES A,2023-06-12,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23
+2a876c7c-41ca-469b-b6c2-77723797cfe7,oxwash,12.0,USD,SERIES A,2022-09-05,Untitled VC,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-75d
+458614f9-c8c7-48e5-bce1-dc8dddaf6ef3,palats,1.0,USD,SEED,2023-05-29,AGV Invest.,https://europeantech.substack.com/p/european-tech-weekly-week-21
+cee05478-6cd2-4a62-8284-02c7ba5b4156,paptic,25.0,USD,SERIES A,2023-09-11,"ECBF, Ecolab",https://europeantech.substack.com/p/european-tech-weekly-week-36
+2e23b1fb-855b-49ac-a534-42b764ae1c50,pelikan mobility,4.0,USD,SEED,2024-03-25,Various,https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+ecc475cf-c926-4942-b133-ec5f9c2b0e77,perpetual next,340.0,USD,SERIES A,2022-06-20,Momentum Capital,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-e34
+924ff782-1993-4096-8aee-f226893aa73c,phasecraft,17.0,USD,SERIES A,2023-08-21,Playground Global,https://europeantech.substack.com/p/european-tech-weekly-week-33
+ccd5d0ae-ee53-46d6-b0fa-0ba2381acd88,phelas,4.0,USD,SEED,2024-03-11,E44 Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-10-2024
+31f04c02-8463-472f-ab97-47e7fc48af14,piclo,10.0,USD,SERIES B,2023-03-27,"Future Energy Ventures, Clean Growth Fund",https://europeantech.substack.com/p/european-tech-weekly-week-12
+88a59622-b096-456c-80fb-21a4fb33a455,pigment,145.0,USD,SERIES D,2024-04-08,Iconiq Growth,https://europeantech.substack.com/p/european-tech-weekly-week-14-2024
+56899370-7263-477f-976e-8713e2b8dc2a,pionix,5.0,USD,SEED,2023-05-29,"yabeo Impact, Pale blue dot",https://europeantech.substack.com/p/european-tech-weekly-week-21
+dc74aead-07c7-41b9-b1fb-239d799ba666,plana,27.0,USD,SERIES A,2023-09-25,Lightspeed,https://europeantech.substack.com/p/european-tech-weekly-week-38
+535a7314-dc8f-4c03-8d15-42cd27c67c4b,planetwatchers,11.0,USD,SERIES A,2022-10-03,Seraphim Space,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-6e7
+bee65239-4323-4357-bb79-c80050b5e747,planted,5.0,USD,SEED,2025-02-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+4f9f3ae1-43ec-45df-ae2c-c043f5211f40,podero,5.0,USD,SEED,2025-02-10,,https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+e1fc9f91-cc5a-4bcb-9d6c-36e17743f5a6,polarium,49.0,USD,SERIES B,2024-10-08,Various,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+2b0aacaa-781e-49d3-b5ee-e72e59bde323,polymateria,25.0,USD,SERIES,2023-05-02,Various,https://europeantech.substack.com/p/european-tech-weekly-week-17
+736052b5-67b2-42f0-83bb-f5039f8ade49,powall,3.0,USD,SEED,2024-06-04,"Sandwater, Invest NL",https://europeantech.substack.com/p/european-tech-weekly-week-21-2024
+456fb096-2f1e-4797-ba34-a98db904358c,predium,5.0,USD,SEED,2023-10-09,b2venture,https://europeantech.substack.com/p/european-tech-weekly-week-40
+7208960c-0888-49ee-9d2e-35550e04b003,previsico,3.0,USD,SEED,2023-10-02,'24Haymarket,https://europeantech.substack.com/p/european-tech-weekly-week-39
+2bf8dd91-b11e-4dcc-a6ac-f8fc48e0d79c,prewave,68.0,USD,SERIES B,2024-07-02,Hedosophia,https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+37086f14-bb95-4dc6-ac7f-f6328d4765c2,proba,1.0,USD,SEED,2025-02-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+a222712c-6f48-4f15-8d87-63ea0befe63a,product fruits,2.0,USD,SEED,2024-06-04,Various,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+0fb06df9-6a1e-47ec-a129-0ce7a370e3dd,promethean particles,10.0,USD,SERIES A,2024-08-19,Aramco Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-33-2024
+011732f7-0fee-4950-8669-baea827a3b74,protex ai,36.0,USD,SERIES B,2025-02-10,Hedosophia,https://europeantech.substack.com/p/european-tech-weekly-week-6-2025
+ae520564-9cfd-4976-a867-0d4fc4a5ad9c,provenrun,16.0,USD,SERIES A,2023-12-11,Tikehau Capital,https://europeantech.substack.com/p/european-tech-weekly-week-49-d4a
+fda37739-a036-4d79-83be-ddca5974f8da,proxima fusion,8.0,USD,PRE-SEED,2023-11-20,"Plural Platforms, UVC Partners",https://europeantech.substack.com/p/european-tech-weekly-week-46-0b4
+fda37739-a036-4d79-83be-ddca5974f8da,proximafusion,1.0,USD,SEED,2023-06-05,"Plural, UVC",https://europeantech.substack.com/p/european-tech-weekly-week-22
+f63cf2e8-14ec-479a-ad6c-d3f28f162de4,préts,1.0,USD,SEED,2024-06-11,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+3a1dd62b-3f66-4bd7-be91-7536923805db,pulsetrain,7.0,USD,SEED,2025-03-24,"Vsquared, Planet A",https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+caaa67f7-07b3-45bc-8aa6-94e7ced5961f,purpose green,15.0,USD,SERIES A,2024-10-14,Fifth Wall,https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+663e248c-c50e-405e-9218-62a89b1db1c1,push security,15.0,USD,SERIES A,2023-04-11,ev,https://europeantech.substack.com/p/european-tech-weekly-week-14
+e12e33f0-a0bf-4da5-a101-11510e24fa3e,pvcase,100.0,USD,SERIES B,2023-07-24,"Highland Europe, Energize",https://europeantech.substack.com/p/european-tech-weekly-week-29
+6cf6aeb9-3a08-40af-b920-2279a97a7cad,pydantic,5.0,USD,SEED,2023-02-20,Sequoia,https://europeantech.substack.com/p/european-tech-weekly-week-7
+49832957-8eef-4004-abac-9fde58c509e5,qdrant,10.0,USD,SEED,2023-04-24,Unusual Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-16
+1a1d8e29-78c6-41eb-b544-754431d00e0b,qio technologies,10.0,USD,SERIES A,2023-02-20,Wave Equity Partners,https://europeantech.substack.com/p/european-tech-weekly-week-7
+53308f1a-9af8-4347-8021-180a3899055f,qnetpurpose,13.0,USD,SERIES A,2022-10-17,ETF Partners,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-41b
+195d8ddd-6929-40d2-bca6-48aadd2ba320,qovoltis,50.0,USD,SERIES B,2024-10-08,Epopée Gestion,https://europeantech.substack.com/p/european-tech-weekly-week-40-2024
+cc64cdf5-59ba-4b49-90d8-01c8b018d460,quantexa,175.0,USD,SERIES F,2025-03-10,IvG,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+c1ac849c-bc33-4d1a-b6bf-256df73465db,quantum systems,67.0,USD,SERIES B,2023-10-30,"HV Capital, DTCP",https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+ad0ff11b-6ded-49f7-ab77-13887b5cfd5c,quixotic,1.0,USD,SEED,2024-10-14,"Demium, Bynd",https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+fa1fe774-6ab1-43bd-99ce-80a254c6d91e,qvantum energi,45.0,USD,GROWTH,2023-01-09,"Thomas von Koch, IMAS Foundation",https://europeantech.substack.com/p/european-tech-weekly-week-1
+36d1b928-58ec-4bf3-aef4-21dd9501ba43,rabot charge,19.0,USD,SERIES A,2024-02-05,HY Capital,https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+36d1b928-58ec-4bf3-aef4-21dd9501ba43,rabotcharge,2.0,USD,SEED,2022-12-05,Yabeo Impact Fund,https://europeantech.substack.com/p/european-tech-weekly-week-48
+f0ea0640-0df8-45cc-8ea3-bb7ffb8f0740,radical dot,3.0,USD,PRE-SEED,2025-03-10,"UVC Partners, Visionaries",https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+6a71717c-7ba5-4873-a1f8-6944733b9f28,raicoon,4.0,USD,SEED,2023-10-16,"Push VC, Voltares",https://europeantech.substack.com/p/european-tech-weekly-week-41
+635c413e-46b2-440e-96a2-85bbf911dc41,rainbow,2.0,USD,SEED,2023-05-15,Various,https://europeantech.substack.com/p/european-tech-weekly-week-19
+a75b13fb-bf73-40ca-bfb0-86e0654a8c8b,recycleye,17.0,USD,SERIES A,2023-02-06,Dcvc,https://europeantech.substack.com/p/european-tech-weekly-week-5
+a7b1a02e-fb3a-4913-93c5-53024a030658,recyda,2.0,USD,SEED,2023-04-03,_—Spedinvest,https://europeantech.substack.com/p/european-tech-weekly-week-13
+ab93ec4e-8e24-4341-9599-a24449cd4cf5,reel,5.0,USD,SEED,2024-01-29,Transition Global,https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+97253e38-64dd-4b98-8901-38f4c5f2f50f,refuel green,1.0,USD,SEED,2023-01-16,HTGF,https://europeantech.substack.com/p/european-tech-weekly-week-2
+94985d17-9325-4846-ace3-4c620acf85a2,renaissance fusion,16.0,USD,SEED,2023-01-30,Lowercarbon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-4
+94985d17-9325-4846-ace3-4c620acf85a2,renaissance fusion,35.0,USD,SERIES A,2025-03-10,Crédit Mutuel Impact,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+1093cba5-b579-4dc8-a799-eee5af4f1e28,renew risk,2.0,USD,SEED,2025-02-17,Moten Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+442e2b39-6e8d-43b6-a971-cf59d0b730b8,reonic,14.0,USD,SERIES A,2024-09-09,Northzone,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+986a73f6-e275-4475-84b8-669e55c94b3b,resoniks,3.0,USD,SEED,2024-05-06,Kvanted,https://europeantech.substack.com/p/european-tech-weekly-week-18-2024
+538cfd59-159b-479a-92d7-c1dad9c79ec1,resourcity,16.0,USD,SERIES A,2023-10-02,Vorwerk Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-39
+9956a1c8-a1b3-45e8-a959-8593584f5083,responsibly,2.0,USD,SEED,2023-10-09,"Hambro Perks, Pi Labs",https://europeantech.substack.com/p/european-tech-weekly-week-40
+95f7f6e5-58ad-412b-8e41-a43e7fe4ec72,retraced,17.0,USD,SERIES A,2024-09-17,Partech,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+0eef940d-7066-4fa3-8b22-b261f13bb80b,risilience,26.0,USD,SERIES B,2023-02-06,Quantum Energy Partners,https://europeantech.substack.com/p/european-tech-weekly-week-5
+3395719b-a3e0-4390-8b10-e597251ca650,riverse,6.0,USD,SEED,2025-05-19,"Aven, Racine",https://europeantech.substack.com/p/european-tech-weekly-week-20-2025
+db3d1ba9-89f9-4773-983c-d96cdefa68cf,robovision,42.0,USD,SERIES A,2024-04-01,"Astanor Ventures, Target Global",https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+b5811a66-ac33-4b23-a2e0-e236b8c013e7,root signals,3.0,USD,SEED,2024-09-09,Angular Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+8d08e95e-7ccc-4bd7-bef3-e4a765e64498,rulemapping group,13.0,USD,SERIES A,2025-04-14,"SPRIND, Hidden Peak Capital",https://europeantech.substack.com/p/european-tech-weekly-week-15-2025
+703163bb-61a4-44db-aeac-5b9b241c28a6,safegrid,6.0,USD,SEED,2023-02-27,Ajanta,https://europeantech.substack.com/p/european-tech-weekly-week-8
+5af9d85a-c967-42db-8968-558cd445b293,samara,10.0,USD,SERIES A,2024-06-11,"Green Generation Fund, Move Energy",https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+111a8b53-9b73-443e-9b19-e73d377520e9,sastrify,32.0,USD,SERIES B,2023-05-29,Endeit Capital,https://europeantech.substack.com/p/european-tech-weekly-week-21
+8d0ae4d1-9f19-4240-a678-30604b79c63c,satelite vu,16.0,USD,SERIES A,2023-05-29,Motten Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-21
+ccf3024c-6b0c-4e64-b4ac-185f4f8a3bd7,scale energy,2.0,USD,SEED,2025-02-24,Climentum Capital,https://europeantech.substack.com/p/european-tech-weekly-week-8-2025
+98da4784-0a3c-4b78-9e51-123bced57886,scalera,6.0,USD,SEED,2025-05-12,Firstminute Capital,https://europeantech.substack.com/p/european-tech-weekly-week-19-2025
+cfba1a21-e2f8-4dbb-8604-1beb26ea5a31,scanmetals,110.0,USD,GROWTH,2022-12-05,Core Sustainability Capital,https://europeantech.substack.com/p/european-tech-weekly-week-48
+e80526cb-577a-4a35-8be4-8078f026aa97,schiittflix,49.0,USD,SERIES B,2023-08-28,Various,https://europeantech.substack.com/p/european-tech-weekly-week-34
+937db176-00d8-4cd4-8d3a-224c3045c8cb,screendragon,27.0,USD,SERIES A,2024-02-13,"Kennet Partners, Federated Hermes PE",https://europeantech.substack.com/p/european-tech-weekly-week-6-2024
+4af486eb-54a4-4651-b97e-9765d591cb3e,segana,2.0,USD,SEED,2024-06-04,"HTGF, Counteract",https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+601af157-df94-423c-90f1-1febde667461,sekoia,35.0,USD,SERIES A,2023-05-29,Various,https://europeantech.substack.com/p/european-tech-weekly-week-21
+601af157-df94-423c-90f1-1febde667461,sekoia.io,28.0,USD,SERIES B,2025-04-14,Revaia,https://europeantech.substack.com/p/european-tech-weekly-week-15-2025
+081a2908-4e45-463d-8d43-eba1cdee8569,seloxium,8.0,USD,SEED,2025-03-24,"OSE, MKS PAMP",https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+73817de0-76dc-4725-8a29-59340e8e8668,senken,8.0,USD,SEED,2023-01-30,Obvious Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4
+31049681-0d2e-4074-8c0d-52f548bc38fb,serviceacharger,11.0,USD,SERIES A,2023-07-03,bp ventures,https://europeantech.substack.com/p/european-tech-weekly-week-26
+9f05e972-9ea2-4e20-a5a8-234b97047acf,shippeo,31.0,USD,SERIES C,2025-01-20,Woven Capital,https://europeantech.substack.com/p/european-tech-weekly-week-3-2025
+42fc733c-4ee8-4af8-91ee-6c233138df20,sifflet,13.0,USD,SERIES A,2023-03-27,EQT Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-12
+1a04761e-e672-4b8f-bb01-f6ce4271421a,sikoia,6.0,USD,SEED,2023-02-20,MassMutual Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-7
+6167cb5b-b920-4f01-87a4-663248f8eb46,sirius,1.0,USD,SEED,2024-01-29,Blackwood Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-4-2024
+bf62c33f-f388-4942-812f-cc21fdd88295,sirona,6.0,USD,SEED,2024-07-02,"Locaiglobe, Xange",https://europeantech.substack.com/p/european-tech-weekly-week-26-2024
+9cc18336-1e95-43b4-a786-09b96215e8d6,skyfora,4.0,USD,SEED,2025-03-10,"Ugly Duckling Ventures, LUMO Labs",https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+76cdbdbd-8851-4655-99a2-ebd296776968,skyqratt,4.0,USD,SEED,2023-09-25,Various,https://europeantech.substack.com/p/european-tech-weekly-week-38
+4b1e29ae-dad6-4ec2-8afb-187a71dd970a,skysun,19.0,USD,SERIES A,2024-09-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+b55cbfd4-1dfb-4917-8124-252b2230204f,smalt,1.0,USD,SEED,2024-09-24,noa (formerly A/O PropTech),https://europeantech.substack.com/p/european-tech-weekly-week-38-2024
+6082c3d6-ced6-46b6-94ba-bb1e31f95c97,smpnet,2.0,USD,SEED,2023-05-09,Marathon Venture Capital,https://europeantech.substack.com/p/european-tech-weekly-week-18
+9ca2d9de-0eb2-4333-ba07-bbc159f752ea,snerpapower,2.0,USD,SEED,2023-09-04,"Crowberry Capital, BackingMinds",https://europeantech.substack.com/p/european-tech-weekly-week-35
+e7211598-0895-442d-80b0-f522d93b8ae5,soil capital,17.0,USD,SERIES B,2024-09-09,Trill Impact Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+eb969c77-e386-4928-b5cd-00450df7050c,solar materials,3.0,USD,SEED,2023-03-20,bmp Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-11
+4f614ca4-d072-4295-abd8-2d00796a2370,soldera,3.0,USD,SEED,2025-03-31,Lifeline Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-13-2025
+d8d7dadc-08e2-4456-b0ef-2307391998ce,solfy,1.0,USD,SEED,2023-09-25,Ona Capital,https://europeantech.substack.com/p/european-tech-weekly-week-38
+90ed6670-c40c-4ffc-9d11-511e27c75364,solskin,2.0,USD,SEED,2023-02-27,Various,https://europeantech.substack.com/p/european-tech-weekly-week-8
+badcc3a7-57e8-498e-a947-3dcb97431180,solvo.al,4.0,USD,SEED,2022-11-07,"Frontline, Speedinvest",https://europeantech.substack.com/p/european-tech-weekly-week-44
+0df83298-b93f-4121-adb4-89c97945bfc3,southern lights,2.0,USD,SEED,2024-03-25,Greencode Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+683243df-dd96-4d18-8e84-58fc015f849f,spacedrip,2.0,USD,SEED,2023-05-09,Various,https://europeantech.substack.com/p/european-tech-weekly-week-18
+485f0ac6-8638-43d1-863a-5b360262a77a,spaltial,14.0,USD,SEED,2025-06-02,Earlybird Venture Capital,https://europeantech.substack.com/p/european-tech-weekly-week-22-2025
+85c875de-1d6f-41cd-95b4-1c9c381c5fc9,spotmyenergy,11.0,USD,SEED,2024-12-16,Norrsken VC,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+8aac5bf4-dd19-4b95-a821-56022d644c77,spread,17.0,USD,SERIES A,2023-05-09,HV Capital,https://europeantech.substack.com/p/european-tech-weekly-week-18
+5e1ad0a5-7a06-46bf-ae01-31ccdc7edf2c,squake,4.0,USD,SEED,2023-06-26,Various,https://europeantech.substack.com/p/european-tech-weekly-week-25
+eb918357-e1a1-4da2-a5de-0c50a46a3281,stability ai,101.0,USD,SEED,2022-10-24,"Coatue, Lightspeed",https://europeantech.substack.com/p/european-tech-weekly-week-42
+fa21ba2b-dcd1-4de3-a63f-56803c84dcb1,stabl,7.0,USD,SEED,2023-08-14,"EIC, NAP",https://europeantech.substack.com/p/european-tech-weekly-week-32
+48ff611c-ee8a-4302-9a1f-6c9d480665b8,steady energy,2.0,USD,SEED,2023-07-03,VTT,https://europeantech.substack.com/p/european-tech-weekly-week-26
+48ff611c-ee8a-4302-9a1f-6c9d480665b8,steady energy,24.0,USD,SERIES A,2025-03-10,92 Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+48ff611c-ee8a-4302-9a1f-6c9d480665b8,steady energy,11.0,USD,SERIES A,2024-03-25,"Lifeline Ventures, Yes VC",https://europeantech.substack.com/p/european-tech-weekly-week-12-2024
+244192a3-f49b-497c-91d0-a0d3df86b5fc,steerlab,2.0,USD,SEED,2024-09-09,Dreamcraft VC,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+bf61b5b0-62c1-4c3a-9ec8-f80441995e05,stepwise,3.0,USD,SEED,2024-06-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-25-2024
+76757b80-84b2-4b5d-bbb6-ddddb59396af,stormharvester,10.0,USD,SERIES A,2025-01-27,YFM Equity Partners,https://europeantech.substack.com/p/european-tech-weekly-week-4-2025
+3e5cc670-df4d-4f52-8f2e-5529e8935db0,subsets,2.0,USD,SEED,2024-03-04,"Upfin, YC",https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+571660db-8ae2-4a6e-95a8-0431702e663f,sunhat,5.0,USD,SEED,2024-03-04,"Capnamic Ventures, xdeck",https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+571660db-8ae2-4a6e-95a8-0431702e663f,sunhat,2.0,USD,SEED,2023-05-29,"Capnamic, xdeck ventures",https://europeantech.substack.com/p/european-tech-weekly-week-21
+f220fa62-3042-4e46-a1e5-dfeede1fe28c,sunhero,11.0,USD,SERIES A,2023-03-20,"Planet A, Vorwerk Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-11
+a9fa646d-9e7e-450d-acca-0b5093d94bb4,sunly,64.0,USD,SERIES C,2024-12-09,Various,https://europeantech.substack.com/p/european-tech-weekly-week-49-2024
+1d6423d2-e3c7-449f-a59a-d67d33c95c46,sunology,11.0,USD,SERIES A,2023-06-05,Rgreen Invest,https://europeantech.substack.com/p/european-tech-weekly-week-22
+0bd4918f-644c-47a5-b435-13a171081e5d,sunroof,6.0,USD,SERIES A,2022-09-19,Klima,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-4e8
+5eeb50a5-a369-433d-a852-eb9b25b78a59,sunsave,12.0,USD,SEED,2023-12-11,Norrsken VC,https://europeantech.substack.com/p/european-tech-weekly-week-49-d4a
+5eeb50a5-a369-433d-a852-eb9b25b78a59,sunswap,22.0,USD,SERIES B,2024-09-02,Various,https://europeantech.substack.com/p/european-tech-weekly-week-35-2024
+df1ec54e-ddd1-42d1-98d0-8e1ef1b37511,sunvigo,1.0,USD,SEED,2023-04-24,"Eneco Ventures, Sparta Capital",https://europeantech.substack.com/p/european-tech-weekly-week-16
+66adecae-7c2e-4f5c-9f87-6d0b32179d82,supercritical,13.0,USD,SERIES A,2023-07-03,Lightspeed,https://europeantech.substack.com/p/european-tech-weekly-week-26
+92cfeb1c-8c23-4c7b-ab0f-c3661efe0ea0,surrealdb,6.0,USD,SEED,2023-01-09,FirstMark,https://europeantech.substack.com/p/european-tech-weekly-week-1
+5cc4235f-a994-4ca0-a015-0109b601e904,sustaincert,37.0,USD,SERIES B,2023-06-12,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23
+33747d65-8342-47e1-982a-b633d6f83d1a,swish,86.0,USD,SEED,2023-10-02,green invest,https://europeantech.substack.com/p/european-tech-weekly-week-39
+db2ac623-4334-42c9-8400-4d82464e4f99,sykell,5.0,USD,SEED,2023-05-09,Various,https://europeantech.substack.com/p/european-tech-weekly-week-18
+4780ec46-6531-462a-acb8-ac4ab16d6234,sylvera,57.0,USD,SERIES B,2023-07-24,Balderton,https://europeantech.substack.com/p/european-tech-weekly-week-29
+474b7256-b9f4-4824-aeec-6ee24ea34ee2,synergi,2.0,USD,SEED,2024-10-14,Greencore Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+e94b0631-9fa3-40f0-9132-811799d82e2d,tado,46.0,USD,GROWTH,2023-01-30,Trill Impact,https://europeantech.substack.com/p/european-tech-weekly-week-4
+e94b0631-9fa3-40f0-9132-811799d82e2d,tado,13.0,USD,SERIES C,2023-04-11,Various,https://europeantech.substack.com/p/european-tech-weekly-week-14
+44240aba-2924-4bc6-b983-2e306c53f0fd,taisaneut,2.0,USD,SEED,2024-07-29,EIT InnoEnergy,https://europeantech.substack.com/p/european-tech-weekly-week-30-2024
+351c9eef-c648-46b3-8f8e-041021ba649b,tanso,4.0,USD,SEED,2023-04-24,Capnamic,https://europeantech.substack.com/p/european-tech-weekly-week-16
+9c1cfeb2-17b3-491d-bf5c-e7975813e01b,tap electric,1.0,USD,SEED,2023-09-18,Various,https://europeantech.substack.com/p/european-tech-weekly-week-37
+8ce5c683-404f-4975-8428-8ab9a024ff25,team-gpt,5.0,USD,SEED,2024-11-18,True Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+c3da4827-c75c-4175-aaf3-fb75260cddee,teamsystem,37.0,USD,SERIES C+,2023-08-28,"ADIA, CapitalG",https://europeantech.substack.com/p/european-tech-weekly-week-34
+d9ddfae0-a3c8-461a-9b14-befef96ed4d6,telescope,4.0,USD,SEED,2025-03-10,"Scale Capital, Dreamcraft Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-10-2025
+73673f01-4ff7-415d-9988-2ad2aa63937e,temenergy,3.0,USD,SEED,2023-06-19,Albionvc,https://europeantech.substack.com/p/european-tech-weekly-week-24
+8144a8a7-3bcc-4390-bae3-0e4031ab0bbc,terra one,8.0,USD,SEED,2024-04-29,PTt,https://europeantech.substack.com/p/european-tech-weekly-week-17-2024
+5ea85c85-792d-4b51-9e13-a1383c805651,terralayr,67.0,USD,SEED,2024-10-22,Various,https://europeantech.substack.com/p/european-tech-weekly-week-42-2024
+c71475cd-6ca9-44c8-9143-b9cc67a3525a,tesseract,10.0,USD,SEED,2022-09-12,"Balderton, Lakestar",https://europeantech.substack.com/p/european-tech-weekly-series-a-and-51b
+6d610e40-1b41-4a09-88c8-9c49740a182d,the mobility house,50.0,USD,SERIES C,2022-11-07,Various,https://europeantech.substack.com/p/european-tech-weekly-week-44
+cc17a4ec-6563-43af-8037-63dacea32ab9,theion,16.0,USD,SERIES A,2025-03-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+9a4eff8b-4e22-4f62-a413-58fb307a2888,threedium,13.0,USD,SERIES A,2023-10-30,IPG,https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+6ebbd7d4-8b0e-4dac-852f-409b59d97091,tibo energy,3.0,USD,SEED,2024-01-15,SET Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-2-2024
+e32c0291-f4b8-4170-9207-1674af34ab35,tilt,6.0,USD,SEED,2025-06-02,Daphni,https://europeantech.substack.com/p/european-tech-weekly-week-22-2025
+b276cd19-2c0c-4696-8c70-898da1a0c358,tines,121.0,USD,SERIES C,2025-02-17,GS Growth,https://europeantech.substack.com/p/european-tech-weekly-week-7-2025
+fe87c6fe-9d4d-41a2-b394-bf633ba1a7cc,tings,1.0,USD,SEED,2024-02-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+e582b533-84ca-4034-9eed-6dfb50195333,tozero,12.0,USD,SEED,2024-11-18,NordicNinja,https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+73c1614a-15f5-40ed-919a-3e0180fe811c,trace for good,4.0,USD,SEED,2024-11-18,"Hiinov Dentressangle, Anka Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-46-2024
+50fe7fd7-56ea-42ab-8e89-7863b5132883,transmutex,12.0,USD,SERIES A,2024-02-05,"USY, Steel Atlas",https://europeantech.substack.com/p/european-tech-weekly-week-5-2024
+b0c63d97-870d-4186-919f-b4f96273e32e,trawa,1.0,USD,SEED,2024-05-20,Balderton Capital,https://europeantech.substack.com/p/european-tech-weekly-week-20-2024
+b0c63d97-870d-4186-919f-b4f96273e32e,trawa,27.0,USD,SERIES A,2025-06-02,Headline,https://europeantech.substack.com/p/european-tech-weekly-week-22-2025
+5698078e-c967-4887-a696-463b7e1a6153,treefera,12.0,USD,SERIES A,2024-05-06,AlbionVC,https://europeantech.substack.com/p/european-tech-weekly-week-18-2024
+c88012ce-daec-4acd-9f57-0e875d71d2b5,treely,5.0,USD,SEED,2024-07-08,PortfoLion Capital Partners,https://europeantech.substack.com/p/european-tech-weekly-week-27-2024
+74bd0d23-1ddd-4ff7-ba2c-d50327cd2a64,tset,14.0,USD,SERIES A,2024-08-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-31-2024
+bd15ddac-1bde-450b-9e87-4a7d41339c5c,tumax,5.0,USD,SEED,2023-07-03,LEA Partners,https://europeantech.substack.com/p/european-tech-weekly-week-26
+6df1d4df-f3ed-4575-a5c8-fbabd470b6ef,twirl,3.0,USD,SEED,2023-05-29,Creandum,https://europeantech.substack.com/p/european-tech-weekly-week-21
+3d1deb8e-98d6-4ae3-a142-64eda6398c1f,ucaneo,7.0,USD,SEED,2024-09-17,Smart Energy Innovationsfonds,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+57dbefbb-8017-42d6-8b7f-c72eaed8bb13,undo,1.0,USD,SEED,2023-05-29,Lowercarbon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-21
+a39cf5a7-aa15-4455-8f6f-82acc12283bd,unikbase,2.0,USD,SEED,2023-02-27,Weber Investissements,https://europeantech.substack.com/p/european-tech-weekly-week-8
+2032867a-261b-4aea-ad70-1688166eb7e7,unosecur,5.0,USD,SEED,2025-04-14,"VentureFriends, DFF Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-15-2025
+644a5c91-41ee-4036-82dd-007eedb8f649,unseenlabs,92.0,USD,SERIES C,2024-03-04,Various,https://europeantech.substack.com/p/european-tech-weekly-week-9-2024
+3a8d84ad-e3cb-46e3-9acc-4ed5b068e7ad,up2vou,4.0,USD,SEED,2022-12-12,Azimut,https://europeantech.substack.com/p/european-tech-weekly-week-49
+95124c60-39db-4f6a-88f0-6da3218d82c1,upvest,105.0,USD,SERIES C,2024-12-16,Hedosophia,https://europeantech.substack.com/p/european-tech-weekly-week-50-2024
+cac9fa64-c263-4f12-98b9-df62c6273051,urbanvolt,28.0,USD,SERIES C,2023-09-04,Verdane,https://europeantech.substack.com/p/european-tech-weekly-week-35
+e128ff87-0256-4803-ae0f-b294f70025c4,util,6.0,USD,SEED,2022-11-07,Eldridge,https://europeantech.substack.com/p/european-tech-weekly-week-44
+512250b6-5a19-41b7-a0ef-143e386143eb,valyuu,3.0,USD,SEED,2023-09-04,"Rubio, Slingshot Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-35
+9b132a1d-56c8-41ad-8782-f982e771a723,vamo,8.0,USD,SEED-EXT,2024-11-05,"Extantia Capital, GET Fund",https://europeantech.substack.com/p/european-tech-weekly-week-44-2024
+9b132a1d-56c8-41ad-8782-f982e771a723,vamo,4.0,USD,SEED,2023-10-02,Neosfer,https://europeantech.substack.com/p/european-tech-weekly-week-39
+e42e8113-a3e1-4cdb-9aae-71015a5e4ffe,vensum,4.0,USD,SEED,2023-05-29,Lifeline Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-21
+bdd2422e-4a26-4fd5-a6b2-ca91a7534b9a,verkor,910.0,USD,SERIES C,2023-09-18,Various,https://europeantech.substack.com/p/european-tech-weekly-week-37
+74142995-23b0-4bd0-a6b6-5f5ef7f2b962,versiro,2.0,USD,SEED,2024-07-08,Alliance VC,https://europeantech.substack.com/p/european-tech-weekly-week-27-2024
+f5bcaaab-812a-4922-b931-0b279dd8f154,vespa,31.0,USD,SERIES A,2023-11-06,Blossom Capital,https://europeantech.substack.com/p/european-tech-weekly-week-44-723
+4e3e63c2-e8a3-4de0-a0c3-41f185c5b670,vested impact,2.0,USD,SEED,2024-10-14,"Impact Shakers, HearstLab",https://europeantech.substack.com/p/european-tech-weekly-week-41-2024
+2d4003c1-c8d2-4a3a-af06-703af198136c,vestigas,9.0,USD,SEED,2025-04-14,"Project A, b2venture",https://europeantech.substack.com/p/european-tech-weekly-week-15-2025
+b32d9771-4b8a-40a3-a03a-0fa6f6a15d8c,vialytics,10.0,USD,SERIES A,2023-01-23,Scania Growth Capital,https://europeantech.substack.com/p/european-tech-weekly-week-3
+6d1a62dc-cf03-451d-a74f-e53451643617,vind ai,3.0,USD,SEED,2024-09-17,Norrsken VC,https://europeantech.substack.com/p/european-tech-weekly-week-37-2024
+a59c8953-513f-4ca0-9d24-ec7d29215556,viridico,4.0,USD,SEED,2023-03-13,EQT Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-10
+ed2d1f05-6492-4275-9b51-34046378c041,vizcab,10.0,USD,SERIES A,2024-06-04,Kompas VC,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+1a2a0adc-1234-4651-8ee9-dc8549d46941,volta trucks,260.0,USD,SERIES C-EXT,2022-12-05,Various,https://europeantech.substack.com/p/european-tech-weekly-week-48
+e9eed74c-3b12-4e79-b6e7-2735c7c999ea,volteras,11.0,USD,SERIES,2025-06-02,USV,https://europeantech.substack.com/p/european-tech-weekly-week-22-2025
+6f20b65b-2e8c-4177-8045-b34b6d9e3a32,volteum,1.0,USD,SEED,2022-11-21,Day One Capital,https://europeantech.substack.com/p/european-tech-weekly-week-46
+cad923ce-bf0b-4f49-ab9d-d10a86a76f42,voltfang,6.0,USD,SEED,2023-05-15,PT1,https://europeantech.substack.com/p/european-tech-weekly-week-19
+b6408a23-8dae-47c5-9fb5-0765a525e9dc,voltstorage,25.0,USD,SERIES C,2022-08-01,,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-a45
+bb63b75f-b113-4fda-b53c-ccc32872e4d3,volytica diagnostics,6.0,USD,SEED,2023-09-11,"SHIFT Invest, EnBW New Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-36
+05dc8544-2001-4793-94c2-8912fae27190,vool,2.0,USD,SEED,2023-02-06,Specialist VC,https://europeantech.substack.com/p/european-tech-weekly-week-5
+5708f67d-49da-41cd-b335-c2528de8ce35,vortex-io,3.0,USD,SEED,2024-06-11,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23-2024
+3d5493db-21f1-4097-806c-8a29deaa78df,vottiris,5.0,USD,SEED,2025-02-03,"EquityPitcher, 3M Ventures",https://europeantech.substack.com/p/european-tech-weekly-week-5-2025
+808e0841-a3c4-4e81-adbc-f1034f933e08,wase,11.0,USD,SEED,2024-04-01,Extantia Capital,https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+c426dd9f-2706-43f1-8059-a6dc1fa61991,watermein,2.0,USD,SEED,2023-05-09,AKEF,https://europeantech.substack.com/p/european-tech-weekly-week-18
+18484855-f34d-42bb-8a04-115aaedb89e9,wattalps,12.0,USD,SERIES A,2024-09-02,Various,https://europeantech.substack.com/p/european-tech-weekly-week-35-2024
+07c1f0e1-5dfc-4f50-b6f7-4a249eef44ad,watttron,13.0,USD,SERIES B,2024-04-01,,https://europeantech.substack.com/p/european-tech-weekly-week-13-2024
+4a0ac2ad-2d73-4f1e-a004-143bb7b28ae3,wayve,,,SERIES C+,2024-09-02,Uber,https://europeantech.substack.com/p/european-tech-weekly-week-35-2024
+f1d1a3c5-e81a-4069-9b16-b62d4d62ef90,weaviate,50.0,USD,SERIES B,2023-04-24,Index Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-16
+2b702716-1925-48d2-827d-7082e732ff6c,weefin,27.0,USD,SERIES B,2025-04-08,BlackFin,https://europeantech.substack.com/p/european-tech-weekly-week-14-2025
+6760ff7a-e98b-4f95-bcf0-aebc6b065741,weezie,4.0,USD,SEED,2024-02-13,GED Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-6-2024
+8263bcdd-c9d6-4756-83b0-2c465203a110,weflow,3.0,USD,SEED,2023-07-10,Gradient Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-27
+c84c835f-df1a-403c-a175-3241b6772fbf,winnow,10.0,USD,SERIES C,2023-06-19,Various,https://europeantech.substack.com/p/european-tech-weekly-week-24
+99f9333b-dd02-4691-8f8b-f4fbb822f6a2,wirelane,12.0,USD,SERIES B,2023-08-28,Various,https://europeantech.substack.com/p/european-tech-weekly-week-34
+a6fd9857-8125-423e-b024-044946dc1dda,withthegrid,2.0,USD,SEED,2025-03-24,Various,https://europeantech.substack.com/p/european-tech-weekly-week-12-2025
+9d834c44-33f3-4de7-94e4-761e3e60803f,woltair,22.0,USD,SERIES A-EXT,2023-06-12,Various,https://europeantech.substack.com/p/european-tech-weekly-week-23
+5f65b32c-b636-456c-b586-488a272c16a4,woodoo,21.0,USD,SEED,2023-05-02,Lowercarbon Capital,https://europeantech.substack.com/p/european-tech-weekly-week-17
+9e8836b1-efd0-4230-bce5-cbaa86797f82,wordsmith,25.0,USD,SERIES A,2025-06-08,Index Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-23-2025
+cb4fca17-dffe-4ba5-a644-e61a04e36310,worldfavor,10.0,USD,SERIES A,2022-08-29,"Spintop, Brightly Ventures",https://europeantech.substack.com/p/european-tech-weekly-series-a-and-eb6
+e3bcda79-215d-4050-80db-2b84f8cfce11,xilva,2.0,USD,SEED,2023-04-17,Various,https://europeantech.substack.com/p/european-tech-weekly-week-15
+5d1f3747-8432-41de-b791-fad667cc44c4,zefi,2.0,USD,SEED,2024-06-04,360 Capital,https://europeantech.substack.com/p/european-tech-weekly-week-22-2024
+cafbe476-0e1f-4f11-b8eb-5fa45f3929fe,zendo,2.0,USD,PRE-SEED,2025-05-19,Fly Ventures,https://europeantech.substack.com/p/european-tech-weekly-week-20-2025
+a74c9330-1d82-4483-b232-d8b5e79111bc,zenml,6.0,USD,SEED,2023-10-30,Crane Venture Partners,https://europeantech.substack.com/p/european-tech-weekly-week-43-a1c
+807295db-1530-4216-9f7c-750222845d9b,zeplug,240.0,USD,GROWTH,2022-09-26,ICG,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-8e4
+8c405085-08c3-4a38-9205-c9e322417926,zepp.solutions,3.0,USD,SEED,2024-05-15,Rotterdam Energy Transition,https://europeantech.substack.com/p/european-tech-weekly-week-19-2024
+973e7c79-a15d-44a8-9704-da9d79cdd4c3,zero44,3.0,USD,SEED,2023-05-29,Atlantic Labs,https://europeantech.substack.com/p/european-tech-weekly-week-21
+bc2d1a28-0b17-4294-95be-bca57e6ca328,zevero,7.0,USD,SEED,2024-09-24,Spiral Capital,https://europeantech.substack.com/p/european-tech-weekly-week-38-2024
+f937b942-43ea-4c95-a055-3df13044559e,zive,3.0,USD,SEED,2024-09-09,Headline,https://europeantech.substack.com/p/european-tech-weekly-week-36-2024
+bae6a4c3-05ca-41b7-9525-b6ebf7bbddf3,zunder,98.0,USD,SERIES C,2022-10-17,Mirova,https://europeantech.substack.com/p/european-tech-weekly-series-a-and-41b

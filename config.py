@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 
+# This will load environment variables from a .env file
+# Ensure you have a .env file in the root directory with the necessary variables
 load_dotenv()
 
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")

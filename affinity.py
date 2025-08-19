@@ -9,6 +9,8 @@ import json
 from embeddings import generate_embedding
 from db_client import cosine_similarity
 import re
+
+# Mapping of Affinity field names to internal names in supabse
 AFFINITY_FIELD_NAME_MAP = {
     "Description": "description",
     "LinkedIn Profile (Founders/CEOs)": "linkedin_profile",
@@ -25,9 +27,11 @@ AFFINITY_FIELD_NAME_MAP = {
     "Pod":"pod"
 }
 
+# pod name map to match energize employees with their affinity ids to save computational time
 with open("private_data/pod_name_map.json","r") as f:
     pod_name_map = json.load(f)
 
+#common field values of interest
 fields_to_extract = [
     "Location",
     "Employees (Current)",
@@ -47,12 +51,9 @@ def name_similarity(name1, name2):
     """
     return SequenceMatcher(None, name1.lower(), name2.lower()).ratio()
 
-def same_word_count(name1,name2):
-    words_1 = name1.split(" ")
-    words_2 = name2.split(" ")
-    return len(words_1) == len(words_2)
 
 def location_check(location,field_values):
+    """ Check if the location in field_values matches the provided location."""
     if field_values and "Location" in field_values and field_values["Location"] and location:
         if in_US(location):
             city, state = field_values["Location"]["city"], field_values["Location"]["state"]
@@ -111,10 +112,9 @@ def patient_get(url, auth = HTTPBasicAuth("",AFFINITY_API_KEY), max_retries=5, b
 
 
 
-all_orgs = pd.read_csv("private_data/energize_affinity_ids.csv")
-id_set = set(all_orgs["id"].values)
 
 def fetch_list(id=153336):
+    """Fetches entries from a specific Affinity list by ID. Default set to Pipeline"""
     url = f'https://api.affinity.co/lists/{id}/list-entries'
     response = requests.get(url, auth=HTTPBasicAuth(" ",AFFINITY_API_KEY))
     if response.status_code == 200:
@@ -122,6 +122,7 @@ def fetch_list(id=153336):
         return pd.DataFrame(data)
     
 def in_energize_affinity(id,pipeline):
+    "Checks if a company is in the energize affinity pipeline"
     if not isinstance(id,int):
         id = int(id)
     if id in pipeline:
@@ -129,6 +130,7 @@ def in_energize_affinity(id,pipeline):
     else:
         return False
 
+# loading us cities and states data for later locational check
 us_data = pd.read_csv("private_data/uscities.csv")
 cities = set(us_data["city"].str.lower().values)
 states = set(us_data["state_id"].str.lower().values)
@@ -140,6 +142,7 @@ def in_US(location):
     else:
         return larger_location[0].lower() in states or larger_location[0].lower() in cities
 def get_person_info(id):
+    """Fetches person information from Affinity by ID."""
     url = f"https://api.affinity.co/persons/{id}?with_current_organizations=true"
     headers = {
         "Content-Type": "application/json"
@@ -151,6 +154,7 @@ def get_person_info(id):
         return data
 
 def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields_to_extract=list(AFFINITY_FIELD_NAME_MAP.keys()), extra_fields=None):
+    """Given a list of raw field values, extracts and normalizes them based on the provided field mapping."""
     if extra_fields:
         fields_to_extract+=extra_fields
     info = {i: None for i in fields_to_extract}
@@ -184,6 +188,7 @@ def extract_field_values(list_of_field_outputs,field_mapping,pod_name_map,fields
     return info
 
 def get_field_value_by_id(company_id, pod_name_map = pod_name_map,extra_fields=None):
+    """Performs the initial API call to fetch field values for a company by its ID."""
     field_mapping = {'Investment Stage': 3007023, 
                      'Description': 3007050,
                     'Year Founded': 3007049,
@@ -230,7 +235,7 @@ def get_field_value_by_id(company_id, pod_name_map = pod_name_map,extra_fields=N
 
 
 def get_company_by_name(company_name, domain=None,location=None,investors=None,description=None,strict = True):
-
+    """Fetches a company from Affinity by name, domain, location, and investors. Performs a fuzzy match on the name and checks for domain, location, and investors."""
     url = f"https://api.affinity.co/organizations?term={company_name}"
     company_name = company_name.strip().lower()
     response = patient_get(url)
@@ -344,6 +349,7 @@ fields_to_extract = [
 fields_to_extract = [normalize_key(f) for f in fields_to_extract]
 
 def affinity_enrich(row,pipeline):
+    """Normalizing and enriching a row with Affinity data."""
     in_energize = False
     affinity_ID = None
     name = row.name
@@ -432,22 +438,34 @@ def enrich_df(companies_df):
         result.append(affinity_enrich(row,pipeline))
     df = pd.DataFrame(result)
     temp = df.copy()
-    # print(f"these are the temp columns \n{list(temp.columns)}")
     columns_to_fix = ["linkedin_profile","industry","business_models","technologies","deep_dive_tag","pod"]
     for i in columns_to_fix:
         df[i] = temp[i].apply(array_columns)
     return df
 
 
+import asyncio
+
+async def async_affinity_enrich(row, pipeline):
+    return await asyncio.to_thread(affinity_enrich, row, pipeline)
+
+async def enrich_df_async(companies_df):
+    result = []
+    pipeline = set(fetch_list()["entity_id"].to_list())
+
+    tasks = [
+        async_affinity_enrich(row, pipeline)
+        for row in companies_df.itertuples()
+    ]
+    enriched = await asyncio.gather(*tasks)
+
+    df = pd.DataFrame(enriched)
+    temp = df.copy()
+    columns_to_fix = ["linkedin_profile", "industry", "business_models", "technologies", "deep_dive_tag", "pod"]
+    for i in columns_to_fix:
+        df[i] = temp[i].apply(array_columns)
+    return df
+
 if __name__=="__main__":
-    
-    # print()
-    # df = pd.DataFrame([{"name":"SunSave","location":"London, UK","tagline":"Sunsave is a subscription-based platform that helps households to save solar battery system.","domain":"sunsave.energy","investors":"IPGL"}])
-    # for row in df.itertuples():
-    #     print(affinity_enrich(row,pipeline=set(fetch_list()["entity_id"].to_list())))
-    # print(affinity_enrich({"name":"bedrock robotics","location":"San Francisco, CA","tagline":"founded by veterans of waymo and segment","domain":"https://bedrockrobotics.com/","investors":"Eclipse 8VC"},pipeline=set(fetch_list()["entity_id"].to_list())))
     print(get_company_by_name("archive",domain="archivesale.com",location="San Francisco, CA",investors=None))
-    # print(get_field_value_by_id(290241095,pod_name_map))
-    # print(pod_name_map["117554472"])
-    # print(fetch_list())
     
