@@ -27,7 +27,7 @@ NEWSLETTER_SOURCES = {
 def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
     for name, (fetch_urls, parse_func) in sources.items():
-        new_urls = fetch_urls(update=False) or []
+        new_urls = fetch_urls(update=True) or []
         print(f"📩 Found {len(new_urls)} new {name} newsletters")
         if new_urls:
             for i, url in enumerate(new_urls, start=1):
