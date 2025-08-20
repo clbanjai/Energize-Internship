@@ -2,8 +2,8 @@ name: Update Database Notes Fields
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: '0 8 * * 1'  # Runs every Monday at 08:00 UTC
+  # schedule:
+  # - cron: '0 8 * * 1'  # Runs every Monday at 08:00 UTC
 
 
 jobs:
