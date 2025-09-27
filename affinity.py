@@ -31,7 +31,7 @@ AFFINITY_FIELD_NAME_MAP = {
 }
 
 # pod name map to match energize employees with their affinity ids to save computational time
-with open("private_data/pod_name_map.json","r") as f:
+with open("data/pod_name_map.json","r") as f:
     pod_name_map = json.load(f)
 
 #common field values of interest
@@ -131,7 +131,7 @@ def in_energize_affinity(id,pipeline):
         return False
 
 # loading us cities and states data for later locational check
-us_data = pd.read_csv("private_data/uscities.csv")
+us_data = pd.read_csv("data/uscities.csv")
 cities = set(us_data["city"].str.lower().values)
 states = set(us_data["state_id"].str.lower().values)
 def in_US(location):
