@@ -28,7 +28,7 @@ def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
     all_data = pd.DataFrame()
     for name, (fetch_urls, parse_func) in sources.items():
         new_urls = fetch_urls(update=True) or []
-        print(f"📩 Found {len(new_urls)} new {name} newsletters")
+        print(f"Found {len(new_urls)} new {name} newsletters")
         if new_urls:
             for i, url in enumerate(new_urls, start=1):
                 print(f"   ↳ Parsing {name} newsletter #{i}")
@@ -36,7 +36,7 @@ def fetch_newsletter_data(sources: dict) -> pd.DataFrame:
                 if df is not None and not df.empty:
                     all_data = pd.concat([all_data, df])
                 else:
-                    print(f"   ⚠️ Failed to parse {name} newsletter #{i}")
+                    print(f"Failed to parse {name} newsletter #{i}")
     return all_data
 
 
@@ -53,9 +53,9 @@ def resolve_companies(companies: pd.DataFrame, deals: pd.DataFrame) -> tuple[pd.
             existing_name = match["name"]
             deals.loc[deals["company_uuid"] == temp_id, "company_uuid"] = existing_id
             deals.loc[deals["company_uuid"] == existing_id, "name"] = existing_name
-            print(f"🔁 Matched existing company: {existing_name}")
+            print(f"Matched existing company: {existing_name}")
         else:
-            print(f"➕ New company: {row['name']} ({row['location']})")
+            print(f"New company: {row['name']} ({row['location']})")
             new_companies = pd.concat([new_companies, row.to_frame().T])
 
     return new_companies.reset_index(drop=True), deals
@@ -63,7 +63,7 @@ def resolve_companies(companies: pd.DataFrame, deals: pd.DataFrame) -> tuple[pd.
 
 def upload_new_companies(companies: pd.DataFrame):
     if companies.empty:
-        print("✅ No new companies to upload.")
+        print("No new companies to upload.")
         return
 
     print(f"\n🧬 Enriching and uploading {len(companies)} new companies...")
@@ -71,37 +71,37 @@ def upload_new_companies(companies: pd.DataFrame):
 
     for i, row in companies.iterrows():
         try:
-            print(f"🔄 Uploading company: {row['name']} (UUID: {row['company_uuid']})")
+            print(f"Uploading company: {row['name']} (UUID: {row['company_uuid']})")
             upload_dataframe(row.to_frame().T, "companies")
         except Exception as e:
-            print(f"❌ Failed to upload company: {row.get('name', '[unknown]')}")
-            print(f"   ↳ Error: {e}\n")
+            print(f"Failed to upload company: {row.get('name', '[unknown]')}")
+            print(f"Error: {e}\n")
             continue
 
 
 def upload_new_deals(deals: pd.DataFrame):
-    print("\n🔎 Checking for unseen deals...")
+    print("\Checking for unseen deals")
     new = unseen_deals(deals)
 
     if new is None or new.empty:
-        print("✅ No new deals to upload.")
+        print("No new deals to upload.")
         return
 
-    print(f"✅ Uploading {len(new)} new deals")
+    print(f"Uploading {len(new)} new deals")
     new = new.reset_index()  # <-- Critical fix
 
     for i, row in new.iterrows():
         try:
-            print(f"🔄 Uploading deal for company UUID: {row['company_uuid']}")
+            print(f"Uploading deal for company UUID: {row['company_uuid']}")
             upload_dataframe(row.to_frame().T, "funding")
         except Exception as e:
-            print(f"❌ Failed to upload deal (UUID: {row.get('company_uuid', '[unknown]')})")
-            print(f"   ↳ Error: {e}\n")
+            print(f"Failed to upload deal (UUID: {row.get('company_uuid', '[unknown]')})")
+            print(f"Error: {e}\n")
             continue
 
 
 def main():
-    print("🚀 Starting newsletter ingestion pipeline...\n")
+    print("Starting newsletter ingestion pipeline\n")
     import json
     
     raw_data = fetch_newsletter_data(NEWSLETTER_SOURCES)
@@ -118,7 +118,7 @@ def main():
 
         upload_new_deals(updated_deals)
 
-        print(f"\n🎉 Pipeline complete: {new_companies.shape[0]} new companies, {updated_deals.shape[0]} total deals processed.")
+        print(f"\nPipeline complete: {new_companies.shape[0]} new companies, {updated_deals.shape[0]} total deals processed.")
 
 if __name__ == "__main__":
     main()

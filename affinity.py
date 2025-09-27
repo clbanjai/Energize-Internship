@@ -9,6 +9,9 @@ import json
 from embeddings import generate_embedding
 from db_client import cosine_similarity
 import re
+import time
+import requests
+from requests.auth import HTTPBasicAuth
 
 # Mapping of Affinity field names to internal names in supabse
 AFFINITY_FIELD_NAME_MAP = {
@@ -71,9 +74,6 @@ def location_check(location,field_values):
                 return True
     return False
 
-import time
-import requests
-from requests.auth import HTTPBasicAuth
 
 def patient_get(url, auth = HTTPBasicAuth("",AFFINITY_API_KEY), max_retries=5, base_wait=61, backoff_factor=1.0):
     """

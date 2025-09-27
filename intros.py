@@ -271,14 +271,14 @@ def set_opportunity_field_values(opportunity_id: int, list_entry_id: int, field_
 
         response = requests.post(url, auth=HTTPBasicAuth("", AFFINITY_API_KEY), headers=headers, data=json.dumps(payload))
         if response.status_code != 200:
-            print("❌ Failed payload:", json.dumps(payload, indent=2))
-            print("❌ Response:", response.status_code, response.text)
+            print("Failed payload:", json.dumps(payload, indent=2))
+            print("Response:", response.status_code, response.text)
         elif response.status_code == 200:
-            print("✅ Successfully set field value:", response.json())
+            print("Successfully set field value:", response.json())
 
     # return results
 def main():
-    emails = get_new_emails(user = "intros@energizecap.com",update_seen=False)
+    emails = get_new_emails(user = MAILBOX,update_seen=True)
     if emails:
         for email in emails:
             try:

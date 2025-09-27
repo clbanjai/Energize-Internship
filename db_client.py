@@ -82,13 +82,13 @@ def prepare_dataframe_for_upload(df: pd.DataFrame, table_name: str) -> pd.DataFr
     if "date" in df.columns:
         df["date"] = df.apply(convert_date_to_string, axis=1)
 
-    # Reset index and drop accidental index column
+    
     df = df.reset_index()
     if "index" in df.columns:
         df = df.drop(columns=["index"])
 
     
-    # Replace NaNs with None for Supabase
+    
     df = df.where(pd.notna(df), None)
 
     return df
@@ -97,7 +97,7 @@ def upload_dataframe(df: pd.DataFrame, table_name: str):
     df = prepare_dataframe_for_upload(df, table_name)
     db = fetch_all(table_name)
 
-    # Determine the primary key
+    
     key = "company_uuid" if "company_uuid" in df.columns else "deal_uuid"
 
     data = df.to_dict(orient="records")
